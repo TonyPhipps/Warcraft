@@ -3,10 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sfFrameFade", "sfFrameFade", "{D1BAC38A-4554-4052-BC24-458FEEAEDF28}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B4C784F-9EBA-4001-883C-DFC1959E46E2}"
 	ProjectSection(SolutionItems) = preProject
-		D:\World of Warcraft\Interface\Addons\sfFrameFade\sfFrameFade.lua = D:\World of Warcraft\Interface\Addons\sfFrameFade\sfFrameFade.lua
-		D:\World of Warcraft\Interface\Addons\sfFrameFade\sfFrameFade.toc = D:\World of Warcraft\Interface\Addons\sfFrameFade\sfFrameFade.toc
+		sfFrameFade\sfFrameFade.lua = sfFrameFade\sfFrameFade.lua
+		sfFrameFade\sfFrameFade.toc = sfFrameFade\sfFrameFade.toc
 	EndProjectSection
 EndProject
 Global
