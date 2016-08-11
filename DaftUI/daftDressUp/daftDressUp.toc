@@ -1,0 +1,7 @@
+## Interface: 70000
+## Title: daftDressUp
+## Version: 70000.2
+## Author: Daftwise - US Destromath
+## Notes: Enlarge and center dressup frame; remove textures.
+
+daftDressUp.lua

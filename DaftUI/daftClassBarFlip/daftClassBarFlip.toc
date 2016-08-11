@@ -1,0 +1,7 @@
+## Interface: 60200
+## Title: daftClassBarFlip
+## Version: 60200.2
+## Author: Daftwise - US Destromath
+## Notes: Move class bars above player frame
+
+daftClassBarFlip.lua

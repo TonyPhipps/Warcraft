@@ -1,0 +1,7 @@
+## Interface: 70000
+## Title: daftClassHealthBars
+## Author: Daftwise - US Destromath
+## Notes: Changes healthbar color to match unit class.
+## Version: 70000.1
+
+daftClassHealthBars.lua

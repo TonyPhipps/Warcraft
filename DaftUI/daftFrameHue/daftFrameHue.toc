@@ -1,0 +1,7 @@
+## Interface: 70000
+## Title: daftFrameHue
+## Author: Daftwise - US Destromath
+## Notes: Applies a hue to multiple default frames.
+## Version: 70000.1
+
+daftFrameHue.lua
