@@ -1,8 +1,0 @@
-## Interface: 70000
-## Title: sfFrameFade
-## Notes: Fades default frames based on mouseover and combat status.
-## Author: Daftwise - US Destromath
-## Version: 70000.9
-
-
-sfFrameFade.lua

@@ -1,16 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B4C784F-9EBA-4001-883C-DFC1959E46E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "daftAuction", "daftAuction", "{43357633-CE72-4890-8EAA-6D615B5B987F}"
 	ProjectSection(SolutionItems) = preProject
-		sfFrameFade\sfFrameFade.lua = sfFrameFade\sfFrameFade.lua
-		sfFrameFade\sfFrameFade.toc = sfFrameFade\sfFrameFade.toc
+		D:\World of Warcraft\Interface\Addons\daftAuction\daftAuction.lua = D:\World of Warcraft\Interface\Addons\daftAuction\daftAuction.lua
+		D:\World of Warcraft\Interface\Addons\daftAuction\daftAuction.toc = D:\World of Warcraft\Interface\Addons\daftAuction\daftAuction.toc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "daftBigGossiper", "daftBigGossiper", "{0DE44D5B-E884-4F25-A755-1C5958BB1A2B}"
+	ProjectSection(SolutionItems) = preProject
+		D:\World of Warcraft\Interface\Addons\daftBigGossiper\daftBigGossiper.lua = D:\World of Warcraft\Interface\Addons\daftBigGossiper\daftBigGossiper.lua
+		D:\World of Warcraft\Interface\Addons\daftBigGossiper\daftBigGossiper.toc = D:\World of Warcraft\Interface\Addons\daftBigGossiper\daftBigGossiper.toc
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{43357633-CE72-4890-8EAA-6D615B5B987F} = {7B4C784F-9EBA-4001-883C-DFC1959E46E2}
+		{0DE44D5B-E884-4F25-A755-1C5958BB1A2B} = {7B4C784F-9EBA-4001-883C-DFC1959E46E2}
 	EndGlobalSection
 EndGlobal
