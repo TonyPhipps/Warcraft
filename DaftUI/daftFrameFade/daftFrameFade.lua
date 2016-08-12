@@ -65,10 +65,7 @@ function daftFrameFade:FadeOutAll()
 		daftFrameFade:FadeFrameOut(BuffFrame)
 	end
 	
-	if TARGET then	
-		daftFrameFade:FadeFrameOut(TargetFrame)
-	end
-	
+
 	if MINIMAP then	
 		daftFrameFade:FadeFrameOut(Minimap)
 		daftFrameFade:FadeFrameOut(MinimapCluster)
