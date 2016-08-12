@@ -17,13 +17,31 @@ if GetUnitName("player") == "Goose" then
 	SPEC4_COMBAT = "set_name"
 end
 
+if GetUnitName("player") == "SomeCharacterName" then
+	SPEC1 = true
+	SPEC1_NOCOMBAT = "set_name"
+	SPEC1_COMBAT = "set_name"
+
+	SPEC2 = true
+	SPEC2_NOCOMBAT = "Warglaives"
+	SPEC2_COMBAT = "Spec2"
+
+	SPEC3 = true
+	SPEC3_NOCOMBAT = "set_name"
+	SPEC3_COMBAT = "set_name"
+
+	SPEC4 = false
+	SPEC4_NOCOMBAT = "set_name"
+	SPEC4_COMBAT = "set_name"
+end
+
 
 local daftSetSwap = CreateFrame("Frame")
 
 
+daftSetSwap:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
 daftSetSwap:RegisterEvent("PLAYER_ENTER_COMBAT")
-daftSetSwap:RegisterEvent("PLAYER_REGEN_DISABLED")	
-	
+daftSetSwap:RegisterEvent("PLAYER_REGEN_DISABLED")		
 daftSetSwap:RegisterEvent("PLAYER_REGEN_ENABLED")	
 daftSetSwap:RegisterEvent("PLAYER_LEAVE_COMBAT")
 
