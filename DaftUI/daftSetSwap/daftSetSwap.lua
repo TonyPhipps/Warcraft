@@ -6,7 +6,7 @@ if GetUnitName("player") == "Goose" then
 
 	SPEC2 = true
 	SPEC2_NOCOMBAT = "Warglaives"
-	SPEC2_COMBAT = "Spec2"
+	SPEC2_COMBAT = "Outlaw"
 
 	SPEC3 = true
 	SPEC3_NOCOMBAT = "set_name"
