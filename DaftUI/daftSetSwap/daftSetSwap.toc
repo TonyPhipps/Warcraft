@@ -2,6 +2,6 @@
 ## Title: daftSetSwap
 ## Notes: Swap equipment sets based on spec and combat status.
 ## Author: Daftwise - US Destromath
-## Version: 70000.1
+## Version: 70000.2
 
 daftSetSwap.lua
