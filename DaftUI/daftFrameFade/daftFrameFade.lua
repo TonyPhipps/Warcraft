@@ -27,8 +27,8 @@ local daftFrameFade = CreateFrame("Frame")
 
 
 daftFrameFade:RegisterEvent("PLAYER_LOGIN")
-daftFrameFade:RegisterEvent("PLAYER_ENTER_COMBAT")
-daftFrameFade:RegisterEvent("PLAYER_LEAVE_COMBAT")
+daftFrameFade:RegisterEvent("PLAYER_REGEN_DISABLED")
+daftFrameFade:RegisterEvent("PLAYER_REGEN_ENABLED")
 daftFrameFade:RegisterEvent("PLAYER_FOCUS_CHANGED")
 daftFrameFade:RegisterEvent("PLAYER_TARGET_CHANGED")
 daftFrameFade:RegisterUnitEvent("UNIT_HEALTH_FREQUENT")
@@ -48,7 +48,7 @@ end
 
 
 function daftFrameFade:FadeFrameOut(frame)
-	if UnitAffectingCombat("player") then
+	if UnitAffectingCombat("player") or InCombatLockdown() then
 		UIFrameFadeOut(frame, COMBAT_FADE[3], frame:GetAlpha(), COMBAT_FADE[4])
 	else
 		UIFrameFadeOut(frame, NOCOMBAT_FADE[3], frame:GetAlpha(), NOCOMBAT_FADE[4])
@@ -61,10 +61,13 @@ function daftFrameFade:FadeOutAll()
 		daftFrameFade:FadeFrameOut(PlayerFrame)
 	end
 	
+	if TARGET then 
+		daftFrameFade:FadeFrameOut(TargetFrame)
+	end
+	
 	if BUFFS then 
 		daftFrameFade:FadeFrameOut(BuffFrame)
 	end
-	
 
 	if MINIMAP then	
 		daftFrameFade:FadeFrameOut(Minimap)
@@ -112,8 +115,9 @@ daftFrameFade:SetScript("OnEvent", function(self, event, ...)
 	local tmp = UnitPower("target") / UnitPowerMax("target")
 
 	if event == "PLAYER_LOGIN" or
-	event == "PLAYER_ENTER_COMBAT" or
-	event == "PLAYER_LEAVE_COMBAT" 	then
+	event == "PLAYER_REGEN_DISABLED" or
+	event == "PLAYER_REGEN_ENABLED" 
+	then
 		daftFrameFade:FadeOutAll()
 	end
 	
@@ -184,7 +188,7 @@ WorldFrame:HookScript("OnEnter", function()
 	if BUFFS then
 		
 		if UnitName("target") == UnitName("player") then
-			return
+			
 		else
 			daftFrameFade:FadeFrameOut(BuffFrame)
 		end
@@ -417,3 +421,4 @@ end
 -- VehicleSeatIndicator
 -- Boss1TargetFrame
 -- WorldStateAlwaysUpFrame
+-- cvar USE_RAID_STYLE_PARTY_FRAMES 0/1
