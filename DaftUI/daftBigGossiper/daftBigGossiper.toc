@@ -2,7 +2,7 @@
 ## Title: daftBigGossiper
 ## Notes: Enlarges the gossip frame
 ## Author: Daftwise - US Destromath
-## Version: 70000.1
+## Version: 70000.2
 
 
 daftBigGossiper.lua
