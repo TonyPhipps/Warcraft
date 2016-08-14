@@ -1,5 +1,7 @@
 ---- CONFIG ----
 if GetUnitName("player") == "Goose" then
+	ENABLED = true
+
 	SPEC1 = true
 	SPEC1_NOCOMBAT = "set_name"
 	SPEC1_COMBAT = "set_name"
@@ -84,5 +86,7 @@ end
 
 
 daftSetSwap:SetScript("OnEvent", function(self, event, ...)
-	Swap(event)
+	if ENABLED then
+		Swap(event)
+	end
 end)
