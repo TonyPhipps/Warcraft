@@ -1,4 +1,6 @@
-SCALE = 2.0
+SCALE = 1.75
+MERCHANT = true
+QUEST = true
 
 local daftBigGossiper = CreateFrame("Frame")
 
@@ -8,15 +10,23 @@ daftBigGossiper:RegisterEvent("QUEST_DETAIL")
 daftBigGossiper:RegisterEvent("QUEST_COMPLETE")
 daftBigGossiper:RegisterEvent("QUEST_FINISHED")
 daftBigGossiper:RegisterEvent("QUEST_PROGRESS")
+daftBigGossiper:RegisterEvent("MERCHANT_SHOW")
+
 
 daftBigGossiper:SetScript("OnEvent", function()
 
-	QuestFrame:SetScale(2)
-	QuestFrame:SetPoint("TOPLEFT",13,-13)
+	if QUEST then
+		QuestFrame:SetScale(SCALE)
+		QuestFrame:SetPoint("TOPLEFT",13,-13)
 
-	GossipFrame:SetScale(2)
-	GossipFrame:SetPoint("TOPLEFT",13,-13)
-		
+		GossipFrame:SetScale(SCALE)
+		GossipFrame:SetPoint("TOPLEFT",13,-13)
+	end
+	
+	if MERCHANT then
+		MerchantFrame:SetScale(SCALE)
+		MerchantFrame:SetPoint("TOPLEFT",13,-13)
+	end
 end)
 
 
