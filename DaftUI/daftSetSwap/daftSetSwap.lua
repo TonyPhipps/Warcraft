@@ -20,6 +20,7 @@ if GetUnitName("player") == "Goose" then
 end
 
 if GetUnitName("player") == "SomeCharacterName" then
+	ENABLED = true
 	SPEC1 = true
 	SPEC1_NOCOMBAT = "set_name"
 	SPEC1_COMBAT = "set_name"
