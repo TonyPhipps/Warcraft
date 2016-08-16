@@ -1,44 +1,3 @@
----- CONFIG ----
-if GetUnitName("player") == "Goose" then
-	ENABLED = true
-
-	SPEC1 = true
-	SPEC1_NOCOMBAT = "set_name"
-	SPEC1_COMBAT = "set_name"
-
-	SPEC2 = true
-	SPEC2_NOCOMBAT = "Warglaives"
-	SPEC2_COMBAT = "Outlaw"
-
-	SPEC3 = true
-	SPEC3_NOCOMBAT = "set_name"
-	SPEC3_COMBAT = "set_name"
-
-	SPEC4 = false
-	SPEC4_NOCOMBAT = "set_name"
-	SPEC4_COMBAT = "set_name"
-end
-
-if GetUnitName("player") == "SomeCharacterName" then
-	ENABLED = true
-	SPEC1 = true
-	SPEC1_NOCOMBAT = "set_name"
-	SPEC1_COMBAT = "set_name"
-
-	SPEC2 = true
-	SPEC2_NOCOMBAT = "Warglaives"
-	SPEC2_COMBAT = "Spec2"
-
-	SPEC3 = true
-	SPEC3_NOCOMBAT = "set_name"
-	SPEC3_COMBAT = "set_name"
-
-	SPEC4 = false
-	SPEC4_NOCOMBAT = "set_name"
-	SPEC4_COMBAT = "set_name"
-end
-
-
 local daftSetSwap = CreateFrame("Frame")
 
 
@@ -87,7 +46,42 @@ end
 
 
 daftSetSwap:SetScript("OnEvent", function(self, event, ...)
-	if ENABLED then
-		Swap(event)
-	end
+	
+	if event == "ADDON_LOADED" then
+		
+		local addon = ...;
+		
+		if addon == "daftSetSwap" then -- Set Stored Options
+		
+			if ENABLED == true then
+				EnableBtn:SetChecked(true);
+			else
+				EnableBtn:SetChecked(false);
+			end;
+			
+			if SPEC1 == true then
+				EnableSpec1Btn:SetChecked(true);
+			else
+				EnableSpec1Btn:SetChecked(false);
+			end;
+			
+			if SPEC1_NOCOMBAT then
+				UIDropDownMenu_SetText(Spec1NoCombatDropdown, SPEC1_NOCOMBAT);
+			else
+				UIDropDownMenu_SetText(Spec1NoCombatDropdown, "None");
+			end;
+			if SPEC1_COMBAT then
+				UIDropDownMenu_SetText(Spec1CombatDropdown, SPEC1_COMBAT);
+			else
+				UIDropDownMenu_SetText(Spec1NoCombatDropdown, "None");
+			end;
+			
+		else
+
+			if ENABLED then
+			
+				Swap(event);
+			end;
+		end;
+	end;
 end)

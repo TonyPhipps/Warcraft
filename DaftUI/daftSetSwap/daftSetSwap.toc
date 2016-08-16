@@ -2,6 +2,8 @@
 ## Title: daftSetSwap
 ## Notes: Swap equipment sets based on spec and combat status.
 ## Author: Daftwise - US Destromath
-## Version: 70000.3
+## SavedVariablesPerCharacter: SPEC1, SPEC1_COMBAT, SPEC1_NOCOMBAT, SPEC2, SPEC2_COMBAT, SPEC2_NOCOMBAT, SPEC3, SPEC3_COMBAT, SPEC3_NOCOMBAT, SPEC4, SPEC4_COMBAT, SPEC4_NOCOMBAT
+## Version: 70000.4
 
 daftSetSwap.lua
+Options.lua
