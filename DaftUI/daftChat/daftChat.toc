@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: daftChat
+## Notes: Quality of life chat frame mods.
+## Author: Daftwise - US Destromath
+## Version: 70000.1
+
+daftChat.lua
+Options.lua
