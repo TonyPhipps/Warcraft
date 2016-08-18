@@ -21,9 +21,13 @@ addonName:RegisterUnitEvent("UNIT_POWER_FREQUENT");
 function addonName:FadeFrameIn(frameName)
 
 	if UnitAffectingCombat("player") then
-		UIFrameFadeIn(frameName, addonTable.COMBAT_TIMETOFADEIN, frameName:GetAlpha(), addonTable.COMBAT_FADEIN);
+		if frameName:IsShown() then
+			UIFrameFadeIn(frameName, addonTable.COMBAT_TIMETOFADEIN, frameName:GetAlpha(), addonTable.COMBAT_FADEIN);
+		end;
 	else
-		UIFrameFadeIn(frameName, addonTable.NOCOMBAT_TIMETOFADEIN, frameName:GetAlpha(), addonTable.NOCOMBAT_FADEIN);
+		if frameName:IsShown() then
+			UIFrameFadeIn(frameName, addonTable.NOCOMBAT_TIMETOFADEIN, frameName:GetAlpha(), addonTable.NOCOMBAT_FADEIN);
+		end;
 	end;
 end;
 
@@ -31,42 +35,47 @@ end;
 function addonName:FadeFrameOut(frameName)
 
 	if UnitAffectingCombat("player") or InCombatLockdown() then
-		UIFrameFadeOut(frameName, addonTable.COMBAT_TIMETOFADEOUT, frameName:GetAlpha(), addonTable.COMBAT_FADEOUT);
+		if frameName:IsShown() then
+			UIFrameFadeOut(frameName, addonTable.COMBAT_TIMETOFADEOUT, frameName:GetAlpha(), addonTable.COMBAT_FADEOUT);
+		end;
 	else
-		UIFrameFadeOut(frameName, addonTable.NOCOMBAT_TIMETOFADEOUT, frameName:GetAlpha(), addonTable.NOCOMBAT_FADEOUT);
+		if frameName:IsShown() then
+			UIFrameFadeOut(frameName, addonTable.NOCOMBAT_TIMETOFADEOUT, frameName:GetAlpha(), addonTable.NOCOMBAT_FADEOUT);
+		end;
 	end;
 end;
 
 function addonName:SetupBasicFading(setting, frameName)
 	if setting then
 		frameName:SetScript("OnEnter", function(self)
-			if self:IsShown() then
-				addonName:FadeFrameIn(self);
-			end;
+			addonName:FadeFrameIn(self);
 		end);
 		
 		WorldFrame:HookScript("OnEnter", function()
-			if frameName:IsShown() then
-				addonName:FadeFrameOut(frameName);
-			end;
+			addonName:FadeFrameOut(frameName);
 		end);
 	end;
 end;
 
 
 function addonName:FadeOutAll()
-	if addonTable.PLAYER then 
-		addonName:FadeFrameOut(PlayerFrame);
-	end;
-	
-	if addonTable.TARGET then 
-		addonName:FadeFrameOut(TargetFrame);
-	end;
-	
 	if addonTable.BUFFS then 
 		addonName:FadeFrameOut(BuffFrame);
 	end;
-
+	
+	if addonTable.CHATTABS then 
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chatFrameNumber = ("ChatFrame%d"):format(i);
+			local ChatFrameNumberTab = _G[chatFrameNumber.."Tab"];
+			
+			addonName:FadeFrameOut(ChatFrameNumberTab);
+		end;
+	end;
+	
+	if addonTable.MAINMENUBAR then
+		addonName:FadeFrameOut(MainMenuBar);
+	end;
+	
 	if addonTable.MINIMAP then	
 		addonName:FadeFrameOut(Minimap);
 		addonName:FadeFrameOut(MinimapCluster);
@@ -75,40 +84,34 @@ function addonName:FadeOutAll()
 	if addonTable.OBJECTIVETRACKER then
 		addonName:FadeFrameOut(ObjectiveTrackerFrame);
 	end;
-	
-	if addonTable.MAINMENUBAR then
-		addonName:FadeFrameOut(MainMenuBar);
-	end;
-	
-	if addonTable.RAIDMANAGER then
-		if CompactRaidFrameManager:IsShown() then
-			if not CompactRaidFrameContainer:IsShown() then
-				if not PartyMemberFrame1:IsShown() then
-					addonName:FadeFrameOut(CompactRaidFrameManager);
-				end;
-			end;
-		end;
-	end;
-	
+
 	if addonTable.PARTY then
-		if not CompactRaidFrameContainer:IsShown() then
-			if UnitExists("party1") then
-				addonName:FadeFrameOut(PartyMemberFrame1);
-			end;
+		for i = 1, GetNumGroupMembers() do
+			local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
+			local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
+			addonName:FadeFrameOut(PartyMemberFrameNumber);
 			
-			if UnitExists("party2") then
-				addonName:FadeFrameOut(PartyMemberFrame2);
-			end;
-			
-			if UnitExists("party3") then
-				addonName:FadeFrameOut(PartyMemberFrame3);
-			end;
-			
-			if UnitExists("party4") then
-				addonName:FadeFrameOut(PartyMemberFrame4);
-			end;
 		end;
 	end;
+	
+	if addonTable.PLAYER then 
+		addonName:FadeFrameOut(PlayerFrame);
+	end;
+
+	if addonTable.RAIDMANAGER then
+		if not CompactRaidFrameContainer:IsShown() then
+			addonName:FadeFrameOut(CompactRaidFrameManager);
+		end;
+	end;
+	
+	if addonName.VEHICLESEATINDICATOR then
+		addonName.FadeFrameOut(VehicleSeatIndicator);
+	end;
+	
+	if addonName.WORLDSTATEFRAME then
+		addonName.FadeFrameOut(WorldStateAlwaysUpFrame);
+	end;
+
 end;
 
 
@@ -205,23 +208,13 @@ function addonName:HookFrames()
 		end;
 		
 		if addonTable.RAIDMANAGER then
-			if CompactRaidFrameManager:IsShown() then
-				if not CompactRaidFrameContainer:IsShown() then
-					if not PartyMemberFrame1:IsShown() then
-						addonName:FadeFrameOut(CompactRaidFrameManager);
-					end;
+			if not CompactRaidFrameContainer:IsShown() then
+				if not PartyMemberFrame1:IsShown() then
+					addonName:FadeFrameOut(CompactRaidFrameManager);
 				end;
 			end;
 		end;
 		
-		if addonTable.PARTY then
-			for i = 1, GetNumGroupMembers() do
-				local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
-				local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
-				
-				addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumber);
-			end;
-		end;
 	end);
 
 
@@ -331,54 +324,25 @@ function addonName:HookFrames()
 	end;
 
 
-	if addonTable.PARTY then
-
-		PartyMemberFrame1:SetScript("OnEnter", function(self)
-			if not CompactRaidFrameContainer:IsShown() then
-				if self:IsShown() then
-					addonName:FadeFrameIn(self);
-				end;
-			end;
-		end);
-
-
-		PartyMemberFrame2:SetScript("OnEnter", function(self)
-			if not CompactRaidFrameContainer:IsShown() then
-				if self:IsShown() then
-					addonName:FadeFrameIn(self);
-				end;
-			end;
-		end);
-
-
-		PartyMemberFrame3:SetScript("OnEnter", function(self)
-			if not CompactRaidFrameContainer:IsShown() then
-				if self:IsShown() then
-					addonName:FadeFrameIn(self);
-				end;
-			end;
-		end);
-
-
-		PartyMemberFrame4:SetScript("OnEnter", function(self)
-			if not CompactRaidFrameContainer:IsShown() then
-				if self:IsShown() then
-					addonName:FadeFrameIn(self);
-				end;
-			end;
-		end);
-	end;
-
-
 	if addonTable.RAIDMANAGER then
-		CompactRaidFrameManager:HookScript("OnEnter", function(self)
-			if CompactRaidFrameManager:IsShown() then
+		if not CompactRaidFrameContainer:IsShown() then
+			CompactRaidFrameManager:HookScript("OnEnter", function(self)
 				addonName:FadeFrameIn(self);
-			end;
-		end);
+			end);
+		end;
 	end;
 
 
+	if addonTable.PARTY then
+		for i = 1, GetNumGroupMembers() do
+			local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
+			local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
+				
+			addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumber);
+		end;
+	end;
+	
+	
 	if addonTable.PLAYER then
 		PlayerFrame:HookScript("OnEnter", function(self)
 			addonName:FadeFrameIn(self);
@@ -404,12 +368,10 @@ function addonName:HookFrames()
 	addonName:SetupBasicFading(addonTable.MAINMENUBAR, MainMenuBar);
 	addonName:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
 
-
-	
 end;
 
 
 
 
 ---- TODO ----
--- WorldStateAlwaysUpFrame
+
