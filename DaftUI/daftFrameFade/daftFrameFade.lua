@@ -137,9 +137,7 @@ function addonName:HookFrames()
 		
 		if addonTable.RAIDMANAGER then
 			if not CompactRaidFrameContainer:IsShown() then
-				if not PartyMemberFrame1:IsShown() then
-					addonName:FadeFrameOut(CompactRaidFrameManager);
-				end;
+				addonName:FadeFrameOut(CompactRaidFrameManager);
 			end;
 		end;
 		
