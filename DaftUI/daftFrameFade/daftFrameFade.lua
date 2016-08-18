@@ -2,10 +2,6 @@ local addonName, addonTable = ... ;
 
 local addonName = CreateFrame("Frame");
 
-
----- EVENTS ----
-
-
 addonName:RegisterEvent("PLAYER_LOGIN");
 addonName:RegisterEvent("PLAYER_REGEN_DISABLED");
 addonName:RegisterEvent("PLAYER_REGEN_ENABLED");
@@ -44,6 +40,7 @@ function addonName:FadeFrameOut(frameName)
 		end;
 	end;
 end;
+
 
 function addonName:SetupBasicFading(setting, frameName)
 	if setting then
@@ -115,76 +112,7 @@ function addonName:FadeOutAll()
 end;
 
 
-addonName:SetScript("OnEvent", function(self, event, ...)
-	local thp = UnitHealth("target") / UnitHealthMax("target");
-	local tmp = UnitPower("target") / UnitPowerMax("target");
-
-	if event == "PLAYER_LOGIN" then
-		addonName:HookFrames();
-	end;
-	
-	if event == "PLAYER_LOGIN" or
-	event == "PLAYER_REGEN_DISABLED" or
-	event == "PLAYER_REGEN_ENABLED" 
-	then
-		addonName:FadeOutAll();
-	end;
-	
-	if event == "PLAYER_TARGET_CHANGED" then
-		if UnitExists("target") or UnitIsDead("target") then
-			
-			if addonTable.PLAYER then
-				addonName:FadeFrameIn(PlayerFrame);
-			end;
-			
-			if addonTable.BUFFS then
-				if UnitName("target") == UnitName("player") then
-					addonName:FadeFrameIn(BuffFrame);
-				end;
-			end;
-			
-			if addonTable.TARGET then
-				addonName:FadeFrameIn(TargetFrame);
-			end;
-		else
-			
-			if addonTable.PLAYER then
-				addonName:FadeFrameOut(PlayerFrame);
-			end;
-			
-			if addonTable.BUFFS then
-				addonName:FadeFrameOut(BuffFrame);
-			end;
-			
-			if addonTable.TARGET then
-				TargetFrame:Hide();
-			end;
-		end;
-	end;
-	
-	if event == "UNIT_HEALTH_FREQUENT" or event == "UNIT_POWER_FREQUENT" then
-		
-		if addonTable.PLAYER then
-			local php = UnitHealth("player") / UnitHealthMax("player");
-			local pmp = UnitPower("player") / UnitPowerMax("player");
-		
-			if php == 1 and (pmp == 1 or pmp == 0) then 
-				if UnitExists("target") or UnitIsDead("target") then
-					return;
-				else 
-					addonName:FadeFrameOut(PlayerFrame);
-				end;
-			end;
-		
-			if php < 1 or (pmp < 1 and pmp > 0) then
-				addonName:FadeFrameIn(PlayerFrame);
-			end;
-		end;
-	end;
-end);
-
-
-------- MAIN -------
+---- FUNCTIONS ----
 
 function addonName:HookFrames()
 
@@ -371,7 +299,75 @@ function addonName:HookFrames()
 end;
 
 
+---- MAIN ----
 
 
----- TODO ----
+addonName:SetScript("OnEvent", function(self, event, ...)
+	local thp = UnitHealth("target") / UnitHealthMax("target");
+	local tmp = UnitPower("target") / UnitPowerMax("target");
+
+	if event == "PLAYER_LOGIN" then
+		addonName:HookFrames();
+	end;
+	
+	if event == "PLAYER_LOGIN" or
+	event == "PLAYER_REGEN_DISABLED" or
+	event == "PLAYER_REGEN_ENABLED" 
+	then
+		addonName:FadeOutAll();
+	end;
+	
+	if event == "PLAYER_TARGET_CHANGED" then
+		if UnitExists("target") or UnitIsDead("target") then
+			
+			if addonTable.PLAYER then
+				addonName:FadeFrameIn(PlayerFrame);
+			end;
+			
+			if addonTable.BUFFS then
+				if UnitName("target") == UnitName("player") then
+					addonName:FadeFrameIn(BuffFrame);
+				end;
+			end;
+			
+			if addonTable.TARGET then
+				addonName:FadeFrameIn(TargetFrame);
+			end;
+		else
+			
+			if addonTable.PLAYER then
+				addonName:FadeFrameOut(PlayerFrame);
+			end;
+			
+			if addonTable.BUFFS then
+				addonName:FadeFrameOut(BuffFrame);
+			end;
+			
+			if addonTable.TARGET then
+				TargetFrame:Hide();
+			end;
+		end;
+	end;
+	
+	if event == "UNIT_HEALTH_FREQUENT" or event == "UNIT_POWER_FREQUENT" then
+		
+		if addonTable.PLAYER then
+			local php = UnitHealth("player") / UnitHealthMax("player");
+			local pmp = UnitPower("player") / UnitPowerMax("player");
+		
+			if php == 1 and (pmp == 1 or pmp == 0) then 
+				if UnitExists("target") or UnitIsDead("target") then
+					return;
+				else 
+					addonName:FadeFrameOut(PlayerFrame);
+				end;
+			end;
+		
+			if php < 1 or (pmp < 1 and pmp > 0) then
+				addonName:FadeFrameIn(PlayerFrame);
+			end;
+		end;
+	end;
+end);
+
 
