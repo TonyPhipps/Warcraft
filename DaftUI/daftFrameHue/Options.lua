@@ -1,4 +1,4 @@
-addonTable.addonName, addonTable = ... ;
+local addonName, addonTable = ... ;
 
 addonTable.CUSTOM = false;
 addonTable.R = 0.3;
