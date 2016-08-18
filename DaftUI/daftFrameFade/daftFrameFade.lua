@@ -1,120 +1,100 @@
----- CONFIG ----
+local addonName, addonTable = ... ;
 
-
--- FadeIn, TimetoFadeIn, FadeOut, TimetoFadeOut
-------------------------{ TTF, IN, TTF, OUT }
-local NOCOMBAT_FADE = 	{ 1.0, 0.8, 1.0, 0.1 };
-local COMBAT_FADE = 	{ 0.5, 1.0, 0.5, 0.8 };
-
--- true for enable, false for disable.
-local MINIMAP = true;
-local PLAYER = true;
-local TARGET = true;
-local MAINMENUBAR = true;
-local PARTY = true;
-local OBJECTIVETRACKER = true;
-local RAIDMANAGER = true;
-local BUFFS = true;
-
-
----- SETUP ----
-
-
-local daftFrameFade = CreateFrame("Frame");
+local addonName = CreateFrame("Frame");
 
 
 ---- EVENTS ----
 
 
-daftFrameFade:RegisterEvent("PLAYER_LOGIN");
-daftFrameFade:RegisterEvent("PLAYER_REGEN_DISABLED");
-daftFrameFade:RegisterEvent("PLAYER_REGEN_ENABLED");
-daftFrameFade:RegisterEvent("PLAYER_FOCUS_CHANGED");
-daftFrameFade:RegisterEvent("PLAYER_TARGET_CHANGED");
-daftFrameFade:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
-daftFrameFade:RegisterUnitEvent("UNIT_POWER_FREQUENT");
+addonName:RegisterEvent("PLAYER_LOGIN");
+addonName:RegisterEvent("PLAYER_REGEN_DISABLED");
+addonName:RegisterEvent("PLAYER_REGEN_ENABLED");
+addonName:RegisterEvent("PLAYER_FOCUS_CHANGED");
+addonName:RegisterEvent("PLAYER_TARGET_CHANGED");
+addonName:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
+addonName:RegisterUnitEvent("UNIT_POWER_FREQUENT");
 
 
 ---- FUNCTIONS ----
 
 
-function daftFrameFade:FadeFrameIn(frame)
+function addonName:FadeFrameIn(frame)
 	if UnitAffectingCombat("player") then
-		UIFrameFadeIn(frame, COMBAT_FADE[1], frame:GetAlpha(), COMBAT_FADE[2]);
+		UIFrameFadeIn(frame, addonTable.COMBAT_FADE[1], frame:GetAlpha(), addonTable.COMBAT_FADE[2]);
 	else
-		UIFrameFadeIn(frame, NOCOMBAT_FADE[1], frame:GetAlpha(), NOCOMBAT_FADE[2]);
+		UIFrameFadeIn(frame, addonTable.NOCOMBAT_FADE[1], frame:GetAlpha(), addonTable.NOCOMBAT_FADE[2]);
 	end;
 end;
 
 
-function daftFrameFade:FadeFrameOut(frame)
+function addonName:FadeFrameOut(frame)
 	if UnitAffectingCombat("player") or InCombatLockdown() then
-		UIFrameFadeOut(frame, COMBAT_FADE[3], frame:GetAlpha(), COMBAT_FADE[4]);
+		UIFrameFadeOut(frame, addonTable.COMBAT_FADE[3], frame:GetAlpha(), addonTable.COMBAT_FADE[4]);
 	else
-		UIFrameFadeOut(frame, NOCOMBAT_FADE[3], frame:GetAlpha(), NOCOMBAT_FADE[4]);
+		UIFrameFadeOut(frame, addonTable.NOCOMBAT_FADE[3], frame:GetAlpha(), addonTable.NOCOMBAT_FADE[4]);
 	end;
 end;
 
 
-function daftFrameFade:FadeOutAll()
-	if PLAYER then 
-		daftFrameFade:FadeFrameOut(PlayerFrame);
+function addonName:FadeOutAll()
+	if addonTable.PLAYER then 
+		addonName:FadeFrameOut(PlayerFrame);
 	end;
 	
-	if TARGET then 
-		daftFrameFade:FadeFrameOut(TargetFrame);
+	if addonTable.TARGET then 
+		addonName:FadeFrameOut(TargetFrame);
 	end;
 	
-	if BUFFS then 
-		daftFrameFade:FadeFrameOut(BuffFrame);
+	if addonTable.BUFFS then 
+		addonName:FadeFrameOut(BuffFrame);
 	end;
 
-	if MINIMAP then	
-		daftFrameFade:FadeFrameOut(Minimap);
-		daftFrameFade:FadeFrameOut(MinimapCluster);
+	if addonTable.MINIMAP then	
+		addonName:FadeFrameOut(Minimap);
+		addonName:FadeFrameOut(MinimapCluster);
 	end;
 	
-	if OBJECTIVETRACKER then
-		daftFrameFade:FadeFrameOut(ObjectiveTrackerFrame);
+	if addonTable.OBJECTIVETRACKER then
+		addonName:FadeFrameOut(ObjectiveTrackerFrame);
 	end;
 	
-	if MAINMENUBAR then
-		daftFrameFade:FadeFrameOut(MainMenuBar);
+	if addonTable.MAINMENUBAR then
+		addonName:FadeFrameOut(MainMenuBar);
 	end;
 	
-	if RAIDMANAGER then
+	if addonTable.RAIDMANAGER then
 		if CompactRaidFrameManager:IsShown() then
 			if not CompactRaidFrameContainer:IsShown() then
 				if not PartyMemberFrame1:IsShown() then
-					daftFrameFade:FadeFrameOut(CompactRaidFrameManager);
+					addonName:FadeFrameOut(CompactRaidFrameManager);
 				end;
 			end;
 		end;
 	end;
 	
-	if PARTY then
+	if addonTable.PARTY then
 		if not CompactRaidFrameContainer:IsShown() then
 			if UnitExists("party1") then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame1);
+				addonName:FadeFrameOut(PartyMemberFrame1);
 			end;
 			
 			if UnitExists("party2") then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame2);
+				addonName:FadeFrameOut(PartyMemberFrame2);
 			end;
 			
 			if UnitExists("party3") then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame3);
+				addonName:FadeFrameOut(PartyMemberFrame3);
 			end;
 			
 			if UnitExists("party4") then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame4);
+				addonName:FadeFrameOut(PartyMemberFrame4);
 			end;
 		end;
 	end;
 end;
 
 
-daftFrameFade:SetScript("OnEvent", function(self, event, ...)
+addonName:SetScript("OnEvent", function(self, event, ...)
 	local thp = UnitHealth("target") / UnitHealthMax("target");
 	local tmp = UnitPower("target") / UnitPowerMax("target");
 
@@ -122,37 +102,37 @@ daftFrameFade:SetScript("OnEvent", function(self, event, ...)
 	event == "PLAYER_REGEN_DISABLED" or
 	event == "PLAYER_REGEN_ENABLED" 
 	then
-		daftFrameFade:FadeOutAll();
+		addonName:FadeOutAll();
 	end;
 	
 	if event == "PLAYER_TARGET_CHANGED" then
 		
 		if UnitExists("target") or UnitIsDead("target") then
 			
-			if PLAYER then
-				daftFrameFade:FadeFrameIn(PlayerFrame);
+			if addonTable.PLAYER then
+				addonName:FadeFrameIn(PlayerFrame);
 			end;
 			
-			if BUFFS then
+			if addonTable.BUFFS then
 				if UnitName("target") == UnitName("player") then
-					daftFrameFade:FadeFrameIn(BuffFrame);
+					addonName:FadeFrameIn(BuffFrame);
 				end;
 			end;
 			
-			if TARGET then
-				daftFrameFade:FadeFrameIn(TargetFrame);
+			if addonTable.TARGET then
+				addonName:FadeFrameIn(TargetFrame);
 			end;
 		else
 			
-			if PLAYER then
-				daftFrameFade:FadeFrameOut(PlayerFrame);
+			if addonTable.PLAYER then
+				addonName:FadeFrameOut(PlayerFrame);
 			end;
 			
-			if BUFFS then
-				daftFrameFade:FadeFrameOut(BuffFrame);
+			if addonTable.BUFFS then
+				addonName:FadeFrameOut(BuffFrame);
 			end;
 			
-			if TARGET then
+			if addonTable.TARGET then
 				TargetFrame:Hide();
 			end;
 		end;
@@ -160,7 +140,7 @@ daftFrameFade:SetScript("OnEvent", function(self, event, ...)
 	
 	if event == "UNIT_HEALTH_FREQUENT" or event == "UNIT_POWER_FREQUENT" then
 		
-		if PLAYER then
+		if addonTable.PLAYER then
 			local php = UnitHealth("player") / UnitHealthMax("player");
 			local pmp = UnitPower("player") / UnitPowerMax("player");
 		
@@ -168,12 +148,12 @@ daftFrameFade:SetScript("OnEvent", function(self, event, ...)
 				if UnitExists("target") or UnitIsDead("target") then
 					return;
 				else 
-					daftFrameFade:FadeFrameOut(PlayerFrame);
+					addonName:FadeFrameOut(PlayerFrame);
 				end;
 			end;
 		
 			if php < 1 or (pmp < 1 and pmp > 0) then
-				daftFrameFade:FadeFrameIn(PlayerFrame);
+				addonName:FadeFrameIn(PlayerFrame);
 			end;
 		end;
 	end;
@@ -185,64 +165,64 @@ end);
 
 WorldFrame:HookScript("OnEnter", function()
 	
-	if MAINMENUBAR then
-		daftFrameFade:FadeFrameOut(MainMenuBar);
+	if addonTable.MAINMENUBAR then
+		addonName:FadeFrameOut(MainMenuBar);
 	end;
 	
-	if BUFFS then
+	if addonTable.BUFFS then
 		
 		if UnitName("target") == UnitName("player") then
 			
 		else
-			daftFrameFade:FadeFrameOut(BuffFrame);
+			addonName:FadeFrameOut(BuffFrame);
 		end;
 		
 	end;
 	
-	if OBJECTIVETRACKER then
-		daftFrameFade:FadeFrameOut(ObjectiveTrackerFrame);
+	if addonTable.OBJECTIVETRACKER then
+		addonName:FadeFrameOut(ObjectiveTrackerFrame);
 	end;
 	
-	if MINIMAP then
-		daftFrameFade:FadeFrameOut(Minimap);
-		daftFrameFade:FadeFrameOut(MinimapCluster);
+	if addonTable.MINIMAP then
+		addonName:FadeFrameOut(Minimap);
+		addonName:FadeFrameOut(MinimapCluster);
 	end;
 	
-	if RAIDMANAGER then
+	if addonTable.RAIDMANAGER then
 		if CompactRaidFrameManager:IsShown() then
 			if not CompactRaidFrameContainer:IsShown() then
 				if not PartyMemberFrame1:IsShown() then
-					daftFrameFade:FadeFrameOut(CompactRaidFrameManager);
+					addonName:FadeFrameOut(CompactRaidFrameManager);
 				end;
 			end;
 		end;
 	end;
 	
-	if PARTY then
+	if addonTable.PARTY then
 		if not CompactRaidFrameContainer:IsShown() then
 			if PartyMemberFrame1:IsShown() then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame1);
+				addonName:FadeFrameOut(PartyMemberFrame1);
 			end;
 			
 			if PartyMemberFrame2:IsShown() then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame2);
+				addonName:FadeFrameOut(PartyMemberFrame2);
 			end;
 			
 			if PartyMemberFrame3:IsShown() then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame3);
+				addonName:FadeFrameOut(PartyMemberFrame3);
 			end;
 			
 			if PartyMemberFrame4:IsShown() then
-				daftFrameFade:FadeFrameOut(PartyMemberFrame4);
+				addonName:FadeFrameOut(PartyMemberFrame4);
 			end;
 		end;
 	end;
 end);
 
 
-if PLAYER then
+if addonTable.PLAYER then
 	PlayerFrame:HookScript("OnEnter", function(self)
-		daftFrameFade:FadeFrameIn(self);
+		addonName:FadeFrameIn(self);
 	end);
 	
 	PlayerFrame:HookScript("OnLeave", function(self)
@@ -253,36 +233,36 @@ if PLAYER then
 			return;
 		else
 			if php == 1 and (pmp == 1 or pmp == 0) then
-				daftFrameFade:FadeFrameOut(self);
+				addonName:FadeFrameOut(self);
 			end;
 		end;
 	end);
 end;
 
 
-if BUFFS then
+if addonTable.BUFFS then
 	PlayerFrame:HookScript("OnEnter", function()
-		daftFrameFade:FadeFrameIn(BuffFrame);
+		addonName:FadeFrameIn(BuffFrame);
 	end);
 end;
 	
 
-if MINIMAP then
+if addonTable.MINIMAP then
 	Minimap:HookScript("OnEnter", function(self)
-		daftFrameFade:FadeFrameIn(self);
-		daftFrameFade:FadeFrameIn(MinimapCluster);
+		addonName:FadeFrameIn(self);
+		addonName:FadeFrameIn(MinimapCluster);
 	end);
 	
 	MinimapCluster:HookScript("OnEnter", function(self)
-		daftFrameFade:FadeFrameIn(self);
-		daftFrameFade:FadeFrameIn(Minimap);
+		addonName:FadeFrameIn(self);
+		addonName:FadeFrameIn(Minimap);
 	end);
 end;
 
 
-if MAINMENUBAR then
+if addonTable.MAINMENUBAR then
 	MainMenuBar:HookScript("OnEnter", function(self)
-		daftFrameFade:FadeFrameIn(self);
+		addonName:FadeFrameIn(self);
 	end);
 	
 	local setScriptActionBars = { 
@@ -347,42 +327,34 @@ if MAINMENUBAR then
 
 	for _, region in pairs(setScriptActionBars) do
 		region:HookScript("OnEnter", function()
-			daftFrameFade:FadeFrameIn(MainMenuBar);
+			addonName:FadeFrameIn(MainMenuBar);
 		end);
 	end;
 end;
 
 
-if OBJECTIVETRACKER then
+if addonTable.OBJECTIVETRACKER then
 	ObjectiveTrackerFrame:SetScript("OnEnter", function(self)
-		daftFrameFade:FadeFrameIn(self);
+		addonName:FadeFrameIn(self);
 	end);
 end;
 
 
-if RAIDMANAGER then
+if addonTable.RAIDMANAGER then
 	CompactRaidFrameManager:HookScript("OnEnter", function(self)
 		if CompactRaidFrameManager:IsShown() then
-			daftFrameFade:FadeFrameIn(self);
+			addonName:FadeFrameIn(self);
 		end;
 	end);
 end;
 
 
-if PARTY then
-
-	-- CompactRaidFrameContainer:HookScript("OnShow", function(self)
-		-- PartyMemberFrame1:Hide();
-		-- PartyMemberFrame2:Hide();
-		-- PartyMemberFrame3:Hide();
-		-- PartyMemberFrame4:Hide();
-	-- end);
-
+if addonTable.PARTY then
 
 	PartyMemberFrame1:SetScript("OnEnter", function(self)
 		if not CompactRaidFrameContainer:IsShown() then
 			if self:IsShown() then
-				daftFrameFade:FadeFrameIn(self);
+				addonName:FadeFrameIn(self);
 			end;
 		end;
 	end);
@@ -391,7 +363,7 @@ if PARTY then
 	PartyMemberFrame2:SetScript("OnEnter", function(self)
 		if not CompactRaidFrameContainer:IsShown() then
 			if self:IsShown() then
-				daftFrameFade:FadeFrameIn(self);
+				addonName:FadeFrameIn(self);
 			end;
 		end;
 	end);
@@ -400,7 +372,7 @@ if PARTY then
 	PartyMemberFrame3:SetScript("OnEnter", function(self)
 		if not CompactRaidFrameContainer:IsShown() then
 			if self:IsShown() then
-				daftFrameFade:FadeFrameIn(self);
+				addonName:FadeFrameIn(self);
 			end;
 		end;
 	end);
@@ -409,7 +381,7 @@ if PARTY then
 	PartyMemberFrame4:SetScript("OnEnter", function(self)
 		if not CompactRaidFrameContainer:IsShown() then
 			if self:IsShown() then
-				daftFrameFade:FadeFrameIn(self);
+				addonName:FadeFrameIn(self);
 			end;
 		end;
 	end);
@@ -417,7 +389,5 @@ end;
 
 
 ---- TODO ----
--- Per-frame enable/disable
 -- VehicleSeatIndicator
--- Boss1TargetFrame
 -- WorldStateAlwaysUpFrame
