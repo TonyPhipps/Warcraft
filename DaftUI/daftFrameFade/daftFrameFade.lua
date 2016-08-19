@@ -83,7 +83,7 @@ function addonName:FadeOutAll()
 	end;
 
 	if addonTable.PARTY then
-		for i = 1, GetNumGroupMembers() do
+		for i = 1, GetNumGroupMembers()-1 do
 			local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
 			local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
 			addonName:FadeFrameOut(PartyMemberFrameNumber);
@@ -260,10 +260,10 @@ function addonName:HookFrames()
 
 
 	if addonTable.PARTY then
-		for i = 1, GetNumGroupMembers() do
+		for i = 1, GetNumGroupMembers()-1 do
 			local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
 			local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
-				
+
 			addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumber);
 		end;
 	end;
