@@ -41,6 +41,7 @@ local function UnitIsInFriendList(name)
 	return false;
 end;
 
+
 ---- SLASH COMMANDS ----
 function SlashCmdList.AUTOINVITE(trigger)
 	
@@ -118,18 +119,20 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.ACCEPTGROUP then
 		if (event == "PARTY_INVITE_REQUEST") then
 			local sender = ...;
-			if UnitIsInMyGuild(sender) or UnitIsInFriendList(sender) then
 			
+			if UnitIsInMyGuild(sender) or UnitIsInFriendList(sender) then
+				AcceptGroup();
+				
 				for i = 1, STATICPOPUP_NUMDIALOGS do
-					local dialog = _G["StaticPopup" .. i];
+					local dialog = _G['StaticPopup' .. i];
 					
-					if (dialog.which == "PARTY_INVITE") then
+					if (dialog.which == 'PARTY_INVITE') then
 						dialog.inviteAccepted = 1;
-						StaticPopup_Hide("PARTY_INVITE");
+						StaticPopup_Hide('PARTY_INVITE');
 						break;
-					elseif (dialog.which == "PARTY_INVITE_XREALM") then
+					elseif (dialog.which == 'PARTY_INVITE_XREALM') then
 						dialog.inviteAccepted = 1;
-						StaticPopup_Hide("PARTY_INVITE_XREALM");
+						StaticPopup_Hide('PARTY_INVITE_XREALM');
 						break;
 					end;
 				end;
@@ -185,6 +188,22 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			if (not UnitAffectingCombat(sender)) then
 				AcceptResurrect();
 				StaticPopup_Hide('RESURRECT_NO_TIMER');
+			end;
+		end;
+	end;
+	
+	if addonTable.FOLLOW then
+		if event == "CHAT_MSG_WHISPER" then
+		
+			local message, sender = ...;
+			local senderName = sender:gsub("%-.+", "");
+			
+			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
+			
+				if message == "!follow" then
+						FollowUnit(senderName);
+						SendChatMessage("Following you.", "WHISPER", nil, sender);
+				end;
 			end;
 		end;
 	end;
