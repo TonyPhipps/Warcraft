@@ -44,8 +44,8 @@ end;
 
 function addonName:SetupBasicFading(setting, frameName)
 	if setting then
-		frameName:SetScript("OnEnter", function(self)
-			addonName:FadeFrameIn(self);
+		frameName:SetScript("OnEnter", function(frameName)
+			addonName:FadeFrameIn(frameName);
 		end);
 		
 		WorldFrame:HookScript("OnEnter", function()
@@ -87,6 +87,7 @@ function addonName:FadeOutAll()
 			for i = 1, GetNumGroupMembers()-1 do
 				local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
 				local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
+				
 				addonName:FadeFrameOut(PartyMemberFrameNumber);				
 			end;
 		end;
@@ -261,11 +262,13 @@ function addonName:HookFrames()
 
 
 	if addonTable.PARTY then
-		for i = 1, GetNumGroupMembers()-1 do
-			local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
-			local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
+		if not IsInRaid() then
+			for i = 1, GetNumGroupMembers()-1 do
+				local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
+				local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
 
-			addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumber);
+				addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumber);
+			end;
 		end;
 	end;
 	
