@@ -8,6 +8,7 @@ addonTable.ACCEPTGROUP = true;
 addonTable.ACCEPTSUMMON = true;
 addonTable.RELEASE_PVP = true;
 addonTable.RELEASE_WORLD = true;
+addonTable.ACCEPTRESURRECT = true;
 
 
 --TODO:

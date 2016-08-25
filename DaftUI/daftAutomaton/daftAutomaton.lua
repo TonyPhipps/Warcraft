@@ -15,10 +15,33 @@ local function RegisterEvents()
 	addonName:RegisterEvent("PARTY_INVITE_REQUEST");
 	addonName:RegisterEvent("CONFIRM_SUMMON");
 	addonName:RegisterEvent("PLAYER_DEAD");
+	addonName:RegisterEvent("RESURRECT_REQUEST");
 	
 end;
 
 
+---- HELPER FUNCTIONS ----
+local function UnitIsInFriendList(name)
+	ShowFriends();
+
+	for i = 1, GetNumFriends() do
+		local toon = GetFriendInfo(i);
+		if (toon == name) then
+			return true;
+		end;
+	end;
+
+	for i = 1, BNGetNumFriends() do
+		local _, _, _, _, toon, _, client = BNGetFriendInfo(i);
+		if (toon == name) and (client == 'WoW') then
+			return true;
+		end;
+	end;
+
+	return false;
+end;
+
+---- SLASH COMMANDS ----
 function SlashCmdList.AUTOINVITE(trigger)
 	
 	if trigger == "on" or trigger == "enable" then
@@ -47,6 +70,8 @@ end;
 
 SLASH_AUTOINVITE1, SLASH_AUTOINVITE2  = "/autoinv", "/autoinvite";
 
+
+---- EVENTS ----
 addonName:SetScript("OnEvent", function(self, event, ...) 
 
 	if (event == "PLAYER_ENTERING_WORLD") then
@@ -145,6 +170,21 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 
 			if (not isInstance) or (instanceType == 'none') then
 				RepopMe();
+			end;
+		end;
+	end;
+	
+	if addonTable.ACCEPTRESURRECT then
+		if (event == 'RESURRECT_REQUEST') then
+			local sender = ...;
+			
+			if (GetCorpseRecoveryDelay() > 0) then
+				return;
+			end
+
+			if (not UnitAffectingCombat(sender)) then
+				AcceptResurrect();
+				StaticPopup_Hide('RESURRECT_NO_TIMER');
 			end;
 		end;
 	end;
