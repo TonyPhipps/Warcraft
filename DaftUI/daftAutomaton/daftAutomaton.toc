@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: daftAutomaton
+## Author: Daftwise - US Destromath
+## Notes: Performs things automatically.
+## Version: 70000.1
+
+daftAutomaton.lua
+Options.lua
