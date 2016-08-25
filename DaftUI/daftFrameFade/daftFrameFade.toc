@@ -2,7 +2,7 @@
 ## Title: daftFrameFade
 ## Notes: Fades default frames based on mouseover and combat status.
 ## Author: Daftwise - US Destromath
-## Version: 70000.15
+## Version: 70000.16
 
 
 daftFrameFade.lua

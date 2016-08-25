@@ -262,13 +262,11 @@ function addonName:HookFrames()
 
 
 	if addonTable.PARTY then
-		if not IsInRaid() then
-			for i = 1, GetNumGroupMembers()-1 do
-				local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
-				local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
+		for i = 1, GetNumGroupMembers()-1 do
+			local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
+			local PartyMemberFrameNumberFrame = _G[partyMemberFrameNumber];
 
-				addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumber);
-			end;
+			addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumberFrame);
 		end;
 	end;
 	
