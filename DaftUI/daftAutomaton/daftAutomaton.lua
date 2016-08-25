@@ -16,6 +16,8 @@ local function RegisterEvents()
 	addonName:RegisterEvent("CONFIRM_SUMMON");
 	addonName:RegisterEvent("PLAYER_DEAD");
 	addonName:RegisterEvent("RESURRECT_REQUEST");
+	addonName:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	addonName:RegisterEvent("RAID_ROSTER_UPDATE");
 	
 end;
 
@@ -113,6 +115,13 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 					InviteUnit(sender);
 					print("Auto-inviting " .. sender);
 				end;
+			end;
+		end;
+		
+		if event == "PARTY_MEMBERS_CHANGED" or event == "RAID_ROSTER_UPDATE" then
+			if GetNumGroupMembers() == 0 then
+				addonTable.INVITE = false;
+				print("Autoinvite disabled.")
 			end;
 		end;
 	end;
