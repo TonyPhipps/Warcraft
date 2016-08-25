@@ -119,7 +119,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		end;
 		
 		if event == "PARTY_MEMBERS_CHANGED" or event == "RAID_ROSTER_UPDATE" then
-			if GetNumGroupMembers() == 0 then
+			if addonTable.INVITE and GetNumGroupMembers() == 0 then
 				addonTable.INVITE = false;
 				print("Autoinvite disabled.")
 			end;
