@@ -2,7 +2,7 @@
 ## Title: daftFrameHue
 ## Author: Daftwise - US Destromath
 ## Notes: Applies a hue to multiple default frames.
-## Version: 70000.3
+## Version: 70000.4
 
 daftFrameHue.lua
 Options.lua
