@@ -16,3 +16,5 @@ addonTable.FOLLOW = true;
 --addonTable.REPAIR_SELF = true;
 --addonTable.REPAIR_GUILD = true;
 --addonTable.REZ = true;
+--addonTable.ACCEPTQUEST = true;
+-- disable autoinvite when leaving party

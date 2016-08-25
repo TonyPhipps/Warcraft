@@ -107,10 +107,11 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 				end;
 			end;
 			
-			if message:lower():find(addonTable.INVITE_TRIGGER) then
+			--if message:lower():find(addonTable.INVITE_TRIGGER) then
+			if message == addonTable.INVITE_TRIGGER then
 				if GetNumGroupMembers() < 5 or IsInRaid() then
 					InviteUnit(sender);
-					print("Inviting " .. sender);
+					print("Auto-inviting " .. sender);
 				end;
 			end;
 		end;
