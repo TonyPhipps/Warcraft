@@ -210,8 +210,11 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
 				if message == "!follow" then
-						FollowUnit(senderName);
-						SendChatMessage("Following you.", "WHISPER", nil, sender);
+					FollowUnit(senderName);
+					if not IsMounted() then
+						C_MountJournal.SummonByID(0);
+					end;
+					SendChatMessage("Following you.", "WHISPER", nil, sender);
 				end;
 			end;
 		end;
