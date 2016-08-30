@@ -1,11 +1,14 @@
 local addonName, addonTable = ... ;
 local addonName = CreateFrame("Frame");
 
+addonName:RegisterEvent("PLAYER_LOGIN");
+addonName:RegisterEvent("PLAYER_TARGET_CHANGED");
+addonName:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
+addonName:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
+addonName:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
+addonName:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
 addonName:RegisterEvent("UNIT_SPELLCAST_START");
 addonName:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
-addonName:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
-addonName:RegisterEvent("PLAYER_TARGET_CHANGED");
-addonName:RegisterEvent("PLAYER_LOGIN");
 
 
 ---- FUNCTIONS ----
@@ -18,7 +21,7 @@ local function SetupFrames()
 		CastingBarFrame:SetWidth(PlayerFrameHealthBar:GetWidth());
 		CastingBarFrame:SetHeight(PlayerName:GetHeight()*1.8);
 		CastingBarFrame:ClearAllPoints();
-		CastingBarFrame:SetPoint("CENTER", PlayerName, "CENTER", 0, 0);
+		CastingBarFrame:SetPoint("CENTER", PlayerName, "CENTER", 0, -1);
 		CastingBarFrame.SetPoint = function() end;
 
 		CastingBarFrame.Text:ClearAllPoints();
@@ -64,7 +67,7 @@ local function SetupFrames()
 
 		TargetFrameSpellBar:ClearAllPoints();
 		TargetFrameSpellBar:SetPoint("TOPLEFT",TargetFrame,"TOPLEFT",7,-22);
-		TargetFrameSpellBar:SetPoint("BOTTOMRIGHT",TargetFrame,"BOTTOMRIGHT",-109.5,60);
+		TargetFrameSpellBar:SetPoint("BOTTOMRIGHT",TargetFrame,"BOTTOMRIGHT",-109.5, 60);
 		TargetFrameSpellBar.SetPoint = function() end;
 		
 		TargetFrameSpellBar.Flash:ClearAllPoints()
@@ -77,7 +80,7 @@ local function SetupFrames()
 		TargetFrameSpellBar.Border:SetAlpha(0);
 
 		TargetFrameSpellBar.Text:ClearAllPoints();
-		TargetFrameSpellBar.Text:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, 0);
+		TargetFrameSpellBar.Text:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -1);
 		
 		if addonTable.TARGET_BIG_SPELL_ICON then
 			TargetFrameSpellBar.Icon:ClearAllPoints();
@@ -90,29 +93,15 @@ local function SetupFrames()
 end;
 
 
----- EVENTS ----
+---- REGISTERED EVENTS ----
 addonName:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
 		SetupFrames();
 	end;
 
 
-	if event == "UNIT_SPELLCAST_START" then
-		local unitID, spell, rank, lineID, spellID = ...;
-
-		if addonTable.TARGET_ENABLED and unitID == "target" then
-			TargetFrameTextureFrameName:Hide();
-			TargetFrameNameBackground:Hide();
-			
-			if addonTable.TARGET_BIG_SPELL_ICON then
-				TargetFramePortrait:Hide();
-			end;
-
-			if addonTable.TARGET_HIDE_SPELL_ICON then
-				TargetFrameSpellBar.Icon:Hide();
-			end;
-		end;
-		
+	if event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" or event == "UNIT_SPELLCAST_CHANNEL_UPDATE" then
+		local unitID = ...;
 		
 		if addonTable.PLAYER_ENABLED and unitID == "player" then
 			PlayerName:Hide();
@@ -133,35 +122,53 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 				CastingBarFrame.Icon:Show();
 			end;
 		end;
+		
+		if addonTable.TARGET_ENABLED and unitID == "target" then
+			TargetFrameTextureFrameName:Hide();
+			TargetFrameNameBackground:Hide();
+			
+			if addonTable.TARGET_BIG_SPELL_ICON then
+				TargetFramePortrait:Hide();
+			end;
+
+			if addonTable.TARGET_HIDE_SPELL_ICON then
+				TargetFrameSpellBar.Icon:Hide();
+			end;
+		end;
+		
 	end;
 	
 	if event == "UNIT_SPELLCAST_INTERRUPTED" then
-		local unitID, spell, rank, lineID, spellID = ...;
+		local unitID = ...;
 
 		if addonTable.PLAYER_ENABLED and unitID == "player" then
-			PlayerPortrait:Show();
-			
-			C_Timer.After(1, function() 
-				PlayerName:Show();
-				PlayerStatusTexture:Show();
-				PlayerFrameBackground:Show();
+			local castName = UnitCastingInfo("player") or UnitChannelInfo("player");
+				
+			C_Timer.After(1, function()
+					if castName then return; end;
+					UIFrameFadeIn(PlayerName, 0.2, 0, 1);
+					UIFrameFadeIn(PlayerStatusTexture, 0.2, 0, 1);
+					UIFrameFadeIn(PlayerFrameBackground, 0.2, 0, 0.6);
+					UIFrameFadeIn(PlayerPortrait, 0.2, 0, 1);
 			end);
-			
 		end;
 		
 		if addonTable.TARGET_ENABLED and unitID == "target" then
-			TargetFramePortrait:Show();
-			
-			C_Timer.After(1, function() 
-				UIFrameFadeIn(TargetFrameTextureFrameName, .2, 0, 1);
-				UIFrameFadeIn(TargetFrameNameBackground, .2, 0, 1);
+			local castName = UnitCastingInfo("target") or UnitChannelInfo("target");
+
+			C_Timer.After(1, function()
+				if castName then return; end;
+				UIFrameFadeIn(TargetFrameTextureFrameName, 0.2, 0, 1);
+				UIFrameFadeIn(TargetFrameNameBackground, 0.2, 0, 0.6);
+				UIFrameFadeIn(TargetFramePortrait, 0.2, 0, 1);
 			end);
+
 		end;
 	end;
 	
 	
-	if event == "UNIT_SPELLCAST_SUCCEEDED" then
-		local unitID, spell, rank, lineID, spellID = ...;
+	if event == "UNIT_SPELLCAST_SUCCEEDED" or event == "UNIT_SPELLCAST_CHANNEL_STOP" then
+		local unitID = ...;
 
 		if addonTable.PLAYER_ENABLED and unitID == "player" then
 			PlayerName:Show();
@@ -171,9 +178,9 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		end;
 		
 		if addonTable.TARGET_ENABLED and unitID == "target" then
-			UIFrameFadeIn(TargetFrameTextureFrameName, .2, 0, 1);
-			UIFrameFadeIn(TargetFrameNameBackground, .2, 0, 1);
-			TargetFramePortrait:Show();
+			UIFrameFadeIn(TargetFrameTextureFrameName, 0.2, 0, 1);
+			UIFrameFadeIn(TargetFrameNameBackground, 0.2, 0, 0.6);
+			UIFrameFadeIn(TargetFramePortrait, 0.2, 0, 1);
 		end;
 	end;
 	
@@ -184,8 +191,8 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			local name = UnitCastingInfo("target");
 			
 			if not name then
-				UIFrameFadeIn(TargetFrameTextureFrameName, .2, 0, 1);
-				UIFrameFadeIn(TargetFrameNameBackground, .2, 0, 1);
+				TargetFrameTextureFrameName:Show();
+				TargetFrameNameBackground:Show();
 				TargetFramePortrait:Show();
 			else
 				TargetFrameTextureFrameName:Hide();
