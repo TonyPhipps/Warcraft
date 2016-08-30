@@ -350,21 +350,22 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	end;
 	
 	if event == "UNIT_HEALTH_FREQUENT" or event == "UNIT_POWER_FREQUENT" then
-		
-		if addonTable.PLAYER then
-			local php = UnitHealth("player") / UnitHealthMax("player");
-			local pmp = UnitPower("player") / UnitPowerMax("player");
-		
-			if php == 1 and (pmp == 1 or pmp == 0) then 
-				if UnitExists("target") or UnitIsDead("target") then
-					return;
-				else 
-					addonName:FadeFrameOut(PlayerFrame);
+		if  not UnitAffectingCombat("player") then
+			if addonTable.PLAYER then
+				local php = UnitHealth("player") / UnitHealthMax("player");
+				local pmp = UnitPower("player") / UnitPowerMax("player");
+			
+				if php == 1 and (pmp == 1 or pmp == 0) then 
+					if UnitExists("target") or UnitIsDead("target") then
+						return;
+					else 
+						addonName:FadeFrameOut(PlayerFrame);
+					end;
 				end;
-			end;
-		
-			if php < 1 or (pmp < 1 and pmp > 0) then
-				addonName:FadeFrameIn(PlayerFrame);
+			
+				if php < 1 or (pmp < 1 and pmp > 0) then
+					addonName:FadeFrameIn(PlayerFrame);
+				end;
 			end;
 		end;
 	end;
