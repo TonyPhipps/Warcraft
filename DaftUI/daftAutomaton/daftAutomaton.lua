@@ -5,12 +5,21 @@ addonName:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 local function RegisterEvents()
 	
-	if addonTable.INVITE or addonTable.FOLLOW then
-		addonName:RegisterEvent("CHAT_MSG_WHISPER");
+	if addonTable.INVITE then
 		addonName:RegisterEvent("CHAT_MSG_CHANNEL");
-		addonName:RegisterEvent("CHAT_MSG_SAY");
 		addonName:RegisterEvent("CHAT_MSG_GUILD");
+		addonName:RegisterEvent("CHAT_MSG_SAY");
+		addonName:RegisterEvent("CHAT_MSG_WHISPER");
+		addonName:RegisterEvent("CHAT_MSG_YELL");
 		addonName:RegisterEvent("GROUP_ROSTER_UPDATE");
+	end;
+	
+	if addonTable.FOLLOW or addonTable.PROMOTE_LEADER then
+		addonName:RegisterEvent("CHAT_MSG_GUILD");
+		addonName:RegisterEvent("CHAT_MSG_PARTY");
+		addonName:RegisterEvent("CHAT_MSG_RAID");
+		addonName:RegisterEvent("CHAT_MSG_SAY");
+		addonName:RegisterEvent("CHAT_MSG_WHISPER");
 	end;
 	
 	if addonTable.SELL_GREYS or addonTable.REPAIR then
@@ -33,7 +42,7 @@ local function RegisterEvents()
 		addonName:RegisterEvent("RESURRECT_REQUEST");
 	end;
 	
-	if addonTable.ENABLE_CINEMATIC_SOUND then
+	if addonTable.TOGGLE_CINEMATIC_SOUND then
 		addonName:RegisterEvent("CINEMATIC_START");
 		addonName:RegisterEvent("CINEMATIC_STOP");
 	end;
@@ -41,6 +50,16 @@ local function RegisterEvents()
 	if addonTable.SCREENSHOT_ACHIEVEMENTS then
 		addonName:RegisterEvent("ACHIEVEMENT_EARNED");
 	end;
+	
+	if addonTable.ACCEPT_QUESTS then
+		addonName:RegisterEvent("QUEST_ACCEPT_CONFIRM");
+	end;
+	
+	
+	if addonTable.SHARE_QUESTS then
+		addonName:RegisterEvent("QUEST_ACCEPTED");
+	end;
+	
 	
 end;
 
@@ -157,7 +176,11 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	
 	if addonTable.INVITE then
 		
-		if event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_CHANNEL" or event == "CHAT_MSG_SAY" or event == "CHAT_MSG_GUILD" then
+		if event == "CHAT_MSG_CHANNEL"
+		or event == "CHAT_MSG_GUILD"
+		or event == "CHAT_MSG_SAY"
+		or event == "CHAT_MSG_WHISPER"
+		or event == "CHAT_MSG_YELL" then
 			local message, sender = ...;
 			
 			if addonTable.INVITE_AUTORAID then
@@ -283,10 +306,13 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	
 	if addonTable.FOLLOW then
 		
-		if event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_CHANNEL" or event == "CHAT_MSG_SAY" or event == "CHAT_MSG_GUILD" then
-		
+		if event == "CHAT_MSG_GUILD"
+		or event == "CHAT_MSG_PARTY" 
+		or event == "CHAT_MSG_RAID" 
+		or event == "CHAT_MSG_SAY" 
+		or event == "CHAT_MSG_WHISPER" then
 			local message, sender = ...;
-			local senderName = sender:gsub("%-.+", "");
+			local senderName = Ambiguate(name, "none");
 			
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
@@ -303,7 +329,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	end;
 	
 	
-	if addonTable.ENABLE_CINEMATIC_SOUND then
+	if addonTable.TOGGLE_CINEMATIC_SOUND then
 
 		if event == "PLAYER_ENTERING_WORLD" then
 			addonTable.soundSettings = {["Sound_EnableAllSound"]=0,["Sound_EnableSFX"]=0,["Sound_EnableEmoteSounds"]=0,["Sound_EnableMusic"]=0,["Sound_EnableAmbience"]=0,["Sound_MusicVolume"]=0,["Sound_AmbienceVolume"]=0,["Sound_SFXVolume"]=0};
@@ -311,7 +337,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	
 		if event == "CINEMATIC_START" then
 		
-			for i in pairs (soundSettings) do
+			for i in pairs (addonTable.soundSettings) do
 				addonTable.soundSettings[i] = GetCVar(i);
 				SetCVar(i, 1);
 			end;
@@ -328,6 +354,49 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		
 		if event == "ACHIEVEMENT_EARNED" then
 			C_Timer.After(1, Screenshot);
+		end;
+	end;
+	
+	
+	if addonTable.SHARE_QUESTS then
+		if event == "QUEST_ACCEPTED" then
+			local questIndex = ...;
+			QuestLogPushQuest(questIndex);
+		end;
+	end;
+	
+	if addonTable.ACCEPT_QUESTS then
+		if event == "QUEST_ACCEPT_CONFIRM" then
+			local name, quest = ...;
+			local sharer = Ambiguate(name, "none");
+			
+			if UnitIsInMyGuild(sharer) or UnitIsInFriendList(sharer) then
+				ConfirmAcceptQuest();
+				StaticPopup_Hide("QUEST_ACCEPT");
+			end;
+		end;
+	end;
+	
+	if addonTable.PROMOTE_LEADER or addonTable.PROMOTE_ASSISTANT then
+		if event == "CHAT_MSG_GUILD"
+		or event == "CHAT_MSG_PARTY" 
+		or event == "CHAT_MSG_RAID"
+		or event == "CHAT_MSG_SAY" 
+		or event == "CHAT_MSG_WHISPER" then
+		
+			local message, sender = ...;
+			local senderName = Ambiguate(name, "none");
+			
+			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
+			
+				if message == "!leader" and addonTable.PROMOTE_LEADER then
+					PromoteToLeader(senderName);
+				end;
+				
+				if message == "!assistant" and addonTable.PROMOTE_ASSISTANT then
+					PromoteToAssistant(senderName);
+				end;
+			end;
 		end;
 	end;
 	
