@@ -1,33 +1,39 @@
-SCALE = 1.75
-MERCHANT = true
-QUEST = true
+local addonName, addonTable = ... ;
+local addonName = CreateFrame("Frame");
 
-local daftBigGossiper = CreateFrame("Frame")
-
-daftBigGossiper:RegisterEvent("GOSSIP_SHOW")
-daftBigGossiper:RegisterEvent("GOSSIP_CLOSED")
-daftBigGossiper:RegisterEvent("QUEST_DETAIL")
-daftBigGossiper:RegisterEvent("QUEST_COMPLETE")
-daftBigGossiper:RegisterEvent("QUEST_FINISHED")
-daftBigGossiper:RegisterEvent("QUEST_PROGRESS")
-daftBigGossiper:RegisterEvent("MERCHANT_SHOW")
+addonName:RegisterEvent("GOSSIP_SHOW");
+addonName:RegisterEvent("GOSSIP_CLOSED");
+addonName:RegisterEvent("QUEST_DETAIL");
+addonName:RegisterEvent("QUEST_COMPLETE");
+addonName:RegisterEvent("QUEST_FINISHED");
+addonName:RegisterEvent("QUEST_PROGRESS");
+addonName:RegisterEvent("MERCHANT_SHOW");
+addonName:RegisterEvent("ITEM_TEXT_BEGIN");
 
 
-daftBigGossiper:SetScript("OnEvent", function()
+local function ResizeFrame(thisFrame)
+		thisFrame:ClearAllPoints();
+		thisFrame:SetScale(addonTable.SCALE);
+		thisFrame:SetPoint("TOPLEFT", 13, -13);
+		thisFrame.SetPoint = function() end;
+end;
 
-	if QUEST then
-		QuestFrame:SetScale(SCALE)
-		QuestFrame:SetPoint("TOPLEFT",13,-13)
 
-		GossipFrame:SetScale(SCALE)
-		GossipFrame:SetPoint("TOPLEFT",13,-13)
+addonName:SetScript("OnEvent", function()
+
+	if addonTable.QUEST then
+		ResizeFrame(QuestFrame);
+		ResizeFrame(GossipFrame);
 	end
 	
-	if MERCHANT then
-		MerchantFrame:SetScale(SCALE)
-		MerchantFrame:SetPoint("TOPLEFT",13,-13)
-	end
-end)
+	if addonTable.MERCHANT then
+		ResizeFrame(MerchantFrame);
+	end;
+	
+	if addonTable.BOOKS then
+		ResizeFrame(ItemTextFrame);
+	end;
+end);
 
 
 
