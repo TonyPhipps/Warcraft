@@ -312,7 +312,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		or event == "CHAT_MSG_SAY" 
 		or event == "CHAT_MSG_WHISPER" then
 			local message, sender = ...;
-			local senderName = Ambiguate(name, "none");
+			local senderName = Ambiguate(sender, "none");
 			
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
@@ -385,8 +385,8 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		or event == "CHAT_MSG_WHISPER" then
 		
 			local message, sender = ...;
-			local senderName = Ambiguate(name, "none");
-			
+			local senderName = Ambiguate(sender, "short");
+			print(senderName);
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
 				if message == "!leader" and addonTable.PROMOTE_LEADER then
