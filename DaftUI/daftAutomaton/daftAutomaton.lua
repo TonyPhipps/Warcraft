@@ -319,7 +319,6 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		or event == "CHAT_MSG_WHISPER" then
 			local message, sender = ...;
 			local senderName = Ambiguate(sender, "short");
-			print(senderName);
 			local inRange = CheckInteractDistance(senderName, 4);
 			
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
