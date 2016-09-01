@@ -3,6 +3,7 @@ local addonName = CreateFrame("Frame");
 
 addonName:RegisterEvent("PLAYER_ENTERING_WORLD");
 
+
 local function RegisterEvents()
 	
 	if addonTable.INVITE then
@@ -14,7 +15,9 @@ local function RegisterEvents()
 		addonName:RegisterEvent("GROUP_ROSTER_UPDATE");
 	end;
 	
-	if addonTable.FOLLOW or addonTable.PROMOTE_LEADER or addonName.PROMOTE_ASSISTANT then
+	if addonTable.FOLLOW
+	or addonTable.PROMOTE_LEADER
+	or addonName.PROMOTE_ASSISTANT then
 		addonName:RegisterEvent("CHAT_MSG_GUILD");
 		addonName:RegisterEvent("CHAT_MSG_PARTY");
 		addonName:RegisterEvent("CHAT_MSG_PARTY_LEADER");
@@ -23,7 +26,8 @@ local function RegisterEvents()
 		addonName:RegisterEvent("CHAT_MSG_WHISPER");
 	end;
 	
-	if addonTable.SELL_GREYS or addonTable.REPAIR then
+	if addonTable.SELL_GREYS
+	or addonTable.REPAIR then
 		addonName:RegisterEvent("MERCHANT_SHOW");
 	end;
 
@@ -35,7 +39,8 @@ local function RegisterEvents()
 		addonName:RegisterEvent("CONFIRM_SUMMON");
 	end;
 	
-	if addonTable.RELEASE_PVP or addonTable.RELEASE_WORLD then
+	if addonTable.RELEASE_PVP
+	or addonTable.RELEASE_WORLD then
 		addonName:RegisterEvent("PLAYER_DEAD");
 	end;
 	
@@ -319,7 +324,6 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			local inRange = CheckInteractDistance(senderName, 4);
 			
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
-			
 
 				if message == "!follow" then
 					if inRange then
@@ -342,7 +346,15 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.TOGGLE_CINEMATIC_SOUND then
 
 		if event == "PLAYER_ENTERING_WORLD" then
-			addonTable.soundSettings = {["Sound_EnableAllSound"]=0,["Sound_EnableSFX"]=0,["Sound_EnableEmoteSounds"]=0,["Sound_EnableMusic"]=0,["Sound_EnableAmbience"]=0,["Sound_MusicVolume"]=0,["Sound_AmbienceVolume"]=0,["Sound_SFXVolume"]=0};
+			addonTable.soundSettings = {
+				["Sound_EnableAllSound"]=0,
+				["Sound_EnableSFX"]=0,
+				["Sound_EnableEmoteSounds"]=0,
+				["Sound_EnableMusic"]=0,
+				["Sound_EnableAmbience"]=0,
+				["Sound_MusicVolume"]=0,
+				["Sound_AmbienceVolume"]=0,
+				["Sound_SFXVolume"]=0};
 		end;
 	
 		if event == "CINEMATIC_START" then
@@ -375,6 +387,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		end;
 	end;
 	
+	
 	if addonTable.ACCEPT_QUESTS then
 		if IsInGroup() then
 			if event == "QUEST_DETAIL" then
@@ -382,6 +395,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			end;
 		end;
 	end;
+	
 	
 	if addonTable.PROMOTE_LEADER or addonTable.PROMOTE_ASSISTANT then
 		if event == "CHAT_MSG_GUILD"
