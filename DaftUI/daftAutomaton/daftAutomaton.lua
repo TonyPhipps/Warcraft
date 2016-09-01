@@ -296,7 +296,6 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.ACCEPT_RESURRECT then
 		
 		if event == 'RESURRECT_REQUEST' then
-			local sender = ...;
 			
 			if (GetCorpseRecoveryDelay() > 0) then
 				return;
