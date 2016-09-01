@@ -9,7 +9,7 @@ addonTable.SELL_GREYS = true;
 
 -- Friend play / multiboxing
 addonTable.ACCEPT_GROUP = true;
-addonTable.ACCEPT_QUESTS = true;
+addonTable.ACCEPT_QUESTS = true; -- Only when in a group
 addonTable.ACCEPT_SUMMON = true;
 addonTable.FOLLOW = true;
 addonTable.INVITE = false;

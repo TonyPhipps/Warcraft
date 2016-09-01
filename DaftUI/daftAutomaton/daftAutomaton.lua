@@ -14,9 +14,10 @@ local function RegisterEvents()
 		addonName:RegisterEvent("GROUP_ROSTER_UPDATE");
 	end;
 	
-	if addonTable.FOLLOW or addonTable.PROMOTE_LEADER then
+	if addonTable.FOLLOW or addonTable.PROMOTE_LEADER or addonName.PROMOTE_ASSISTANT then
 		addonName:RegisterEvent("CHAT_MSG_GUILD");
 		addonName:RegisterEvent("CHAT_MSG_PARTY");
+		addonName:RegisterEvent("CHAT_MSG_PARTY_LEADER");
 		addonName:RegisterEvent("CHAT_MSG_RAID");
 		addonName:RegisterEvent("CHAT_MSG_SAY");
 		addonName:RegisterEvent("CHAT_MSG_WHISPER");
@@ -52,7 +53,7 @@ local function RegisterEvents()
 	end;
 	
 	if addonTable.ACCEPT_QUESTS then
-		addonName:RegisterEvent("QUEST_ACCEPT_CONFIRM");
+		addonName:RegisterEvent("QUEST_DETAIL");
 	end;
 	
 	
@@ -223,7 +224,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			local sender = ...;
 			
 			if UnitIsInMyGuild(sender) or UnitIsInFriendList(sender) then
-				ACCEPT_GROUP();
+				AcceptGroup();
 				
 				for i = 1, STATICPOPUP_NUMDIALOGS do
 					local dialog = _G['StaticPopup' .. i];
@@ -296,7 +297,7 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 				return;
 			end
 
-			if (not UnitAffectingCombat(sender)) then
+			if (not UnitAffectingCombat("player")) then
 				ACCEPT_RESURRECT();
 				StaticPopup_Hide('RESURRECT_NO_TIMER');
 			end;
@@ -306,23 +307,32 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	
 	if addonTable.FOLLOW then
 		
-		if event == "CHAT_MSG_GUILD"
+		if event == "CHAT_MSG_GUILD" 
 		or event == "CHAT_MSG_PARTY" 
+		or event == "CHAT_MSG_PARTY_LEADER" 
 		or event == "CHAT_MSG_RAID" 
 		or event == "CHAT_MSG_SAY" 
 		or event == "CHAT_MSG_WHISPER" then
 			local message, sender = ...;
-			local senderName = Ambiguate(sender, "none");
+			local senderName = Ambiguate(sender, "short");
+			print(senderName);
+			local inRange = CheckInteractDistance(senderName, 4);
 			
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
+
 				if message == "!follow" then
-					FollowUnit(senderName);
+					if inRange then
+						FollowUnit(senderName);
+						
+						if not IsMounted() then
+							C_MountJournal.SummonByID(0);
+						end;
+						SendChatMessage("Following you.", "WHISPER", nil, sender);
 					
-					if not IsMounted() then
-						C_MountJournal.SummonByID(0);
+					else
+						SendChatMessage("Too far to follow.", "WHISPER", nil, sender);
 					end;
-					SendChatMessage("Following you.", "WHISPER", nil, sender);
 				end;
 			end;
 		end;
@@ -366,13 +376,9 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	end;
 	
 	if addonTable.ACCEPT_QUESTS then
-		if event == "QUEST_ACCEPT_CONFIRM" then
-			local name, quest = ...;
-			local sharer = Ambiguate(name, "none");
-			
-			if UnitIsInMyGuild(sharer) or UnitIsInFriendList(sharer) then
-				ConfirmAcceptQuest();
-				StaticPopup_Hide("QUEST_ACCEPT");
+		if IsInGroup() then
+			if event == "QUEST_DETAIL" then
+				AcceptQuest();
 			end;
 		end;
 	end;
@@ -386,7 +392,6 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 		
 			local message, sender = ...;
 			local senderName = Ambiguate(sender, "short");
-			print(senderName);
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
 				if message == "!leader" and addonTable.PROMOTE_LEADER then
