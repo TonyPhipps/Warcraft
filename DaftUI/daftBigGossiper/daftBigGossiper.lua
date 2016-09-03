@@ -1,17 +1,21 @@
 local addonName, addonTable = ... ;
-local addonName = CreateFrame("Frame");
+local addon = CreateFrame("Frame");
 
-addonName:RegisterEvent("GOSSIP_SHOW");
-addonName:RegisterEvent("GOSSIP_CLOSED");
-addonName:RegisterEvent("QUEST_DETAIL");
-addonName:RegisterEvent("QUEST_COMPLETE");
-addonName:RegisterEvent("QUEST_FINISHED");
-addonName:RegisterEvent("QUEST_PROGRESS");
-addonName:RegisterEvent("MERCHANT_SHOW");
-addonName:RegisterEvent("ITEM_TEXT_BEGIN");
+addon:RegisterEvent("ADVENTURE_MAP_OPEN");
+addon:RegisterEvent("GOSSIP_SHOW");
+addon:RegisterEvent("GOSSIP_CLOSED");
+addon:RegisterEvent("PLAYER_LOGIN");
+addon:RegisterEvent("QUEST_DETAIL");
+addon:RegisterEvent("QUEST_COMPLETE");
+addon:RegisterEvent("QUEST_FINISHED");
+addon:RegisterEvent("QUEST_PROGRESS");
+addon:RegisterEvent("MERCHANT_SHOW");
+addon:RegisterEvent("ITEM_TEXT_BEGIN");
 
 
-local function ResizeFrame(thisFrame)
+---- HELPER FUNCTIONS ----
+
+function addon:ResizeFrame(thisFrame)
 		thisFrame:ClearAllPoints();
 		thisFrame:SetScale(addonTable.SCALE);
 		thisFrame:SetPoint("TOPLEFT", 13, -13);
@@ -19,20 +23,49 @@ local function ResizeFrame(thisFrame)
 end;
 
 
-addonName:SetScript("OnEvent", function()
+function addon:HookAdventureMapQuest()
+	AdventureMapQuestChoiceDialog:HookScript("OnShow", function(self)
+		AdventureMapQuestChoiceDialog:SetScale(addonTable.SCALE);
+	end);
+end;
 
+
+---- EVENT HANDLER ----
+
+addon:SetScript("OnEvent", function(self, event, ...)
+	
 	if addonTable.QUEST then
-		ResizeFrame(QuestFrame);
-		ResizeFrame(GossipFrame);
-	end
+
+	if event == "GOSSIP_SHOW"
+		or event == "QUEST_DETAIL"
+		or event == "GOSSIP_CLOSED"
+		or event == "QUEST_COMPLETE"
+		or event == "QUEST_FINISHED"
+		or event == "QUEST_PROGRESS" then
+			addon:ResizeFrame(QuestFrame);
+			addon:ResizeFrame(GossipFrame);
+			addon:ResizeFrame(QuestLogPopupDetailFrame);
+		end;
+		
+		if event == "ADVENTURE_MAP_OPEN" then
+			addon:HookAdventureMapQuest();
+		end;
+	end;
+	
 	
 	if addonTable.MERCHANT then
-		ResizeFrame(MerchantFrame);
+		if event == "MERCHANT_SHOW" then
+			addon:ResizeFrame(MerchantFrame);
+		end;
 	end;
 	
+	
 	if addonTable.BOOKS then
-		ResizeFrame(ItemTextFrame);
+		if event == "ITEM_TEXT_BEGIN" then
+			addon:ResizeFrame(ItemTextFrame);
+		end;
 	end;
+	
 end);
 
 
