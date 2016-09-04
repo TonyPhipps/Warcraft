@@ -1,20 +1,20 @@
 local addonName, addonTable = ... ;
 
-local addonName = CreateFrame("Frame");
+local addon = CreateFrame("Frame");
 
-addonName:RegisterEvent("PLAYER_LOGIN");
-addonName:RegisterEvent("PLAYER_REGEN_DISABLED");
-addonName:RegisterEvent("PLAYER_REGEN_ENABLED");
-addonName:RegisterEvent("PLAYER_FOCUS_CHANGED");
-addonName:RegisterEvent("PLAYER_TARGET_CHANGED");
-addonName:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
-addonName:RegisterUnitEvent("UNIT_POWER_FREQUENT");
+addon:RegisterEvent("PLAYER_LOGIN");
+addon:RegisterEvent("PLAYER_REGEN_DISABLED");
+addon:RegisterEvent("PLAYER_REGEN_ENABLED");
+addon:RegisterEvent("PLAYER_FOCUS_CHANGED");
+addon:RegisterEvent("PLAYER_TARGET_CHANGED");
+addon:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
+addon:RegisterUnitEvent("UNIT_POWER_FREQUENT");
 
 
 ---- HELPER FUNCTIONS ----
 
 
-function addonName:FadeFrameIn(frameName)
+function addon:FadeFrameIn(frameName)
 
 	if UnitAffectingCombat("player") then
 		if frameName:IsShown() then
@@ -28,7 +28,7 @@ function addonName:FadeFrameIn(frameName)
 end;
 
 
-function addonName:FadeFrameOut(frameName)
+function addon:FadeFrameOut(frameName)
 
 	if UnitAffectingCombat("player") or InCombatLockdown() then
 		if frameName:IsShown() then
@@ -42,22 +42,22 @@ function addonName:FadeFrameOut(frameName)
 end;
 
 
-function addonName:SetupBasicFading(setting, frameName)
+function addon:SetupBasicFading(setting, frameName)
 	if setting then
 		frameName:SetScript("OnEnter", function(frameName)
-			addonName:FadeFrameIn(frameName);
+			addon:FadeFrameIn(frameName);
 		end);
 		
 		WorldFrame:HookScript("OnEnter", function()
-			addonName:FadeFrameOut(frameName);
+			addon:FadeFrameOut(frameName);
 		end);
 	end;
 end;
 
 
-function addonName:FadeOutAll()
+function addon:FadeOutAll()
 	if addonTable.BUFFS then 
-		addonName:FadeFrameOut(BuffFrame);
+		addon:FadeFrameOut(BuffFrame);
 	end;
 	
 	if addonTable.CHATTABS then 
@@ -65,21 +65,21 @@ function addonName:FadeOutAll()
 			local chatFrameNumber = ("ChatFrame%d"):format(i);
 			local ChatFrameNumberTab = _G[chatFrameNumber.."Tab"];
 			
-			addonName:FadeFrameOut(ChatFrameNumberTab);
+			addon:FadeFrameOut(ChatFrameNumberTab);
 		end;
 	end;
 	
 	if addonTable.MAINMENUBAR then
-		addonName:FadeFrameOut(MainMenuBar);
+		addon:FadeFrameOut(MainMenuBar);
 	end;
 	
 	if addonTable.MINIMAP then	
-		addonName:FadeFrameOut(Minimap);
-		addonName:FadeFrameOut(MinimapCluster);
+		addon:FadeFrameOut(Minimap);
+		addon:FadeFrameOut(MinimapCluster);
 	end;
 	
 	if addonTable.OBJECTIVETRACKER then
-		addonName:FadeFrameOut(ObjectiveTrackerFrame);
+		addon:FadeFrameOut(ObjectiveTrackerFrame);
 	end;
 
 	if addonTable.PARTY then
@@ -88,27 +88,27 @@ function addonName:FadeOutAll()
 				local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
 				local PartyMemberFrameNumber = _G[partyMemberFrameNumber];
 				
-				addonName:FadeFrameOut(PartyMemberFrameNumber);				
+				addon:FadeFrameOut(PartyMemberFrameNumber);				
 			end;
 		end;
 	end;
 	
 	if addonTable.PLAYER then 
-		addonName:FadeFrameOut(PlayerFrame);
+		addon:FadeFrameOut(PlayerFrame);
 	end;
 
 	if addonTable.RAIDMANAGER then
 		if not CompactRaidFrameContainer:IsShown() then
-			addonName:FadeFrameOut(CompactRaidFrameManager);
+			addon:FadeFrameOut(CompactRaidFrameManager);
 		end;
 	end;
 	
-	if addonName.VEHICLESEATINDICATOR then
-		addonName.FadeFrameOut(VehicleSeatIndicator);
+	if addon.VEHICLESEATINDICATOR then
+		addon.FadeFrameOut(VehicleSeatIndicator);
 	end;
 	
-	if addonName.WORLDSTATEFRAME then
-		addonName.FadeFrameOut(WorldStateAlwaysUpFrame);
+	if addon.WORLDSTATEFRAME then
+		addon.FadeFrameOut(WorldStateAlwaysUpFrame);
 	end;
 
 end;
@@ -116,7 +116,7 @@ end;
 
 ---- FUNCTIONS ----
 
-function addonName:HookFrames()
+function addon:HookFrames()
 
 
 	WorldFrame:HookScript("OnEnter", function()
@@ -126,20 +126,20 @@ function addonName:HookFrames()
 				if UnitName("target") == UnitName("player") then
 					
 				else
-					addonName:FadeFrameOut(BuffFrame);
+					addon:FadeFrameOut(BuffFrame);
 				end;
 				
 			end;
 		
 		
 		if addonTable.MINIMAP then
-			addonName:FadeFrameOut(Minimap);
-			addonName:FadeFrameOut(MinimapCluster);
+			addon:FadeFrameOut(Minimap);
+			addon:FadeFrameOut(MinimapCluster);
 		end;
 		
 		if addonTable.RAIDMANAGER then
 			if not CompactRaidFrameContainer:IsShown() then
-				addonName:FadeFrameOut(CompactRaidFrameManager);
+				addon:FadeFrameOut(CompactRaidFrameManager);
 			end;
 		end;
 		
@@ -148,7 +148,7 @@ function addonName:HookFrames()
 
 	if addonTable.BUFFS then
 		PlayerFrame:HookScript("OnEnter", function()
-			addonName:FadeFrameIn(BuffFrame);
+			addon:FadeFrameIn(BuffFrame);
 		end);
 	end;
 
@@ -158,11 +158,11 @@ function addonName:HookFrames()
 			local chatFrameNumber = ("ChatFrame%d"):format(i);
 			local ChatFrameNumberTab = _G[chatFrameNumber.."Tab"];
 			
-			addonName:SetupBasicFading(addonTable.CHATTABS, ChatFrameNumberTab);
+			addon:SetupBasicFading(addonTable.CHATTABS, ChatFrameNumberTab);
 			
 			ChatFrameNumberTab:HookScript("OnEnter", function()
 				if self:IsShown() then
-					addonName:FadeFrameIn(GeneralDockManager);
+					addon:FadeFrameIn(GeneralDockManager);
 				end;
 			end);
 		end;
@@ -171,7 +171,8 @@ function addonName:HookFrames()
 	
 	if addonTable.MAINMENUBAR then
 		
-		local setScriptActionBars = { 
+		local setScriptActionBars = {
+			ExtraActionBarFrame,
 			MultiBarBottomLeft, 
 			MultiBarBottomLeftButton1,
 			MultiBarBottomLeftButton2,
@@ -233,7 +234,7 @@ function addonName:HookFrames()
 
 		for _, region in pairs(setScriptActionBars) do
 			region:HookScript("OnEnter", function()
-				addonName:FadeFrameIn(MainMenuBar);
+				addon:FadeFrameIn(MainMenuBar);
 			end);
 		end;
 	end;
@@ -241,13 +242,13 @@ function addonName:HookFrames()
 
 	if addonTable.MINIMAP then
 		Minimap:HookScript("OnEnter", function(self)
-			addonName:FadeFrameIn(self);
-			addonName:FadeFrameIn(MinimapCluster);
+			addon:FadeFrameIn(self);
+			addon:FadeFrameIn(MinimapCluster);
 		end);
 		
 		MinimapCluster:HookScript("OnEnter", function(self)
-			addonName:FadeFrameIn(self);
-			addonName:FadeFrameIn(Minimap);
+			addon:FadeFrameIn(self);
+			addon:FadeFrameIn(Minimap);
 		end);
 	end;
 
@@ -255,7 +256,7 @@ function addonName:HookFrames()
 	if addonTable.RAIDMANAGER then
 		if not CompactRaidFrameContainer:IsShown() then
 			CompactRaidFrameManager:HookScript("OnEnter", function(self)
-				addonName:FadeFrameIn(self);
+				addon:FadeFrameIn(self);
 			end);
 		end;
 	end;
@@ -267,7 +268,7 @@ function addonName:HookFrames()
 				local partyMemberFrameNumber = ("PartyMemberFrame%d"):format(i);
 				local PartyMemberFrameNumberFrame = _G[partyMemberFrameNumber];
 
-				addonName:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumberFrame);
+				addon:SetupBasicFading(addonTable.PARTY, PartyMemberFrameNumberFrame);
 			end;
 		end;
 	end;
@@ -275,7 +276,7 @@ function addonName:HookFrames()
 	
 	if addonTable.PLAYER then
 		PlayerFrame:HookScript("OnEnter", function(self)
-			addonName:FadeFrameIn(self);
+			addon:FadeFrameIn(self);
 		end);
 		
 		PlayerFrame:HookScript("OnLeave", function(self)
@@ -286,17 +287,17 @@ function addonName:HookFrames()
 				return;
 			else
 				if php == 1 and (pmp == 1 or pmp == 0) then
-					addonName:FadeFrameOut(self);
+					addon:FadeFrameOut(self);
 				end;
 			end;
 		end);
 	end;
 
 
-	addonName:SetupBasicFading(addonTable.VEHICLESEATINDICATOR, VehicleSeatIndicator);
-	addonName:SetupBasicFading(addonTable.OBJECTIVETRACKER, ObjectiveTrackerFrame);
-	addonName:SetupBasicFading(addonTable.MAINMENUBAR, MainMenuBar);
-	addonName:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
+	addon:SetupBasicFading(addonTable.VEHICLESEATINDICATOR, VehicleSeatIndicator);
+	addon:SetupBasicFading(addonTable.OBJECTIVETRACKER, ObjectiveTrackerFrame);
+	addon:SetupBasicFading(addonTable.MAINMENUBAR, MainMenuBar);
+	addon:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
 
 end;
 
@@ -304,45 +305,45 @@ end;
 ---- MAIN ----
 
 
-addonName:SetScript("OnEvent", function(self, event, ...)
+addon:SetScript("OnEvent", function(self, event, ...)
 	local thp = UnitHealth("target") / UnitHealthMax("target");
 	local tmp = UnitPower("target") / UnitPowerMax("target");
 
 	if event == "PLAYER_LOGIN" then
-		addonName:HookFrames();
+		addon:HookFrames();
 	end;
 	
 	if event == "PLAYER_LOGIN" or
 	event == "PLAYER_REGEN_DISABLED" or
 	event == "PLAYER_REGEN_ENABLED" 
 	then
-		addonName:FadeOutAll();
+		addon:FadeOutAll();
 	end;
 	
 	if event == "PLAYER_TARGET_CHANGED" then
 		if UnitExists("target") or UnitIsDead("target") then
 			
 			if addonTable.PLAYER then
-				addonName:FadeFrameIn(PlayerFrame);
+				addon:FadeFrameIn(PlayerFrame);
 			end;
 			
 			if addonTable.BUFFS then
 				if UnitName("target") == UnitName("player") then
-					addonName:FadeFrameIn(BuffFrame);
+					addon:FadeFrameIn(BuffFrame);
 				end;
 			end;
 			
 			if addonTable.TARGET then
-				addonName:FadeFrameIn(TargetFrame);
+				addon:FadeFrameIn(TargetFrame);
 			end;
 		else
 			
 			if addonTable.PLAYER then
-				addonName:FadeFrameOut(PlayerFrame);
+				addon:FadeFrameOut(PlayerFrame);
 			end;
 			
 			if addonTable.BUFFS then
-				addonName:FadeFrameOut(BuffFrame);
+				addon:FadeFrameOut(BuffFrame);
 			end;
 			
 			if addonTable.TARGET then
@@ -361,12 +362,12 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 					if UnitExists("target") or UnitIsDead("target") then
 						return;
 					else 
-						addonName:FadeFrameOut(PlayerFrame);
+						addon:FadeFrameOut(PlayerFrame);
 					end;
 				end;
 			
 				if php < 1 or (pmp < 1 and pmp > 0) then
-					addonName:FadeFrameIn(PlayerFrame);
+					addon:FadeFrameIn(PlayerFrame);
 				end;
 			end;
 		end;
