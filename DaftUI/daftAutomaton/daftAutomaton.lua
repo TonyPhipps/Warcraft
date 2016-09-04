@@ -1,69 +1,69 @@
 local addonName, addonTable = ... ;
-local addonName = CreateFrame("Frame");
+local addon = CreateFrame("Frame");
 
-addonName:RegisterEvent("PLAYER_ENTERING_WORLD");
+addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 
 local function RegisterEvents()
 	
 	if addonTable.INVITE then
-		addonName:RegisterEvent("CHAT_MSG_CHANNEL");
-		addonName:RegisterEvent("CHAT_MSG_GUILD");
-		addonName:RegisterEvent("CHAT_MSG_SAY");
-		addonName:RegisterEvent("CHAT_MSG_WHISPER");
-		addonName:RegisterEvent("CHAT_MSG_YELL");
-		addonName:RegisterEvent("GROUP_ROSTER_UPDATE");
+		addon:RegisterEvent("CHAT_MSG_CHANNEL");
+		addon:RegisterEvent("CHAT_MSG_GUILD");
+		addon:RegisterEvent("CHAT_MSG_SAY");
+		addon:RegisterEvent("CHAT_MSG_WHISPER");
+		addon:RegisterEvent("CHAT_MSG_YELL");
+		addon:RegisterEvent("GROUP_ROSTER_UPDATE");
 	end;
 	
 	if addonTable.FOLLOW
 	or addonTable.PROMOTE_LEADER
-	or addonName.PROMOTE_ASSISTANT then
-		addonName:RegisterEvent("CHAT_MSG_GUILD");
-		addonName:RegisterEvent("CHAT_MSG_PARTY");
-		addonName:RegisterEvent("CHAT_MSG_PARTY_LEADER");
-		addonName:RegisterEvent("CHAT_MSG_RAID");
-		addonName:RegisterEvent("CHAT_MSG_SAY");
-		addonName:RegisterEvent("CHAT_MSG_WHISPER");
+	or addon.PROMOTE_ASSISTANT then
+		addon:RegisterEvent("CHAT_MSG_GUILD");
+		addon:RegisterEvent("CHAT_MSG_PARTY");
+		addon:RegisterEvent("CHAT_MSG_PARTY_LEADER");
+		addon:RegisterEvent("CHAT_MSG_RAID");
+		addon:RegisterEvent("CHAT_MSG_SAY");
+		addon:RegisterEvent("CHAT_MSG_WHISPER");
 	end;
 	
 	if addonTable.SELL_GREYS
 	or addonTable.REPAIR then
-		addonName:RegisterEvent("MERCHANT_SHOW");
+		addon:RegisterEvent("MERCHANT_SHOW");
 	end;
 
 	if addonTable.ACCEPT_GROUP then
-		addonName:RegisterEvent("PARTY_INVITE_REQUEST");
+		addon:RegisterEvent("PARTY_INVITE_REQUEST");
 	end;
 	
 	if addonTable.ACCEPT_SUMMON then
-		addonName:RegisterEvent("CONFIRM_SUMMON");
+		addon:RegisterEvent("CONFIRM_SUMMON");
 	end;
 	
 	if addonTable.RELEASE_PVP
 	or addonTable.RELEASE_WORLD then
-		addonName:RegisterEvent("PLAYER_DEAD");
+		addon:RegisterEvent("PLAYER_DEAD");
 	end;
 	
 	if addonTable.ACCEPT_RESURRECT then
-		addonName:RegisterEvent("RESURRECT_REQUEST");
+		addon:RegisterEvent("RESURRECT_REQUEST");
 	end;
 	
 	if addonTable.TOGGLE_CINEMATIC_SOUND then
-		addonName:RegisterEvent("CINEMATIC_START");
-		addonName:RegisterEvent("CINEMATIC_STOP");
+		addon:RegisterEvent("CINEMATIC_START");
+		addon:RegisterEvent("CINEMATIC_STOP");
 	end;
 	
 	if addonTable.SCREENSHOT_ACHIEVEMENTS then
-		addonName:RegisterEvent("ACHIEVEMENT_EARNED");
+		addon:RegisterEvent("ACHIEVEMENT_EARNED");
 	end;
 	
 	if addonTable.ACCEPT_QUESTS then
-		addonName:RegisterEvent("QUEST_DETAIL");
+		addon:RegisterEvent("QUEST_DETAIL");
 	end;
 	
 	
 	if addonTable.SHARE_QUESTS then
-		addonName:RegisterEvent("QUEST_ACCEPTED");
+		addon:RegisterEvent("QUEST_ACCEPTED");
 	end;
 	
 	
@@ -123,7 +123,7 @@ SLASH_AUTOINVITE1, SLASH_AUTOINVITE2  = "/autoinv", "/autoinvite";
 
 
 ---- EVENTS ----
-addonName:SetScript("OnEvent", function(self, event, ...) 
+addon:SetScript("OnEvent", function(self, event, ...) 
 
 	if event == "PLAYER_ENTERING_WORLD" then
 		RegisterEvents();
@@ -342,28 +342,31 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 	
 	
 	if addonTable.TOGGLE_CINEMATIC_SOUND then
+		addonTable.soundSettings = {
+		["Sound_AmbienceVolume"] = 0,
+		["Sound_DialogVolume"] = 0,
+		["Sound_EnableAllSound"] = 0,
+		["Sound_EnableAmbience"] = 0,
+		["Sound_EnableDialog"] = 0,
+		["Sound_EnableEmoteSounds"] = 0,
+		["Sound_EnableMusic"] = 0,
+		["Sound_EnableSFX"] = 0,
+		["Sound_EnableReverb"] = 0,
+		["Sound_MasterVolume"] = 0,
+		["Sound_MusicVolume"] = 0,
+		["Sound_SFXVolume"] = 0};
 
-		if event == "PLAYER_ENTERING_WORLD" then
-			addonTable.soundSettings = {
-				["Sound_EnableAllSound"]=0,
-				["Sound_EnableSFX"]=0,
-				["Sound_EnableEmoteSounds"]=0,
-				["Sound_EnableMusic"]=0,
-				["Sound_EnableAmbience"]=0,
-				["Sound_MusicVolume"]=0,
-				["Sound_AmbienceVolume"]=0,
-				["Sound_SFXVolume"]=0};
-		end;
 	
 		if event == "CINEMATIC_START" then
-		
+
 			for i in pairs (addonTable.soundSettings) do
 				addonTable.soundSettings[i] = GetCVar(i);
 				SetCVar(i, 1);
 			end;
 		
 		elseif event == "CINEMATIC_STOP" then
-			for i,v in pairs (addonTable.soundSettings) do
+		
+			for i, v in pairs (addonTable.soundSettings) do
 				SetCVar(i, v);
 			end;
 		end;
