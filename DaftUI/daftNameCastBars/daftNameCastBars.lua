@@ -1,19 +1,14 @@
 local addonName, addonTable = ... ;
-local addonName = CreateFrame("Frame");
+local addon = CreateFrame("Frame");
 
-addonName:RegisterEvent("PLAYER_LOGIN");
-addonName:RegisterEvent("PLAYER_TARGET_CHANGED");
-addonName:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
-addonName:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
-addonName:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
-addonName:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
-addonName:RegisterEvent("UNIT_SPELLCAST_START");
-addonName:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
+
+addon:RegisterEvent("PLAYER_LOGIN");
 
 
 ---- FUNCTIONS ----
 
-local function SetupFrames()
+function addon:SetupFrames()
+
 	if addonTable.PLAYER_ENABLED then
 		CastingBarFrame:SetFrameStrata("BACKGROUND");
 		CastingBarFrame.Border:Hide();
@@ -93,17 +88,11 @@ local function SetupFrames()
 end;
 
 
----- REGISTERED EVENTS ----
-addonName:SetScript("OnEvent", function(self, event, ...)
-	if event == "PLAYER_LOGIN" then
-		SetupFrames();
-	end;
-
-
-	if event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" or event == "UNIT_SPELLCAST_CHANNEL_UPDATE" then
-		local unitID = ...;
+function addon:SetupOnShowHide()
+	CastingBarFrame:HookScript("OnShow", function(self, event, ...)
 		
-		if addonTable.PLAYER_ENABLED and unitID == "player" then
+		if addonTable.PLAYER_ENABLED then
+			print("test");
 			PlayerName:Hide();
 			PlayerStatusTexture:Hide();
 			PlayerFrameBackground:Hide();
@@ -122,11 +111,26 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 				CastingBarFrame.Icon:Show();
 			end;
 		end;
+	end);
+
+	
+	CastingBarFrame:HookScript("OnHide", function(self, event, ...)
+		if addonTable.PLAYER_ENABLED then
+			PlayerName:Show();
+			PlayerStatusTexture:Show();
+			PlayerFrameBackground:Show();
+			PlayerPortrait:Show();
+		end;
+	end);
+	
+
+	TargetFrameSpellBar:HookScript("OnShow", function(self, event, ...)
+		if addonTable.TARGET_ENABLED then
 		
-		if addonTable.TARGET_ENABLED and unitID == "target" then
 			TargetFrameTextureFrameName:Hide();
 			TargetFrameNameBackground:Hide();
-			
+			TargetFramePortrait:Hide();
+				
 			if addonTable.TARGET_BIG_SPELL_ICON then
 				TargetFramePortrait:Hide();
 			end;
@@ -135,81 +139,26 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 				TargetFrameSpellBar.Icon:Hide();
 			end;
 		end;
-		
-	end;
-	
-	if event == "UNIT_SPELLCAST_INTERRUPTED" then
-		local unitID = ...;
+	end);
 
-		if addonTable.PLAYER_ENABLED and unitID == "player" then
-			local castName = UnitCastingInfo("player") or UnitChannelInfo("player");
-				
-			C_Timer.After(1, function()
-					if castName then return; end;
-					UIFrameFadeIn(PlayerName, 0.2, 0, 1);
-					UIFrameFadeIn(PlayerStatusTexture, 0.2, 0, 1);
-					UIFrameFadeIn(PlayerFrameBackground, 0.2, 0, 0.6);
-					UIFrameFadeIn(PlayerPortrait, 0.2, 0, 1);
-			end);
-		end;
-		
-		if addonTable.TARGET_ENABLED and unitID == "target" then
-			local castName = UnitCastingInfo("target") or UnitChannelInfo("target");
-
-			C_Timer.After(1, function()
-				if castName then return; end;
-				UIFrameFadeIn(TargetFrameTextureFrameName, 0.2, 0, 1);
-				UIFrameFadeIn(TargetFrameNameBackground, 0.2, 0, 0.6);
-				UIFrameFadeIn(TargetFramePortrait, 0.2, 0, 1);
-			end);
-
-		end;
-	end;
 	
-	
-	if event == "UNIT_SPELLCAST_SUCCEEDED" or event == "UNIT_SPELLCAST_CHANNEL_STOP" then
-		local unitID = ...;
-
-		if addonTable.PLAYER_ENABLED and unitID == "player" then
-			PlayerName:Show();
-			PlayerStatusTexture:Show();
-			PlayerFrameBackground:Show();
-			PlayerPortrait:Show();
-		end;
-		
-		if addonTable.TARGET_ENABLED and unitID == "target" then
-			UIFrameFadeIn(TargetFrameTextureFrameName, 0.2, 0, 1);
-			UIFrameFadeIn(TargetFrameNameBackground, 0.2, 0, 0.6);
-			UIFrameFadeIn(TargetFramePortrait, 0.2, 0, 1);
-		end;
-	end;
-	
-	
-	if event == "PLAYER_TARGET_CHANGED" then
-		
+	TargetFrameSpellBar:HookScript("OnHide", function(self, event, ...)
 		if addonTable.TARGET_ENABLED then
-			local name = UnitCastingInfo("target");
-			
-			if not name then
-				TargetFrameTextureFrameName:Show();
-				TargetFrameNameBackground:Show();
-				TargetFramePortrait:Show();
-			else
-				TargetFrameTextureFrameName:Hide();
-				TargetFrameNameBackground:Hide();
-				
-				if addonTable.TARGET_BIG_SPELL_ICON then
-					TargetFramePortrait:Hide();
-				end;
-				
-				if addonTable.TARGET_HIDE_SPELL_ICON then
-					TargetFrameSpellBar.Icon:Hide();
-				end;
-			end;
+			TargetFrameTextureFrameName:Show();
+			TargetFrameNameBackground:Show();
+			TargetFramePortrait:Show();
 		end;
+	end);
+end;
+
+
+---- REGISTERED EVENTS ----
+
+addon:SetScript("OnEvent", function(self, event, ...)
+
+	if event == "PLAYER_LOGIN" then
+		addon:SetupFrames();
+		addon:SetupOnShowHide();
 	end;
+
 end);
-
-
-
-

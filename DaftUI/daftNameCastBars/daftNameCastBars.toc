@@ -2,7 +2,7 @@
 ## Title: daftNameCastBars
 ## Author: Daftwise - US Destromath
 ## Notes: Anchors castbars to unit name bars
-## Version: 70000.4
+## Version: 70000.5
 
 daftNameCastBars.lua
 Options.lua
