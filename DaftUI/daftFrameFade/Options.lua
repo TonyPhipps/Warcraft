@@ -16,6 +16,7 @@ addonTable.CHATTABS = true;
 addonTable.MAINMENUBAR = true;
 addonTable.MINIMAP = true;
 addonTable.OBJECTIVETRACKER = true;
+addonTable.OBJECTIVETRACKER_PULSE = true; -- Briefly show the Object Tracker when updating achieve/quest progress
 addonTable.PARTY = true;
 addonTable.PLAYER = true;
 addonTable.RAIDMANAGER = true;

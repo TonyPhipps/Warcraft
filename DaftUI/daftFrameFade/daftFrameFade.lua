@@ -9,6 +9,8 @@ addon:RegisterEvent("PLAYER_FOCUS_CHANGED");
 addon:RegisterEvent("PLAYER_TARGET_CHANGED");
 addon:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
 addon:RegisterUnitEvent("UNIT_POWER_FREQUENT");
+addon:RegisterUnitEvent("QUEST_WATCH_LIST_CHANGED");
+addon:RegisterUnitEvent("QUEST_WATCH_UPDATE");
 
 
 ---- HELPER FUNCTIONS ----
@@ -103,14 +105,14 @@ function addon:FadeOutAll()
 		end;
 	end;
 	
-	if addon.VEHICLESEATINDICATOR then
-		addon.FadeFrameOut(VehicleSeatIndicator);
+	if addonTable.VEHICLESEATINDICATOR then
+		addon:FadeFrameOut(VehicleSeatIndicator);
 	end;
 	
-	if addon.WORLDSTATEFRAME then
-		addon.FadeFrameOut(WorldStateAlwaysUpFrame);
+	if addonTable.WORLDSTATEFRAME then
+		addon:FadeFrameOut(WorldStateAlwaysUpFrame);
 	end;
-
+	
 end;
 
 
@@ -293,6 +295,11 @@ function addon:HookFrames()
 		end);
 	end;
 
+	if addonTable.TARGET then
+		TargetFrame:HookScript("OnShow", function(self)
+			addon:FadeFrameIn(self);
+		end);
+	end;
 
 	addon:SetupBasicFading(addonTable.VEHICLESEATINDICATOR, VehicleSeatIndicator);
 	addon:SetupBasicFading(addonTable.OBJECTIVETRACKER, ObjectiveTrackerFrame);
@@ -306,22 +313,20 @@ end;
 
 
 addon:SetScript("OnEvent", function(self, event, ...)
-	local thp = UnitHealth("target") / UnitHealthMax("target");
-	local tmp = UnitPower("target") / UnitPowerMax("target");
 
 	if event == "PLAYER_LOGIN" then
 		addon:HookFrames();
 	end;
 	
-	if event == "PLAYER_LOGIN" or
-	event == "PLAYER_REGEN_DISABLED" or
-	event == "PLAYER_REGEN_ENABLED" 
-	then
+	if event == "PLAYER_LOGIN" 
+	or event == "PLAYER_REGEN_DISABLED"
+	or event == "PLAYER_REGEN_ENABLED" then
 		addon:FadeOutAll();
 	end;
 	
 	if event == "PLAYER_TARGET_CHANGED" then
-		if UnitExists("target") or UnitIsDead("target") then
+		if UnitExists("target") 
+		or UnitIsDead("target") then
 			
 			if addonTable.PLAYER then
 				addon:FadeFrameIn(PlayerFrame);
@@ -333,9 +338,6 @@ addon:SetScript("OnEvent", function(self, event, ...)
 				end;
 			end;
 			
-			if addonTable.TARGET then
-				addon:FadeFrameIn(TargetFrame);
-			end;
 		else
 			
 			if addonTable.PLAYER then
@@ -345,16 +347,16 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			if addonTable.BUFFS then
 				addon:FadeFrameOut(BuffFrame);
 			end;
-			
-			if addonTable.TARGET then
-				TargetFrame:Hide();
-			end;
 		end;
 	end;
 	
-	if event == "UNIT_HEALTH_FREQUENT" or event == "UNIT_POWER_FREQUENT" then
-		if  not UnitAffectingCombat("player") then
-			if addonTable.PLAYER then
+	
+	if addonTable.PLAYER then
+		
+		if event == "UNIT_HEALTH_FREQUENT" 
+		or event == "UNIT_POWER_FREQUENT" then
+		
+			if  not UnitAffectingCombat("player") then
 				local php = UnitHealth("player") / UnitHealthMax("player");
 				local pmp = UnitPower("player") / UnitPowerMax("player");
 			
@@ -370,6 +372,17 @@ addon:SetScript("OnEvent", function(self, event, ...)
 					addon:FadeFrameIn(PlayerFrame);
 				end;
 			end;
+		end;
+	end;
+	
+	if addonTable.OBJECTIVETRACKER_PULSE then
+		
+		if event == "QUEST_WATCH_LIST_CHANGED" 
+		or event == "QUEST_WATCH_UPDATE" then
+			addon:FadeFrameIn(ObjectiveTrackerFrame);
+			C_Timer.After(2, function() 
+				addon:FadeFrameOut(ObjectiveTrackerFrame);
+			end);
 		end;
 	end;
 end);
