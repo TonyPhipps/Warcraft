@@ -3,7 +3,6 @@ local addon = CreateFrame("Frame");
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 
-
 local function RegisterEvents()
 	
 	if addonTable.INVITE then
@@ -65,8 +64,6 @@ local function RegisterEvents()
 	if addonTable.SHARE_QUESTS then
 		addon:RegisterEvent("QUEST_ACCEPTED");
 	end;
-	
-	
 end;
 
 
@@ -75,15 +72,15 @@ local function UnitIsInFriendList(name)
 	ShowFriends();
 
 	for i = 1, GetNumFriends() do
-		local toon = GetFriendInfo(i);
-		if (toon == name) then
+		local friend = GetFriendInfo(i);
+		if (friend == name) then
 			return true;
 		end;
 	end;
 
 	for i = 1, BNGetNumFriends() do
-		local _, _, _, _, toon, _, client = BNGetFriendInfo(i);
-		if (toon == name) and (client == 'WoW') then
+		local _, _, _, _, friend, _, client = BNGetFriendInfo(i);
+		if (friend == name) and (client == 'WoW') then
 			return true;
 		end;
 	end;
@@ -127,6 +124,24 @@ addon:SetScript("OnEvent", function(self, event, ...)
 
 	if event == "PLAYER_ENTERING_WORLD" then
 		RegisterEvents();
+		
+		soundSettings = {
+		["Sound_AmbienceVolume"] = 0,
+		["Sound_DialogVolume"] = 0,
+		["Sound_EnableAllSound"] = 0,
+		["Sound_EnableAmbience"] = 0,
+		["Sound_EnableDialog"] = 0,
+		["Sound_EnableEmoteSounds"] = 0,
+		["Sound_EnableMusic"] = 0,
+		["Sound_EnableSFX"] = 0,
+		["Sound_EnableReverb"] = 0,
+		["Sound_MasterVolume"] = 0,
+		["Sound_MusicVolume"] = 0,
+		["Sound_SFXVolume"] = 0};
+		
+		for i in pairs (soundSettings) do
+			soundSettings[i] = GetCVar(i);
+		end;
 	end;
 
 	
@@ -215,6 +230,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		end;
 		
 		if event == "GROUP_ROSTER_UPDATE" then
+		
 			if addonTable.INVITE and GetNumGroupMembers() == 0 then
 				addonTable.INVITE = false;
 				print("Autoinvite disabled.");
@@ -238,6 +254,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 						dialog.inviteAccepted = 1;
 						StaticPopup_Hide('PARTY_INVITE');
 						break;
+						
 					elseif (dialog.which == 'PARTY_INVITE_XREALM') then
 						dialog.inviteAccepted = 1;
 						StaticPopup_Hide('PARTY_INVITE_XREALM');
@@ -324,6 +341,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 
 				if message == "!follow" then
+				
 					if inRange then
 						FollowUnit(senderName);
 						
@@ -342,31 +360,16 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	
 	
 	if addonTable.TOGGLE_CINEMATIC_SOUND then
-		addonTable.soundSettings = {
-		["Sound_AmbienceVolume"] = 0,
-		["Sound_DialogVolume"] = 0,
-		["Sound_EnableAllSound"] = 0,
-		["Sound_EnableAmbience"] = 0,
-		["Sound_EnableDialog"] = 0,
-		["Sound_EnableEmoteSounds"] = 0,
-		["Sound_EnableMusic"] = 0,
-		["Sound_EnableSFX"] = 0,
-		["Sound_EnableReverb"] = 0,
-		["Sound_MasterVolume"] = 0,
-		["Sound_MusicVolume"] = 0,
-		["Sound_SFXVolume"] = 0};
-
-	
+			
 		if event == "CINEMATIC_START" then
-
-			for i in pairs (addonTable.soundSettings) do
-				addonTable.soundSettings[i] = GetCVar(i);
+		
+			for i, v in pairs (soundSettings) do
 				SetCVar(i, 1);
 			end;
 		
 		elseif event == "CINEMATIC_STOP" then
-		
-			for i, v in pairs (addonTable.soundSettings) do
+			
+			for i, v in pairs (soundSettings) do
 				SetCVar(i, v);
 			end;
 		end;
@@ -382,6 +385,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	
 	
 	if addonTable.SHARE_QUESTS then
+	
 		if event == "QUEST_ACCEPTED" then
 			local questIndex = ...;
 			QuestLogPushQuest(questIndex);
@@ -390,7 +394,9 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	
 	
 	if addonTable.ACCEPT_QUESTS then
+	
 		if IsInGroup() then
+		
 			if event == "QUEST_DETAIL" then
 				AcceptQuest();
 			end;
@@ -399,14 +405,15 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	
 	
 	if addonTable.PROMOTE_LEADER or addonTable.PROMOTE_ASSISTANT then
+	
 		if event == "CHAT_MSG_GUILD"
 		or event == "CHAT_MSG_PARTY" 
 		or event == "CHAT_MSG_RAID"
 		or event == "CHAT_MSG_SAY" 
 		or event == "CHAT_MSG_WHISPER" then
-		
 			local message, sender = ...;
 			local senderName = Ambiguate(sender, "short");
+			
 			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
 			
 				if message == "!leader" and addonTable.PROMOTE_LEADER then
