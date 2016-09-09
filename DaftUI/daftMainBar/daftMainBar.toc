@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: daftMainBar
+## Author: Daftwise - US Destromath
+## Notes: Changes MainMenuBar to Daft's liking.
+## Version: 70000.1
+
+daftMainBar.lua
+Options.lua
