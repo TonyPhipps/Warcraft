@@ -1,6 +1,11 @@
 local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
 
+local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = "CENTER", MainMenuBar, "CENTER", -254, 58;
+local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = "CENTER", MainMenuBar, "CENTER", 258, 58;
+local point3, relativeTo3, relativePoint3, xOffset3, yOffset3 = "CENTER", MainMenuBar, "CENTER", 258, -4;
+
+
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 local menuButtons = {
@@ -24,6 +29,7 @@ local bagButtons = {
 	"CharacterBag2Slot",
 	"CharacterBag3Slot",
 };
+
 
 ---- HELPER FUNCTIONS ----
 
@@ -99,7 +105,58 @@ function addon:FadeFrames(frames)
 	end;
 end;
 
+
+---- FUNCTIONS ----
+
+
+function addon:MoveMultiBarBottomRight()
+	MultiBarBottomRight:ClearAllPoints();	
+	
+	if addonTable.BOTTOM_RIGHT_BAR == 1 then
+		MultiBarBottomRight:SetPoint(point1, relativeTo1, relativePoint1, xOffset1, yOffset1);
+	elseif addonTable.BOTTOM_RIGHT_BAR == 2 then
+		MultiBarBottomRight:SetPoint(point2, relativeTo2, relativePoint2, xOffset2, yOffset2);
+	elseif addonTable.BOTTOM_RIGHT_BAR == 3 then
+		MultiBarBottomRight:SetPoint(point3, relativeTo3, relativePoint3, xOffset3, yOffset3);
+	else end;
+end;
+
+
+function addon:MoveMultiBarBottomLeft()
+	MultiBarBottomLeft:ClearAllPoints();
+	
+	if addonTable.BOTTOM_LEFT_BAR == 1 then
+		MultiBarBottomLeft:SetPoint(point1, relativeTo1, relativePoint1, xOffset1, yOffset1);
+	elseif addonTable.BOTTOM_LEFT_BAR == 2 then
+		MultiBarBottomLeft:SetPoint(point2, relativeTo2, relativePoint2, xOffset2, yOffset2);
+	elseif addonTable.BOTTOM_LEFT_BAR == 3 then
+		MultiBarBottomLeft:SetPoint(point3, relativeTo3, relativePoint3, xOffset3, yOffset3);
+	else end;
+	MultiBarBottomLeft.SetPoint = function() end;
+end;
+
+
+function addon:MovePetActionBarFrame()
+	PetActionBarFrame:ClearAllPoints();
+	
+	if addonTable.PET_BAR == 1 then
+		PetActionBarFrame:SetPoint(point1, relativeTo1, relativePoint1, xOffset1 + 30, yOffset1);
+	elseif addonTable.PET_BAR == 2 then
+		PetActionBarFrame:SetPoint(point2, relativeTo2, relativePoint2, xOffset2 + 30, yOffset2);
+	elseif addonTable.PET_BAR == 3 then
+		PetActionBarFrame:SetScale(1.2);
+		PetActionBarFrame:SetPoint(point3, relativeTo3, relativePoint3, xOffset3 - 15, yOffset3 + 5);
+		MainMenuBarTexture2:SetTexture(CharacterFrameInsetRightBg:GetTexture());
+		MainMenuBarTexture2:SetTexCoord(CharacterFrameInsetRightBg:GetTexCoord());
+		MainMenuBarTexture3:SetTexture(CharacterFrameInsetRightBg:GetTexture());
+		MainMenuBarTexture3:SetTexCoord(CharacterFrameInsetRightBg:GetTexCoord());
+	else end;
+	PetActionBarFrame.SetPoint = function() end;
+end;
+		
+		
 ---- MAIN ----
+
 
 addon:SetScript("OnEvent", function(self, event, ...) 
 
@@ -116,8 +173,17 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			MainMenuBarTexture2:Hide();
 			MainMenuBarTexture3:Hide();
 		end;
+		
+		addon.MoveMultiBarBottomRight();
+		addon.MoveMultiBarBottomLeft();
+		addon.MovePetActionBarFrame();
+		
+		
+		-- Scale MainMenuBar
+		MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
 	end;
 end);
+
 
 ---- Prepare menu/bar area for action bar
 MainMenuBarTexture2:SetTexture(MainMenuBarTexture0:GetTexture());
@@ -144,20 +210,4 @@ MainMenuBarBackpackButton:ClearAllPoints();
 MainMenuBarBackpackButton:SetPoint("TOPRIGHT", ReputationWatchBar, "TOPRIGHT", -50, 0);
 addon:ScaleFrames(bagButtons, .7);
 addon:FadeFrames(bagButtons);
-
-
--- Move MultiBarBottomRight
-MultiBarBottomRight:ClearAllPoints();
-MultiBarBottomRight:SetPoint("BOTTOMLEFT", MainMenuBar, "BOTTOM", 6, 4);
-
-
--- Move PetActionBarFrame to the old MultiBarBottomRight spot
-PetActionBarFrame:ClearAllPoints();
-PetActionBarFrame:SetPoint("BOTTOMLEFT", MainMenuBar, "BOTTOM", 30, 65);
-PetActionBarFrame.SetPoint = function() end;
-
-
-
-
-
 
