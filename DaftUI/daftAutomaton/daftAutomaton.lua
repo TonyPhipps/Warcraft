@@ -319,7 +319,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			end
 
 			if (not UnitAffectingCombat("player")) then
-				ACCEPT_RESURRECT();
+				AcceptResurrect();
 				StaticPopup_Hide('RESURRECT_NO_TIMER');
 			end;
 		end;
