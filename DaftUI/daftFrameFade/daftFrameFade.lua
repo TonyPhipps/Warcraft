@@ -174,7 +174,10 @@ function addon:HookFrames()
 	if addonTable.MAINMENUBAR then
 		
 		local setScriptActionBars = {
+			ArtifactWatchBar,
 			ExtraActionBarFrame,
+			HonorWatchBar,
+			MainMenuExpBar,
 			MultiBarBottomLeft, 
 			MultiBarBottomLeftButton1,
 			MultiBarBottomLeftButton2,
@@ -227,6 +230,8 @@ function addon:HookFrames()
 			MultiBarRightButton10,
 			MultiBarRightButton11,
 			MultiBarRightButton12,
+			PetActionBarFrame,
+			ReputationWatchBar,
 			StanceButton1,
 			StanceButton2,
 			StanceButton3,
