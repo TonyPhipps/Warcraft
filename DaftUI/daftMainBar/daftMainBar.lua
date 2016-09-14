@@ -1,30 +1,9 @@
 local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
-local NoTexture = CreateFrame("Frame", nil);
+local HiddenFrame = CreateFrame("Frame", nil);
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
-
-local menuButtons = {
-	"CharacterMicroButton",
-	"SpellbookMicroButton",
-	"TalentMicroButton",
-	"AchievementMicroButton",
-	"QuestLogMicroButton",
-	"GuildMicroButton",
-	"LFDMicroButton",
-	"CollectionsMicroButton",
-	"EJMicroButton",
-	"StoreMicroButton",
-	"MainMenuMicroButton",
-};
-		
-local bagButtons = {
-	"MainMenuBarBackpackButton",
-	"CharacterBag0Slot",
-	"CharacterBag1Slot",
-	"CharacterBag2Slot",
-	"CharacterBag3Slot",
-};
+addon:RegisterEvent("PET_UI_UPDATE");
 
 
 ---- HELPER FUNCTIONS ----
@@ -83,22 +62,27 @@ function addon:ResizeMainBar()
 	MainMenuBarTexture2, MainMenuBarTexture3,
 	MainMenuBarPageNumber, ActionBarUpButton, ActionBarDownButton, 						--button of Bar Number, up, down
 	StanceBarLeft, StanceBarMiddle, StanceBarRight, } do								--BG of Stance
-		texture:SetParent(NoTexture);
-		NoTexture:Hide();
+		texture:SetParent(HiddenFrame);
+		HiddenFrame:Hide();
 	end;
 	
 	for _, bar in next, {
-	MainMenuBar, MainMenuBarArtFrame, 
+	MainMenuBar, MainMenuBarArtFrame,  --512
 	MainMenuExpBar, MainMenuBarMaxLevelBar,
 	ReputationWatchBar, ReputationWatchBar.StatusBar,
 	HonorWatchBar, HonorWatchBar.StatusBar,
 	ArtifactWatchBar, ArtifactWatchBar.StatusBar,}  do
-		bar:SetWidth(bar:GetWidth()/2);
+		bar:SetWidth(512);
 	end;
 	
-	for i = 10,19 do
-		_G["MainMenuXPBarDiv"..i]:SetParent(NoTexture);
+	for i = 0, 1  do 
+		_G["SlidingActionBarTexture"..i]:SetParent(HiddenFrame);
+	end;	
+	
+	for i = 10, 19 do
+		_G["MainMenuXPBarDiv"..i]:SetParent(HiddenFrame);
 	end;
+	
 	
 	ReputationWatchBar.StatusBar.WatchBarTexture0:SetWidth(128);
 	ReputationWatchBar.StatusBar.WatchBarTexture1:SetWidth(128);
@@ -131,7 +115,11 @@ function addon:ResizeMainBar()
 	HonorWatchBar.StatusBar.XPBarTexture3:SetWidth(128);
 
 	MainMenuBar:ClearAllPoints();
-	MainMenuBar:SetPoint("BOTTOM", WorldFrame, "BOTTOM", 0, 0);
+	MainMenuBar:SetPoint("BOTTOM", WorldFrame, "BOTTOM", 0, -1);
+	MainMenuBar.SetPoint = function() end;
+	
+	MainMenuBarVehicleLeaveButton:ClearAllPoints();
+	MainMenuBar:SetPoint("RIGHT", ActionButton1, "LEFT", -3, 0);
 	MainMenuBar.SetPoint = function() end;
 	
 	MainMenuBarTexture0:ClearAllPoints();
@@ -155,14 +143,15 @@ end;
 function addon:MoveBarFrames()
 	
 	MultiBarBottomLeft:ClearAllPoints();
-	MultiBarBottomLeft:SetPoint("BOTTOM", ReputationWatchBar, "TOP", 0, 5);
+	MultiBarBottomLeft:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", 0, 15);
 	MultiBarBottomLeft.SetPoint = function() end;
+	
 	
 	MultiBarBottomRight:ClearAllPoints();
 	MultiBarBottomRight:SetPoint("BOTTOM", MultiBarBottomLeft, "TOP", 0, 5);
 	MultiBarBottomRight.SetPoint = function() end;
 	
-	
+
 	MultiBarRight:ClearAllPoints();
 	MultiBarRight:SetPoint("RIGHT", WorldFrame, "RIGHT", 0, 0);
 	MultiBarRight.SetPoint = function() end;
@@ -178,12 +167,13 @@ function addon:MoveBarFrames()
 			StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
 		
 		else
-			StanceBarFrame:SetPoint("BOTTOMLEFT", ReputationWatchBar, "TOPLEFT", -10, 5);
+			StanceBarFrame:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", -10, 15);
 		end;
 		
 		
 		StanceBarFrame.SetPoint = function() end;
 	end;
+	
 	
 	if PetActionBarFrame:IsShown() then	
 		PetActionBarFrame:ClearAllPoints();
@@ -195,7 +185,7 @@ function addon:MoveBarFrames()
 			PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomLeft, "TOPRIGHT", 100, 5);
 		
 		else
-			PetActionBarFrame:SetPoint("BOTTOMRIGHT", ReputationWatchBar, "TOPRIGHT", 0, 5);
+			PetActionBarFrame:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 100, 11);
 		end;
 		
 		PetActionBarFrame.SetPoint = function() end;
@@ -204,40 +194,121 @@ function addon:MoveBarFrames()
 end;
 
 
-function addon.HideBlizzardArt()
-	NoTexture:Hide();
+function addon:MoveMenuBags()
+	local menuButtons = {
+	"CharacterMicroButton",
+	"SpellbookMicroButton",
+	"TalentMicroButton",
+	"AchievementMicroButton",
+	"QuestLogMicroButton",
+	"GuildMicroButton",
+	"LFDMicroButton",
+	"CollectionsMicroButton",
+	"EJMicroButton",
+	"StoreMicroButton",
+	"MainMenuMicroButton",
+	};
+			
+	local bagButtons = {
+		"MainMenuBarBackpackButton",
+		"CharacterBag0Slot",
+		"CharacterBag1Slot",
+		"CharacterBag2Slot",
+		"CharacterBag3Slot",
+	};
+
+	-- Micro Menu
+	CharacterMicroButton:ClearAllPoints();
+	CharacterMicroButton:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", 0, -13);
+	addon:ScaleFrames(menuButtons, .7);
+	addon:FadeFrames(menuButtons);
+
+	-- Bags
+	MainMenuBarBackpackButton:ClearAllPoints();
+	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 0, -12);
+	addon:ScaleFrames(bagButtons, .7);
+	addon:FadeFrames(bagButtons);
+end;
+
+
+function addon:HideBlizzardArt()
+	HiddenFrame:Hide();
 	
-	MainMenuBarLeftEndCap:SetParent(NoTexture);
-	MainMenuBarRightEndCap:SetParent(NoTexture);
+	MainMenuBarLeftEndCap:SetParent(HiddenFrame);
+	MainMenuBarRightEndCap:SetParent(HiddenFrame);
 	
 	for i = 0,3  do
-		_G["MainMenuBarTexture"..i]:SetParent(NoTexture);
-		_G["MainMenuMaxLevelBar"..i]:SetParent(NoTexture);
-		ReputationWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(NoTexture);
-		ArtifactWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(NoTexture);
-		HonorWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(NoTexture);
-		ReputationWatchBar.StatusBar["XPBarTexture"..i]:SetParent(NoTexture);
-		ArtifactWatchBar.StatusBar["XPBarTexture"..i]:SetParent(NoTexture);
-		HonorWatchBar.StatusBar["XPBarTexture"..i]:SetParent(NoTexture);
+		_G["MainMenuBarTexture"..i]:SetParent(HiddenFrame);
+		_G["MainMenuMaxLevelBar"..i]:SetParent(HiddenFrame);
+		ReputationWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(HiddenFrame);
+		ArtifactWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(HiddenFrame);
+		HonorWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(HiddenFrame);
+		ReputationWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
+		ArtifactWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
+		HonorWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
 	end;
 	
 	for i = 1,2  do
-		_G["PossessBackground"..i]:SetParent(NoTexture);
+		_G["PossessBackground"..i]:SetParent(HiddenFrame);
 	end;
 	
 	for i = 0,1  do
-		_G["SlidingActionBarTexture"..i]:SetParent(NoTexture);
+		_G["SlidingActionBarTexture"..i]:SetParent(HiddenFrame);
 	end;
 	
 	for i = 1,19 do
-		_G["MainMenuXPBarDiv"..i]:SetParent(NoTexture);
+		_G["MainMenuXPBarDiv"..i]:SetParent(HiddenFrame);
 	end;
 	
 	for _, texture in next, {
 	MainMenuBarPageNumber, ActionBarUpButton, ActionBarDownButton, 						--button of Bar Number, up, down
 	MainMenuXPBarTextureLeftCap, MainMenuXPBarTextureRightCap, MainMenuXPBarTextureMid, --Art between xp and bar1	
 	StanceBarLeft, StanceBarMiddle, StanceBarRight, } do								--BG of Stance
-		texture:SetParent(NoTexture);
+		texture:SetParent(HiddenFrame);
+	end;
+end;
+
+
+function addon:SetFonts()
+	ArtifactWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	ArtifactWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+	
+	if MainMenuExpBar:IsShown() then
+		MainMenuBarExpText.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		MainMenuBarExpText.OverlayFrame.Text:SetShadowOffset(0, 0);
+	end;
+	
+	HonorWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	HonorWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+		
+	ReputationWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	ReputationWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+	
+	for i = 1, 12 do
+		_G["ActionButton"..i.."HotKey"]:ClearAllPoints();
+		_G["ActionButton"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
+		_G["ActionButton"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		_G["ActionButton"..i.."HotKey"]:SetVertexColor(1, 1, 1);
+	end;
+	
+	for i = 1, 10 do
+		_G["PetActionButton"..i.."HotKey"]:ClearAllPoints();
+		_G["PetActionButton"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
+		_G["PetActionButton"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		_G["PetActionButton"..i.."HotKey"]:SetVertexColor(1, 1, 1);
+	end;
+	
+	for _, bar in next, {
+	"MultiBarBottomLeft",
+	"MultiBarBottomRight",
+	"MultiBarLeft",
+	"MultiBarRight",} do
+		for i = 1, 12 do
+		_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
+		_G[bar.."Button"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
+		_G[bar.."Button"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
+	end;
 	end;
 end;
 
@@ -247,9 +318,9 @@ end;
 function addon.Main()
 
 	if addonTable.HIDE_GRYPHONS then
-		MainMenuBarLeftEndCap:SetParent(NoTexture);
-		MainMenuBarRightEndCap:SetParent(NoTexture);
-		NoTexture:Hide();
+		MainMenuBarLeftEndCap:SetParent(HiddenFrame);
+		MainMenuBarRightEndCap:SetParent(HiddenFrame);
+		HiddenFrame:Hide();
 	end;
 	
 	if addonTable.HIDE_ART then
@@ -258,29 +329,36 @@ function addon.Main()
 	
 	addon:MoveBarFrames();
 	addon:ResizeMainBar();
+	addon:MoveMenuBags();
 	
-	-- Scale MainMenuBar
+	if addonTable.SKIN_FONTS then
+		addon:SetFonts();
+	end;
+	
 	MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
-
-	-- Main Menu
-	CharacterMicroButton:ClearAllPoints();
-	CharacterMicroButton:SetPoint("TOPLEFT", ReputationWatchBar, "TOPLEFT", 0, 30);
-	addon:ScaleFrames(menuButtons, .7);
-	addon:FadeFrames(menuButtons);
-
-	-- Bags
-	MainMenuBarBackpackButton:ClearAllPoints();
-	MainMenuBarBackpackButton:SetPoint("TOPRIGHT", ReputationWatchBar, "TOPRIGHT", 0, 0);
-	addon:ScaleFrames(bagButtons, .7);
-	addon:FadeFrames(bagButtons);
 end;
 
 
 ---- SCRIPTS ----
 
 addon:SetScript("OnEvent", function(self, event, ...) 
+	addon.Main();
+end);
 
-	if event == "PLAYER_ENTERING_WORLD" then
-		addon.Main();
-	end;
+
+---- HOOKS ----
+hooksecurefunc('ActionButton_OnUpdate', function()
+	addon:SetFonts();
+end);
+
+hooksecurefunc('ActionButton_UpdateHotkeys', function()
+	addon:SetFonts();
+end);
+
+hooksecurefunc('ActionButton_Update', function()
+	addon:SetFonts();
+end);
+
+hooksecurefunc('PetActionBar_Update', function()
+	addon:SetFonts();
 end);
