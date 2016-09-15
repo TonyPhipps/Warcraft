@@ -16,42 +16,42 @@ addon:RegisterUnitEvent("QUEST_WATCH_UPDATE");
 ---- HELPER FUNCTIONS ----
 
 
-function addon:FadeFrameIn(frameName)
+function addon:FadeFrameIn(Frame)
 
 	if UnitAffectingCombat("player") then
-		if frameName:IsShown() then
-			UIFrameFadeIn(frameName, addonTable.COMBAT_TIMETOFADEIN, frameName:GetAlpha(), addonTable.COMBAT_FADEIN);
+		if Frame:IsShown() then
+			UIFrameFadeIn(Frame, addonTable.COMBAT_TIMETOFADEIN, Frame:GetAlpha(), addonTable.COMBAT_FADEIN);
 		end;
 	else
-		if frameName:IsShown() then
-			UIFrameFadeIn(frameName, addonTable.NOCOMBAT_TIMETOFADEIN, frameName:GetAlpha(), addonTable.NOCOMBAT_FADEIN);
+		if Frame:IsShown() then
+			UIFrameFadeIn(Frame, addonTable.NOCOMBAT_TIMETOFADEIN, Frame:GetAlpha(), addonTable.NOCOMBAT_FADEIN);
 		end;
 	end;
 end;
 
 
-function addon:FadeFrameOut(frameName)
+function addon:FadeFrameOut(Frame)
 
 	if UnitAffectingCombat("player") or InCombatLockdown() then
-		if frameName:IsShown() then
-			UIFrameFadeOut(frameName, addonTable.COMBAT_TIMETOFADEOUT, frameName:GetAlpha(), addonTable.COMBAT_FADEOUT);
+		if Frame:IsShown() then
+			UIFrameFadeOut(Frame, addonTable.COMBAT_TIMETOFADEOUT, Frame:GetAlpha(), addonTable.COMBAT_FADEOUT);
 		end;
 	else
-		if frameName:IsShown() then
-			UIFrameFadeOut(frameName, addonTable.NOCOMBAT_TIMETOFADEOUT, frameName:GetAlpha(), addonTable.NOCOMBAT_FADEOUT);
+		if Frame:IsShown() then
+			UIFrameFadeOut(Frame, addonTable.NOCOMBAT_TIMETOFADEOUT, Frame:GetAlpha(), addonTable.NOCOMBAT_FADEOUT);
 		end;
 	end;
 end;
 
 
-function addon:SetupBasicFading(setting, frameName)
+function addon:SetupBasicFading(setting, Frame)
 	if setting then
-		frameName:SetScript("OnEnter", function(frameName)
-			addon:FadeFrameIn(frameName);
+		Frame:SetScript("OnEnter", function(Frame)
+			addon:FadeFrameIn(Frame);
 		end);
 		
 		WorldFrame:HookScript("OnEnter", function()
-			addon:FadeFrameOut(frameName);
+			addon:FadeFrameOut(Frame);
 		end);
 	end;
 end;
@@ -125,15 +125,30 @@ function addon:HookFrames()
 		
 		if addonTable.BUFFS then
 				
-				if UnitName("target") == UnitName("player") then
-					
-				else
-					addon:FadeFrameOut(BuffFrame);
-				end;
+			if UnitName("target") == UnitName("player") then
 				
+			else
+				addon:FadeFrameOut(BuffFrame);
 			end;
+			
+		end;
 		
+		if addonTable.PLAYER then
 		
+			php = UnitHealth("player") / UnitHealthMax("player");
+			pmp = UnitPower("player") / UnitPowerMax("player");
+			
+			if UnitExists("target") then
+				return;
+				
+			else
+			
+				if php == 1 and (pmp == 1 or pmp == 0) then
+					addon:FadeFrameOut(PlayerFrame);
+				end;
+			end;
+		end;
+	
 		if addonTable.MINIMAP then
 			addon:FadeFrameOut(Minimap);
 			addon:FadeFrameOut(MinimapCluster);
@@ -143,6 +158,10 @@ function addon:HookFrames()
 			if not CompactRaidFrameContainer:IsShown() then
 				addon:FadeFrameOut(CompactRaidFrameManager);
 			end;
+		end;
+		
+		if addonTable.OBJECTIVETRACKER then
+			addon:FadeFrameOut(ObjectiveTrackerFrame);
 		end;
 		
 	end);
@@ -172,11 +191,18 @@ function addon:HookFrames()
 	
 	
 	if addonTable.MAINMENUBAR then
+	
+	
+		MainMenuBar:HookScript("OnEnter", function(self)
+			addon:FadeFrameIn(self);
+		end);
+		
 		
 		ParentFrames = { 
 		MainMenuBar, MultiBarBottomLeft, MultiBarBottomRight, 
 		MultiBarLeft, MultiBarRight, StanceBarFrame, PetBarFrame,
 		};
+		
 		
 		for _, ParentFrame in ipairs(ParentFrames) do 
 			ChildFrames = { ParentFrame:GetChildren() };
@@ -207,6 +233,7 @@ function addon:HookFrames()
 			CharacterBag2Slot,
 			CharacterBag3Slot,
 		}
+		
 
 		for _, region in pairs(setScriptActionBars) do
 			region:HookScript("OnEnter", function()
@@ -220,7 +247,7 @@ function addon:HookFrames()
 		
 		MinimapChildren = { Minimap:GetChildren() };
 		for _, MinimapChild in ipairs(MinimapChildren) do 
-			MinimapChild:HookScript("OnEnter", function(self)
+			MinimapChild:HookScript("OnEnter", function()
 				addon:FadeFrameIn(Minimap);
 				addon:FadeFrameIn(MinimapCluster);
 			end);
@@ -228,7 +255,7 @@ function addon:HookFrames()
 		
 		MinimapClusterChildren = { MinimapCluster:GetChildren() };
 		for _, MinimapClusterChild in ipairs(MinimapClusterChildren) do 
-			MinimapClusterChild:HookScript("OnEnter", function(self)
+			MinimapClusterChild:HookScript("OnEnter", function()
 				addon:FadeFrameIn(Minimap);
 				addon:FadeFrameIn(MinimapCluster);
 			end);
@@ -262,29 +289,54 @@ function addon:HookFrames()
 			addon:FadeFrameIn(self);
 		end);
 		
-		PlayerFrame:HookScript("OnLeave", function(self)
-			php = UnitHealth("player") / UnitHealthMax("player");
-			pmp = UnitPower("player") / UnitPowerMax("player");
-			
-			if UnitExists("target") then
-				return;
-			else
-				if php == 1 and (pmp == 1 or pmp == 0) then
-					addon:FadeFrameOut(self);
-				end;
-			end;
-		end);
+		PlayerFrameChildren = { PlayerFrame:GetChildren() };
+		for _, PlayerFrameChild in ipairs(PlayerFrameChildren) do 
+			PlayerFrameChild:HookScript("OnEnter", function()
+				addon:FadeFrameIn(PlayerFrame);
+			end);
+		end;
+		
+		PetFrameChildren = { PetFrame:GetChildren() };
+		for _, PetFrameChild in ipairs(PetFrameChildren) do 
+			PetFrameChild:HookScript("OnEnter", function()
+				addon:FadeFrameIn(PetFrame);
+			end);
+		end;
 	end;
 
+	
 	if addonTable.TARGET then
 		TargetFrame:HookScript("OnShow", function(self)
 			addon:FadeFrameIn(self);
 		end);
 	end;
 
+	
+	if addonTable.OBJECTIVETRACKER then
+		ObjectiveTrackerFrame:SetScript("OnEnter", function(self)
+			addon:FadeFrameIn(self);
+		end);
+		
+		ObjectiveTrackerBlocksFrame:SetScript("OnEnter", function()
+			addon:FadeFrameIn(ObjectiveTrackerFrame);
+		end);
+		
+		ObjectiveTrackerFrameChildren = { ObjectiveTrackerFrame:GetChildren() };
+		for _, ObjectiveTrackerFrameChild in ipairs(ObjectiveTrackerFrameChildren) do 
+			ObjectiveTrackerFrameChild:SetScript("OnEnter", function()
+				addon:FadeFrameIn(ObjectiveTrackerFrame);
+			end);
+		end;
+		
+		ObjectiveTrackerBlocksFrameChildren = { ObjectiveTrackerBlocksFrame:GetChildren() };
+		for _, ObjectiveTrackerBlocksFrameChild in ipairs(ObjectiveTrackerBlocksFrameChildren) do 
+			ObjectiveTrackerBlocksFrameChild:SetScript("OnEnter", function()
+				addon:FadeFrameIn(ObjectiveTrackerFrame);
+			end);
+		end;
+	end;
+	
 	addon:SetupBasicFading(addonTable.VEHICLESEATINDICATOR, VehicleSeatIndicator);
-	addon:SetupBasicFading(addonTable.OBJECTIVETRACKER, ObjectiveTrackerFrame);
-	addon:SetupBasicFading(addonTable.MAINMENUBAR, MainMenuBar);
 	addon:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
 
 end;

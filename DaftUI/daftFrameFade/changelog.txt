@@ -2,6 +2,9 @@
 -- Code efficiencies
 -- Added micro buttons and bags support (to fade MainMenuBar)
 -- Fixed issues with minimap having difficulty fading in
+-- Fixed issues with PlayerFrame fading out unexpectedly
+-- Added support for PetFrame (to fade PlayerFrame)
+-- Fixed issue with ObjectiveTracker fading out unexpectedly
 
 70000.20
 -- Added Pet Bar and XP bars support as part of main bar
