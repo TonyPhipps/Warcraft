@@ -3,7 +3,6 @@ local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
-addon:RegisterEvent("PET_UI_UPDATE");
 
 
 ---- HELPER FUNCTIONS ----
@@ -118,9 +117,7 @@ function addon:ResizeMainBar()
 	MainMenuBar:SetPoint("BOTTOM", WorldFrame, "BOTTOM", 0, -1);
 	MainMenuBar.SetPoint = function() end;
 	
-	MainMenuBarVehicleLeaveButton:ClearAllPoints();
-	MainMenuBar:SetPoint("RIGHT", ActionButton1, "LEFT", -3, 0);
-	MainMenuBar.SetPoint = function() end;
+
 	
 	MainMenuBarTexture0:ClearAllPoints();
 	MainMenuBarTexture0:SetPoint("RIGHT", MainMenuBar, "CENTER", 0, -4);
@@ -346,7 +343,76 @@ addon:SetScript("OnEvent", function(self, event, ...)
 end);
 
 
+MainMenuBarVehicleLeaveButton:HookScript('OnShow', function(self)
+	self:ClearAllPoints();
+	self:SetPoint("RIGHT", MainMenuBar, "LEFT", -3, -5);
+	self:SetFrameLevel(3);
+end)
+
+
+ArtifactWatchBar.OverlayFrame:SetScript('OnMouseUp', function()
+	mouseFocusFrame = GetMouseFocus();
+	mouseFocusFrameName = mouseFocusFrame:GetName();
+	
+	if mouseFocusFrameName == "ArtifactWatchBar" then		
+				
+		if IsAddOnLoaded("Blizzard_ArtifactUI") then
+			
+			if ArtifactFrame:IsShown() then
+				HideUIPanel(ArtifactFrame);
+			
+			else
+				SocketInventoryItem(16);
+				SocketInventoryItem(17);
+			end;	
+
+		else
+			SocketInventoryItem(16);
+			SocketInventoryItem(17);
+		end;
+	end;
+end);
+
+
+ReputationWatchBar:SetScript('OnMouseUp', function(self)
+
+	if GetMouseFocus() == self then				
+		ToggleCharacter("ReputationFrame"); 
+	end;
+end);
+
+
+HonorWatchBar:SetScript('OnMouseUp', function(self)
+	
+	if GetMouseFocus() == self then				
+		ToggleCharacter("ReputationFrame"); 
+	end;
+end);
+
+
+ArtifactWatchBar:SetScript('OnMouseUp', function(self)
+	
+	if GetMouseFocus() == self then
+
+		if IsAddOnLoaded("Blizzard_ArtifactUI") then
+			
+			if ArtifactFrame:IsShown() then
+				HideUIPanel(ArtifactFrame);
+			
+			else
+				SocketInventoryItem(16);
+				SocketInventoryItem(17);
+			end;	
+
+		else
+			SocketInventoryItem(16);
+			SocketInventoryItem(17);
+		end;
+	end;
+end);
+
 ---- HOOKS ----
+
 hooksecurefunc('ActionButton_OnUpdate', function()
 	addon:SetFonts();
 end);
