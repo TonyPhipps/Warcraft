@@ -2,6 +2,7 @@ local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
 
+addon:RegisterEvent("ADDON_LOADED");
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 
@@ -154,44 +155,44 @@ function addon:MoveBarFrames()
 	MultiBarRight.SetPoint = function() end;
 
 	
-	if StanceBarFrame:IsShown() then
-		StanceBarFrame:ClearAllPoints();
-		
-		if MultiBarBottomRight:IsShown() then	
-			StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomRight, "TOPLEFT", -10, 5);
-		
-		elseif MultiBarBottomLeft:IsShown() then
-			StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
-		
-		else
-			StanceBarFrame:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", -10, 15);
-		end;
-		
-		
-		StanceBarFrame.SetPoint = function() end;
+	-- Stance Bar
+	StanceBarFrame:ClearAllPoints();
+	
+	if MultiBarBottomRight:IsShown() then	
+		StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomRight, "TOPLEFT", -10, 5);
+	
+	elseif MultiBarBottomLeft:IsShown() then
+		StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
+	
+	else
+		StanceBarFrame:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", -10, 15);
 	end;
 	
+	StanceBarFrame.SetPoint = function() end;
 	
-	if PetActionBarFrame:IsShown() then	
-		PetActionBarFrame:ClearAllPoints();
-		
-		if MultiBarBottomRight:IsShown() then	
-			PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomRight, "TOPRIGHT", 100, 5);
-		
-		elseif MultiBarBottomLeft:IsShown() then
-			PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomLeft, "TOPRIGHT", 100, 5);
-		
-		else
-			PetActionBarFrame:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 100, 11);
-		end;
-		
-		PetActionBarFrame.SetPoint = function() end;
-		PetActionBarFrame:SetScale(.8);
+	
+	-- Pet Bar
+	PetActionBarFrame:ClearAllPoints();
+	
+	if MultiBarBottomRight:IsShown() then	
+		PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomRight, "TOPRIGHT", 100, 5);
+	
+	elseif MultiBarBottomLeft:IsShown() then
+		PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomLeft, "TOPRIGHT", 100, 5);
+	
+	else
+		PetActionBarFrame:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 100, 11);
 	end;
+	
+	PetActionBarFrame.SetPoint = function() end;
+	PetActionBarFrame:SetScale(.8);
+	PetActionBarFrame:UnregisterEvent("PLAYER_CONTROL_LOST");
 end;
 
 
 function addon:MoveMenuBags()
+	
+	-- Micro Menu
 	local menuButtons = {
 	"CharacterMicroButton",
 	"SpellbookMicroButton",
@@ -205,22 +206,21 @@ function addon:MoveMenuBags()
 	"StoreMicroButton",
 	"MainMenuMicroButton",
 	};
-			
-	local bagButtons = {
-		"MainMenuBarBackpackButton",
-		"CharacterBag0Slot",
-		"CharacterBag1Slot",
-		"CharacterBag2Slot",
-		"CharacterBag3Slot",
-	};
-
-	-- Micro Menu
+	
 	CharacterMicroButton:ClearAllPoints();
 	CharacterMicroButton:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", 0, -13);
 	addon:ScaleFrames(menuButtons, .7);
 	addon:FadeFrames(menuButtons);
 
 	-- Bags
+	local bagButtons = {
+	"MainMenuBarBackpackButton",
+	"CharacterBag0Slot",
+	"CharacterBag1Slot",
+	"CharacterBag2Slot",
+	"CharacterBag3Slot",
+	};
+	
 	MainMenuBarBackpackButton:ClearAllPoints();
 	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 0, -12);
 	addon:ScaleFrames(bagButtons, .7);
@@ -267,26 +267,17 @@ end;
 
 
 function addon:SetFonts()
-	ArtifactWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-	ArtifactWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+	MainMenuBarExpText:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	MainMenuBarExpText:SetShadowOffset(0, 0);
 	
-	if MainMenuExpBar:IsShown() then
-		MainMenuBarExpText.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-		MainMenuBarExpText.OverlayFrame.Text:SetShadowOffset(0, 0);
-	end;
-	
-	HonorWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-	HonorWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
-		
 	ReputationWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
 	ReputationWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
 	
-	for i = 1, 12 do
-		_G["ActionButton"..i.."HotKey"]:ClearAllPoints();
-		_G["ActionButton"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
-		_G["ActionButton"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-		_G["ActionButton"..i.."HotKey"]:SetVertexColor(1, 1, 1);
-	end;
+	HonorWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	HonorWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+	
+	ArtifactWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	ArtifactWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
 	
 	for i = 1, 10 do
 		_G["PetActionButton"..i.."HotKey"]:ClearAllPoints();
@@ -296,16 +287,17 @@ function addon:SetFonts()
 	end;
 	
 	for _, bar in next, {
-	"MultiBarBottomLeft",
-	"MultiBarBottomRight",
-	"MultiBarLeft",
-	"MultiBarRight",} do
-		for i = 1, 12 do
-		_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
-		_G[bar.."Button"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
-		_G[bar.."Button"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-		_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
-	end;
+		"Action",
+		"MultiBarBottomLeft",
+		"MultiBarBottomRight",
+		"MultiBarLeft",
+		"MultiBarRight",} do
+			for i = 1, 12 do
+			_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
+			_G[bar.."Button"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
+			_G[bar.."Button"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+			_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
+		end;
 	end;
 end;
 
@@ -339,7 +331,9 @@ end;
 ---- SCRIPTS ----
 
 addon:SetScript("OnEvent", function(self, event, ...) 
-	addon.Main();
+	if event == "PLAYER_ENTERING_WORLD" then 
+		addon.Main();
+	end;
 end);
 
 
