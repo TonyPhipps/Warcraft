@@ -1,0 +1,117 @@
+70000.21
+-- Code efficiencies
+-- Added micro buttons and bags support (to fade MainMenuBar)
+
+70000.20
+-- Added Pet Bar and XP bars support as part of main bar
+
+70000.19
+-- Added ExtraActionBarFrame support
+-- Fixed various target frame issues
+-- Added OBJECTIVETRACKER_PULSE
+
+70000.18
+-- Fixed a lua error popup when in some instances or raid groups related to party windows.
+
+70000.17
+-- Fixed repeating combat error related to making playerframe show
+
+70000.14, 15, 16
+-- Fixed bugs between party and raid frames
+
+70000.13
+-- Fixed party frame issue when in a raide
+-- Moved Options to a separate file to help with future updates overriding user settings.
+-- Code efficiency improvements
+-- Added support for Chat Tabs, Vehicle Frame, World Objective Frame
+
+70000.12
+-- Fixed a bug with combat detection, providing a more efficient fix for the bug from 70000.11
+
+70000.11
+-- Fixed a bug where target frame sometimes hid when combat started.
+
+70000.10
+-- Fixed bug that caused player frame to fade out with a target
+-- Added support for buff frame. Targeting self out of combat fades in buff frame
+-- Code housekeeping
+
+70000.9
+-- Added options at the top to configure each frame (on/off = true/false)
+-- Included zone text in Minimap fading.
+
+70000.8
+-- RaidFrameManager now only hides when RaidFrames are all hidden.
+
+70000.7
+-- ObjectiveTracker bug fix from .6
+
+70000.6
+-- Include support for Stance buttons
+-- Improved handling of action bars
+
+70000.5
+-- Removed support for buffs. Too buggy due to BuffFrame and BuffButton# issues. Temporary.
+-- Added support for ObjectiveTracker
+
+70000.4
+-- Small fixes on login/enter/exit fade level resets.
+-- Bug fix on party member frames when in raid
+-- Small changes to format of config area
+-- Fixed bug with config area that had time to fade and fade levels swapped.
+
+70000.3
+-- Rewrite fixing many small bugs and making it easier for myself to maintain.
+-- Simplified config area.
+-- Removed support for chat window (for now)
+-- Removed support to change each window to have their own fade values. Instead there is just combat and nocombat.
+-- Removed support to enable / disable per window. This may come back.
+
+70000.2
+-- Small fix for combat bug.
+
+70000.1
+-- Quick fix to get it working again. Commented out two lines referencing ConsolidatedBuffs
+
+60200.11
+--Bug fixes. Player frame now fades immediately when clearing target (and not in combat).
+
+60200.10
+--Fixed a bug with target frame when clearing target after targeting a corpse. target.
+
+60200.9
+--Fixed miscellaneous bugs.
+
+60200.8
+--Player and Target frames now show at MouseOver alpha level when a target exists
+--Fixed empty target frame showing on mouseover with no target.
+
+60200.7
+--Added support for up to 6 chat frames.
+--Fixed bug that affected those with less than 4 chat frames.
+
+60200.6
+--Minimap bug fix
+--Fixed Player health/mana show on mouseover
+--Fixed bug with some addons that rebuild action bars without the background frame
+
+60200.5
+--added Quest Tracker frame support.
+
+60200.4
+--Fixed a bug that would fade in player, target frames when the unit had 0 power (warrior, hunter, etc during idle)
+
+60200-3
+--Player frame fades in when under 100% health or mana.
+--Target frame fades in when under 100% health or mana.
+--Bug fixes.
+
+
+60200.2
+--Added FocusFrame support.
+--Bug fixes.
+
+60200.1
+--Initial Release
+
+github: https://github.com/TonyPhipps/DaftFade
