@@ -173,70 +173,39 @@ function addon:HookFrames()
 	
 	if addonTable.MAINMENUBAR then
 		
+		ParentFrames = { 
+		MainMenuBar, MultiBarBottomLeft, MultiBarBottomRight, 
+		MultiBarLeft, MultiBarRight, StanceBarFrame, PetBarFrame,
+		};
+		
+		for _, ParentFrame in ipairs(ParentFrames) do 
+			ChildFrames = { ParentFrame:GetChildren() };
+			
+			for _, ChildFrame in ipairs(ChildFrames) do 
+				ChildFrame:HookScript("OnEnter", function()
+					addon:FadeFrameIn(MainMenuBar);
+				end);
+			end;
+		end;
+
+		
 		local setScriptActionBars = {
-			ArtifactWatchBar,
-			ExtraActionBarFrame,
-			HonorWatchBar,
-			MainMenuExpBar,
-			MultiBarBottomLeft, 
-			MultiBarBottomLeftButton1,
-			MultiBarBottomLeftButton2,
-			MultiBarBottomLeftButton3,
-			MultiBarBottomLeftButton4,
-			MultiBarBottomLeftButton5,
-			MultiBarBottomLeftButton6,
-			MultiBarBottomLeftButton7,
-			MultiBarBottomLeftButton8,
-			MultiBarBottomLeftButton9,
-			MultiBarBottomLeftButton10,
-			MultiBarBottomLeftButton11,
-			MultiBarBottomLeftButton12,
-			MultiBarBottomRight, 
-			MultiBarBottomRightButton1,
-			MultiBarBottomRightButton2,
-			MultiBarBottomRightButton3,
-			MultiBarBottomRightButton4,
-			MultiBarBottomRightButton5,
-			MultiBarBottomRightButton6,
-			MultiBarBottomRightButton7,
-			MultiBarBottomRightButton8,
-			MultiBarBottomRightButton9,
-			MultiBarBottomRightButton10,
-			MultiBarBottomRightButton11,
-			MultiBarBottomRightButton12,
-			MultiBarLeft,
-			MultiBarLeftButton1,
-			MultiBarLeftButton2,
-			MultiBarLeftButton3,
-			MultiBarLeftButton4,
-			MultiBarLeftButton5,
-			MultiBarLeftButton6,
-			MultiBarLeftButton7,
-			MultiBarLeftButton8,
-			MultiBarLeftButton9,
-			MultiBarLeftButton10,
-			MultiBarLeftButton11,
-			MultiBarLeftButton12,
-			MultiBarRight,
-			MultiBarRightButton1,
-			MultiBarRightButton2,
-			MultiBarRightButton3,
-			MultiBarRightButton4,
-			MultiBarRightButton5,
-			MultiBarRightButton6,
-			MultiBarRightButton7,
-			MultiBarRightButton8,
-			MultiBarRightButton9,
-			MultiBarRightButton10,
-			MultiBarRightButton11,
-			MultiBarRightButton12,
-			PetActionBarFrame,
-			ReputationWatchBar,
-			StanceButton1,
-			StanceButton2,
-			StanceButton3,
-			StanceButton4,
-			StanceButton5,
+			CharacterMicroButton,
+			SpellbookMicroButton,
+			TalentMicroButton,
+			AchievementMicroButton,
+			QuestLogMicroButton,
+			GuildMicroButton,
+			LFDMicroButton,
+			CollectionsMicroButton,
+			EJMicroButton,
+			StoreMicroButton,
+			MainMenuMicroButton,
+			MainMenuBarBackpackButton,
+			CharacterBag0Slot,
+			CharacterBag1Slot,
+			CharacterBag2Slot,
+			CharacterBag3Slot,
 		}
 
 		for _, region in pairs(setScriptActionBars) do
@@ -248,15 +217,22 @@ function addon:HookFrames()
 
 
 	if addonTable.MINIMAP then
-		Minimap:HookScript("OnEnter", function(self)
-			addon:FadeFrameIn(self);
-			addon:FadeFrameIn(MinimapCluster);
-		end);
 		
-		MinimapCluster:HookScript("OnEnter", function(self)
-			addon:FadeFrameIn(self);
-			addon:FadeFrameIn(Minimap);
-		end);
+		MinimapChildren = { Minimap:GetChildren() };
+		for _, MinimapChild in ipairs(MinimapChildren) do 
+			MinimapChild:HookScript("OnEnter", function(self)
+				addon:FadeFrameIn(Minimap);
+				addon:FadeFrameIn(MinimapCluster);
+			end);
+		end;
+		
+		MinimapClusterChildren = { MinimapCluster:GetChildren() };
+		for _, MinimapClusterChild in ipairs(MinimapClusterChildren) do 
+			MinimapClusterChild:HookScript("OnEnter", function(self)
+				addon:FadeFrameIn(Minimap);
+				addon:FadeFrameIn(MinimapCluster);
+			end);
+		end;
 	end;
 
 

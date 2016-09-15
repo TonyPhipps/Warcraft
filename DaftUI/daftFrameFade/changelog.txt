@@ -1,6 +1,7 @@
 70000.21
 -- Code efficiencies
 -- Added micro buttons and bags support (to fade MainMenuBar)
+-- Fixed issues with minimap having difficulty fading in
 
 70000.20
 -- Added Pet Bar and XP bars support as part of main bar
