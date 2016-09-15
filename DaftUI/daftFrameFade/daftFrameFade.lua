@@ -164,6 +164,10 @@ function addon:HookFrames()
 			addon:FadeFrameOut(ObjectiveTrackerFrame);
 		end;
 		
+		if addonTable.MAINMENUBAR then
+			addon:FadeFrameOut(MainMenuBar);
+		end;
+		
 	end);
 
 
