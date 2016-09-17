@@ -4,6 +4,7 @@ local HiddenFrame = CreateFrame("Frame", nil);
 
 addon:RegisterEvent("ADDON_LOADED");
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
+addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 
 
 ---- HELPER FUNCTIONS ----
@@ -333,6 +334,16 @@ end;
 addon:SetScript("OnEvent", function(self, event, ...) 
 	if event == "PLAYER_ENTERING_WORLD" then 
 		addon.Main();
+	end;
+	
+	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Avoids error on mounting flight path
+		PetActionBarFrame:Hide();
+	end;
+	
+	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Brings pet bar back after flight path
+		if UnitExists("pet") then
+			PetActionBarFrame:Show();
+		end;
 	end;
 end);
 
