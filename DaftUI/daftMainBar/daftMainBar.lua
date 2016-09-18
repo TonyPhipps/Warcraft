@@ -3,6 +3,7 @@ local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
+addon:RegisterEvent("ADDON_LOADED");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 
@@ -380,6 +381,9 @@ end;
 addon:SetScript("OnEvent", function(self, event, ...) 
 	if event == "PLAYER_ENTERING_WORLD" then 
 		addon.Main();
+		if addonTable.SHOW_HONORBAR then
+			addon:EnableHonorBar();
+		end;
 	end;
 	
 	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Avoids error on mounting flight path
