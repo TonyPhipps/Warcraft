@@ -2,7 +2,6 @@ local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
 
-addon:RegisterEvent("ADDON_LOADED");
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 
@@ -14,6 +13,17 @@ function addon:ScaleFrames(frames, scale)
 	for i, frame in next, frames do
 		local thisFrame = _G[frame];
 		thisFrame:SetScale(scale);
+	end;
+end;
+
+
+function addon:SetFramesStrata(frames, strata)
+	for i, frame in next, frames do
+		local thisFrame = _G[frame];
+		
+		if thisFrame:IsShown() then
+			thisFrame:SetFrameStrata(strata);
+		end;
 	end;
 end;
 
@@ -84,7 +94,6 @@ function addon:ResizeMainBar()
 		_G["MainMenuXPBarDiv"..i]:SetParent(HiddenFrame);
 	end;
 	
-	
 	ReputationWatchBar.StatusBar.WatchBarTexture0:SetWidth(128);
 	ReputationWatchBar.StatusBar.WatchBarTexture1:SetWidth(128);
 	ReputationWatchBar.StatusBar.WatchBarTexture2:SetWidth(128);
@@ -118,8 +127,6 @@ function addon:ResizeMainBar()
 	MainMenuBar:ClearAllPoints();
 	MainMenuBar:SetPoint("BOTTOM", WorldFrame, "BOTTOM", 0, -1);
 	MainMenuBar.SetPoint = function() end;
-	
-
 	
 	MainMenuBarTexture0:ClearAllPoints();
 	MainMenuBarTexture0:SetPoint("RIGHT", MainMenuBar, "CENTER", 0, -4);
@@ -212,6 +219,7 @@ function addon:MoveMenuBags()
 	CharacterMicroButton:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", 0, -13);
 	addon:ScaleFrames(menuButtons, .7);
 	addon:FadeFrames(menuButtons);
+	addon:SetFramesStrata(menuButtons, "DIALOG");
 
 	-- Bags
 	local bagButtons = {
@@ -226,6 +234,7 @@ function addon:MoveMenuBags()
 	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 0, -12);
 	addon:ScaleFrames(bagButtons, .7);
 	addon:FadeFrames(bagButtons);
+	addon:SetFramesStrata(bagButtons, "DIALOG");
 end;
 
 
@@ -303,6 +312,37 @@ function addon:SetFonts()
 end;
 
 
+function addon:SetFonts_Hooks()
+	hooksecurefunc('ActionButton_OnUpdate', function()
+		addon:SetFonts();
+	end);
+
+	hooksecurefunc('ActionButton_UpdateHotkeys', function()
+		addon:SetFonts();
+	end);
+
+	hooksecurefunc('ActionButton_Update', function()
+		addon:SetFonts();
+	end);
+
+	hooksecurefunc('PetActionBar_Update', function()
+		addon:SetFonts();
+	end);
+end;
+
+
+function addon:EnableHonorBar()
+	HonorWatchBar.StatusBar:SetFrameStrata("MEDIUM");
+	HonorWatchBar.StatusBar:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()-1);
+	
+	if ReputationWatchBar:IsVisible() then
+		HonorWatchBar:Hide();
+	else
+		HonorWatchBar:Show();
+	end;
+end;
+
+
 ---- MAIN ----
 
 function addon.Main()
@@ -323,9 +363,14 @@ function addon.Main()
 	
 	if addonTable.SKIN_FONTS then
 		addon:SetFonts();
+		addon:SetFonts_Hooks();
 	end;
 	
 	MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
+	
+	if addonTable.SHOW_HONORBAR then
+		addon:EnableHonorBar();
+	end;
 end;
 
 
@@ -338,9 +383,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	
 	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Avoids error on mounting flight path
 		PetActionBarFrame:Hide();
-	end;
-	
-	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Brings pet bar back after flight path
+		
 		if UnitExists("pet") then
 			PetActionBarFrame:Show();
 		end;
@@ -351,7 +394,7 @@ end);
 MainMenuBarVehicleLeaveButton:HookScript('OnShow', function(self)
 	self:ClearAllPoints();
 	self:SetPoint("RIGHT", MainMenuBar, "LEFT", -3, -5);
-	self:SetFrameLevel(3);
+	self:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()+1);
 end)
 
 
@@ -387,10 +430,30 @@ ReputationWatchBar:SetScript('OnMouseUp', function(self)
 end);
 
 
+ReputationWatchBar:SetScript('OnHide', function(self)
+	HonorWatchBar:Show();
+end);
+
+
 HonorWatchBar:SetScript('OnMouseUp', function(self)
 	
 	if GetMouseFocus() == self then				
-		ToggleCharacter("ReputationFrame"); 
+		local isInstance, instanceType = IsInInstance();
+		
+		if isInstance and (instanceType == 'pvp') then
+			LoadAddOn("Blizzard_TalentUI");
+			
+			if PlayerTalentFrame:IsShown() then
+				HideUIPanel(PlayerTalentFrame);
+			
+			else
+				PlayerTalentFrame:Show();
+				PlayerTalentTab_OnClick(_G["PlayerTalentFrameTab"..PVP_TALENTS_TAB]);
+			end;
+		
+		else
+			TogglePVPUI();
+		end;
 	end;
 end);
 
@@ -416,20 +479,3 @@ ArtifactWatchBar:SetScript('OnMouseUp', function(self)
 	end;
 end);
 
----- HOOKS ----
-
-hooksecurefunc('ActionButton_OnUpdate', function()
-	addon:SetFonts();
-end);
-
-hooksecurefunc('ActionButton_UpdateHotkeys', function()
-	addon:SetFonts();
-end);
-
-hooksecurefunc('ActionButton_Update', function()
-	addon:SetFonts();
-end);
-
-hooksecurefunc('PetActionBar_Update', function()
-	addon:SetFonts();
-end);

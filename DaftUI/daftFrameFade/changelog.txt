@@ -1,3 +1,6 @@
+70000.22
+-- Fixed bug causing all frames to not fade out if targeting self
+
 70000.21
 -- Code efficiencies
 -- Added micro buttons and bags support (to fade MainMenuBar)

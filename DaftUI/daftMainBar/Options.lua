@@ -7,4 +7,6 @@ addonTable.SKIN_FONTS = true;
 addonTable.HIDE_ART = false;
 addonTable.HIDE_GRYPHONS = false;
 
+addonTable.SHOW_HONORBAR = true;
+
 

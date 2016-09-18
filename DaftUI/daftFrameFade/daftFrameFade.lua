@@ -139,7 +139,6 @@ function addon:HookFrames()
 			pmp = UnitPower("player") / UnitPowerMax("player");
 			
 			if UnitExists("target") then
-				return;
 				
 			else
 			
