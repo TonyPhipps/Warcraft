@@ -348,31 +348,9 @@ end;
 ---- MAIN ----
 
 function addon.Main()
-
-	if addonTable.HIDE_GRYPHONS then
-		MainMenuBarLeftEndCap:SetParent(HiddenFrame);
-		MainMenuBarRightEndCap:SetParent(HiddenFrame);
-		HiddenFrame:Hide();
-	end;
-	
-	if addonTable.HIDE_ART then
-		addon.HideBlizzardArt();
-	end;
-	
 	addon:MoveBarFrames();
 	addon:ResizeMainBar();
 	addon:MoveMenuBags();
-	
-	if addonTable.SKIN_FONTS then
-		addon:SetFonts();
-		addon:SetFonts_Hooks();
-	end;
-	
-	MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
-	
-	if addonTable.SHOW_HONORBAR then
-		addon:EnableHonorBar();
-	end;
 end;
 
 
@@ -381,9 +359,7 @@ end;
 addon:SetScript("OnEvent", function(self, event, ...) 
 	if event == "PLAYER_ENTERING_WORLD" then 
 		addon.Main();
-		if addonTable.SHOW_HONORBAR then
-			addon:EnableHonorBar();
-		end;
+		MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
 	end;
 	
 	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Avoids error on mounting flight path
@@ -394,9 +370,31 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		end;
 	end;
 	
-	if event == "ZONE_CHANGED_NEW_AREA" then
-		if addonTable.SHOW_HONORBAR then
+	if addonTable.SHOW_HONORBAR then
+		if event == "ZONE_CHANGED_NEW_AREA" 
+		or event == "PLAYER_ENTERING_WORLD" then 
 			addon:EnableHonorBar();
+		end;
+	end;
+	
+	if addonTable.SKIN_FONTS then
+		if event == "PLAYER_ENTERING_WORLD" then 
+			addon:SetFonts();
+			addon:SetFonts_Hooks();
+		end;
+	end;
+	
+	if addonTable.HIDE_GRYPHONS then
+		if event == "PLAYER_ENTERING_WORLD" then 
+			MainMenuBarLeftEndCap:SetParent(HiddenFrame);
+			MainMenuBarRightEndCap:SetParent(HiddenFrame);
+			HiddenFrame:Hide();
+		end;
+	end;
+	
+	if addonTable.HIDE_ART then
+		if event == "PLAYER_ENTERING_WORLD" then 
+			addon.HideBlizzardArt();
 		end;
 	end;
 end);
