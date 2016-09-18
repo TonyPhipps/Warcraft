@@ -388,7 +388,6 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		if event == "PLAYER_ENTERING_WORLD" then 
 			MainMenuBarLeftEndCap:SetParent(HiddenFrame);
 			MainMenuBarRightEndCap:SetParent(HiddenFrame);
-			HiddenFrame:Hide();
 		end;
 	end;
 	
