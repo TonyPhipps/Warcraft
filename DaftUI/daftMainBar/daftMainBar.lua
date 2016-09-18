@@ -4,6 +4,7 @@ local HiddenFrame = CreateFrame("Frame", nil);
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
+addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 
 
 ---- HELPER FUNCTIONS ----
@@ -386,6 +387,12 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		
 		if UnitExists("pet") then
 			PetActionBarFrame:Show();
+		end;
+	end;
+	
+	if event == "ZONE_CHANGED_NEW_AREA" then
+		if addonTable.SHOW_HONORBAR then
+			addon:EnableHonorBar();
 		end;
 	end;
 end);
