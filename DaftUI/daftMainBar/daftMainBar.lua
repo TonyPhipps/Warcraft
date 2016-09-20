@@ -332,9 +332,16 @@ function addon:EnableHonorBar() -- experimental. seems to cuase parts of main ba
 		HonorWatchBar:Show();
 	end;
 	
+	
+	ReputationWatchBar:SetScript('OnShow', function()
+		HonorWatchBar:Hide();
+	end);
+	
+	
 	ReputationWatchBar:SetScript('OnHide', function()
 		HonorWatchBar:Show();
 	end);
+	
 	
 	HonorWatchBar:SetScript('OnHide', function()
 		if ReputationWatchBar:IsVisible() then
