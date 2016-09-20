@@ -2,6 +2,7 @@ local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
 
+addon:RegisterEvent("PLAYER_LOGIN");
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
@@ -312,35 +313,11 @@ function addon:SetFonts()
 	end;
 end;
 
-function addon:SetFontColors()
-	for i = 1, 10 do
-		_G["PetActionButton"..i.."HotKey"]:SetVertexColor(1, 1, 1);
-	end;
-	
-	for _, bar in next, {
-		"Action",
-		"MultiBarBottomLeft",
-		"MultiBarBottomRight",
-		"MultiBarLeft",
-		"MultiBarRight",} do
-			for i = 1, 12 do
-			_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
-		end;
-	end;
-end;
-
 
 function addon:SetFonts_Hooks()
-	hooksecurefunc('ActionButton_OnUpdate', function()
-		addon:SetFontColors()
-	end);
-
-	hooksecurefunc('ActionButton_UpdateHotkeys', function()
-		addon:SetFonts();
-	end);
-
-	hooksecurefunc('PetActionBar_Update', function()
-		addon:SetFonts();
+	hooksecurefunc('ActionButton_OnUpdate', function(self)
+		local hotkey = _G[self:GetName()..'HotKey'];
+		hotkey:SetVertexColor(1, 1, 1);
 	end);
 end;
 
@@ -354,15 +331,33 @@ function addon:EnableHonorBar() -- experimental. seems to cuase parts of main ba
 	else
 		HonorWatchBar:Show();
 	end;
+	
+	ReputationWatchBar:SetScript('OnHide', function()
+		HonorWatchBar:Show();
+	end);
+	
+	HonorWatchBar:SetScript('OnHide', function()
+		if ReputationWatchBar:IsVisible() then
+			HonorWatchBar:Hide();
+		else
+			HonorWatchBar:Show();
+		end;
+	end);
 end;
 
 
 ---- SCRIPTS ----
 
 addon:SetScript("OnEvent", function(self, event, ...) 
+	if ( event == "PLAYER_LOGIN" ) then
+		local addonName = ...;
+		if addonName == addonName then
+			addon:ResizeMainBar();
+		end;
+end;
+	
 	if event == "PLAYER_ENTERING_WORLD" then 
 		addon:MoveBarFrames();
-		addon:ResizeMainBar();
 		addon:MoveMenuBags();
 		MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
 	end;
@@ -411,40 +406,11 @@ MainMenuBarVehicleLeaveButton:HookScript('OnShow', function(self)
 end)
 
 
-ArtifactWatchBar.OverlayFrame:SetScript('OnMouseUp', function()
-	mouseFocusFrame = GetMouseFocus();
-	mouseFocusFrameName = mouseFocusFrame:GetName();
-	
-	if mouseFocusFrameName == "ArtifactWatchBar" then		
-				
-		if IsAddOnLoaded("Blizzard_ArtifactUI") then
-			
-			if ArtifactFrame:IsShown() then
-				HideUIPanel(ArtifactFrame);
-			
-			else
-				SocketInventoryItem(16);
-				SocketInventoryItem(17);
-			end;	
-
-		else
-			SocketInventoryItem(16);
-			SocketInventoryItem(17);
-		end;
-	end;
-end);
-
-
 ReputationWatchBar:SetScript('OnMouseUp', function(self)
 
 	if GetMouseFocus() == self then				
 		ToggleCharacter("ReputationFrame"); 
 	end;
-end);
-
-
-ReputationWatchBar:SetScript('OnHide', function(self)
-	HonorWatchBar:Show();
 end);
 
 
@@ -492,3 +458,7 @@ ArtifactWatchBar:SetScript('OnMouseUp', function(self)
 	end;
 end);
 
+
+hooksecurefunc('MoveMicroButtons', function()
+	addon:MoveMenuBags();
+end);

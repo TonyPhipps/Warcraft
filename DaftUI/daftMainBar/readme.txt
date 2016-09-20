@@ -6,13 +6,14 @@ Micro Menu moved to left side of XP bar area (shows on mouseover; hides on mouse
 Bag Bar moved to right side of XP bar area (shows on mouseover; hides on mouseover world frame)
 Dismount and stop flight early button moved to overlay left griffon art
 Click Reputation / Artifact bars to toggle relevant panel
-Click Honor inside a BG opens Honor Talents pane.
+Click Honor bar outside a BG to open BG pane. Iniside a BG opens Honor Talents pane.
 
 
 Toggleable features
-Set hotkey/bar characters to white, slightly larger, and arial typeface
+Set hotkey text to white, slightly larger, and arial typeface
 Hide gryphon art
 Hide all Blizzard art
+When a reputation is not set to shown as experience bar, show Honor Bar.
 
 
 Other Features
