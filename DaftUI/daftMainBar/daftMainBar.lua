@@ -3,7 +3,6 @@ local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
-addon:RegisterEvent("ADDON_LOADED");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 
@@ -80,7 +79,7 @@ function addon:ResizeMainBar()
 	end;
 	
 	for _, bar in next, {
-	MainMenuBar, MainMenuBarArtFrame,  --512
+	MainMenuBar, MainMenuBarArtFrame,
 	MainMenuExpBar, MainMenuBarMaxLevelBar,
 	ReputationWatchBar, ReputationWatchBar.StatusBar,
 	HonorWatchBar, HonorWatchBar.StatusBar,
@@ -313,17 +312,30 @@ function addon:SetFonts()
 	end;
 end;
 
+function addon:SetFontColors()
+	for i = 1, 10 do
+		_G["PetActionButton"..i.."HotKey"]:SetVertexColor(1, 1, 1);
+	end;
+	
+	for _, bar in next, {
+		"Action",
+		"MultiBarBottomLeft",
+		"MultiBarBottomRight",
+		"MultiBarLeft",
+		"MultiBarRight",} do
+			for i = 1, 12 do
+			_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
+		end;
+	end;
+end;
+
 
 function addon:SetFonts_Hooks()
 	hooksecurefunc('ActionButton_OnUpdate', function()
-		addon:SetFonts();
+		addon:SetFontColors()
 	end);
 
 	hooksecurefunc('ActionButton_UpdateHotkeys', function()
-		addon:SetFonts();
-	end);
-
-	hooksecurefunc('ActionButton_Update', function()
 		addon:SetFonts();
 	end);
 
@@ -333,7 +345,7 @@ function addon:SetFonts_Hooks()
 end;
 
 
-function addon:EnableHonorBar()
+function addon:EnableHonorBar() -- experimental. seems to cuase parts of main bar to fail when outside pvp instances
 	HonorWatchBar.StatusBar:SetFrameStrata("MEDIUM");
 	HonorWatchBar.StatusBar:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()-1);
 	
@@ -345,20 +357,13 @@ function addon:EnableHonorBar()
 end;
 
 
----- MAIN ----
-
-function addon.Main()
-	addon:MoveBarFrames();
-	addon:ResizeMainBar();
-	addon:MoveMenuBags();
-end;
-
-
 ---- SCRIPTS ----
 
 addon:SetScript("OnEvent", function(self, event, ...) 
 	if event == "PLAYER_ENTERING_WORLD" then 
-		addon.Main();
+		addon:MoveBarFrames();
+		addon:ResizeMainBar();
+		addon:MoveMenuBags();
 		MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
 	end;
 	
@@ -371,7 +376,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	end;
 	
 	if addonTable.SHOW_HONORBAR then
-		if event == "ZONE_CHANGED_NEW_AREA" 
+		if event == "ZONE_CHANGED_NEW_AREA"
 		or event == "PLAYER_ENTERING_WORLD" then 
 			addon:EnableHonorBar();
 		end;
