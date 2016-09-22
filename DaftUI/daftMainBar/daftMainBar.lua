@@ -152,7 +152,7 @@ end;
 function addon:MoveBarFrames()
 	
 	MultiBarBottomLeft:ClearAllPoints();
-	MultiBarBottomLeft:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", 0, 15);
+	MultiBarBottomLeft:SetPoint("BOTTOMLEFT", ActionButton1, "TOPLEFT", 0, 32);
 	MultiBarBottomLeft.SetPoint = function() end;
 	
 	
@@ -330,7 +330,9 @@ function addon:EnableHonorBar() -- experimental. seems to cuase parts of main ba
 	if ReputationWatchBar:IsVisible() then
 		HonorWatchBar:Hide();
 	else
-		HonorWatchBar:Show();
+		if not MainMenuExpBar:IsVisible() then
+			HonorWatchBar:Show();
+		end;
 	end;
 	
 	
@@ -340,7 +342,9 @@ function addon:EnableHonorBar() -- experimental. seems to cuase parts of main ba
 	
 	
 	ReputationWatchBar:SetScript('OnHide', function()
-		HonorWatchBar:Show();
+		if not MainMenuExpBar:IsVisible() then
+			HonorWatchBar:Show();
+		end;
 	end);
 	
 	
@@ -348,7 +352,9 @@ function addon:EnableHonorBar() -- experimental. seems to cuase parts of main ba
 		if ReputationWatchBar:IsVisible() then
 			HonorWatchBar:Hide();
 		else
-			HonorWatchBar:Show();
+			if not MainMenuExpBar:IsVisible() then
+				HonorWatchBar:Show();
+			end;
 		end;
 	end);
 end;
@@ -474,5 +480,7 @@ end);
 
 
 hooksecurefunc('MoveMicroButtons', function()
-	addon:MoveMenuBags();
+	if not OverrideActionBar:IsShown() then
+		addon:MoveMenuBags();
+	end;
 end);
