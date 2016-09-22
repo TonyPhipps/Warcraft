@@ -6,6 +6,7 @@ addon:RegisterEvent("PLAYER_LOGIN");
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+addon:RegisterEvent("UNIT_PET");
 
 
 ---- HELPER FUNCTIONS ----
@@ -356,12 +357,18 @@ end;
 ---- SCRIPTS ----
 
 addon:SetScript("OnEvent", function(self, event, ...) 
-	if ( event == "PLAYER_LOGIN" ) then
+	if event == "PLAYER_LOGIN" then
 		local addonName = ...;
 		if addonName == addonName then
 			addon:ResizeMainBar();
 		end;
-end;
+	end;
+	
+	if event == "UNIT_PET" then
+		if UnitExists("pet") then
+			PetActionBarFrame:Show();
+		end;
+	end;
 	
 	if event == "PLAYER_ENTERING_WORLD" then 
 		addon:MoveBarFrames();
