@@ -1,0 +1,5 @@
+70000.2
+-- Added PossessBarFrame support
+
+70000.1
+-- Initial Release

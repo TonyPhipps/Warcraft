@@ -176,11 +176,28 @@ function addon:MoveBarFrames()
 		StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
 	
 	else
-		StanceBarFrame:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", -10, 15);
+		StanceBarFrame:SetPoint("BOTTOMLEFT", ActionButton1, "TOPLEFT", 0, 32);
 	end;
 	
 	StanceBarFrame.SetPoint = function() end;
 	
+	
+	-- Possess Bar
+	PossessBarFrame:ClearAllPoints();
+	
+	if MultiBarBottomRight:IsShown() then	
+		PossessBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomRight, "TOPLEFT", -10, 5);
+	
+	elseif MultiBarBottomLeft:IsShown() then
+		PossessBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
+	
+	else
+		PossessBarFrame:SetPoint("BOTTOMLEFT", ActionButton1, "TOPLEFT", 0, 32);
+	end;
+	
+	
+	PossessBarFrame.SetPoint = function() end;
+
 	
 	-- Pet Bar
 	PetActionBarFrame:ClearAllPoints();
@@ -234,8 +251,8 @@ function addon:MoveMenuBags()
 	};
 	
 	MainMenuBarBackpackButton:ClearAllPoints();
-	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 0, -12);
-	addon:ScaleFrames(bagButtons, .7);
+	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", ActionButton12, "TOPRIGHT", 0, 6);
+	addon:ScaleFrames(bagButtons, .85);
 	addon:FadeFrames(bagButtons);
 	addon:SetFramesStrata(bagButtons, "DIALOG");
 end;
@@ -256,10 +273,6 @@ function addon:HideBlizzardArt()
 		ReputationWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
 		ArtifactWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
 		HonorWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
-	end;
-	
-	for i = 1,2  do
-		_G["PossessBackground"..i]:SetParent(HiddenFrame);
 	end;
 	
 	for i = 0,1  do
@@ -419,14 +432,14 @@ addon:SetScript("OnEvent", function(self, event, ...)
 end);
 
 
-MainMenuBarVehicleLeaveButton:HookScript('OnShow', function(self)
+MainMenuBarVehicleLeaveButton:HookScript("OnShow", function(self)
 	self:ClearAllPoints();
 	self:SetPoint("RIGHT", MainMenuBar, "LEFT", -3, -5);
 	self:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()+1);
 end)
 
 
-ReputationWatchBar:SetScript('OnMouseUp', function(self)
+ReputationWatchBar:SetScript("OnMouseUp", function(self)
 
 	if GetMouseFocus() == self then				
 		ToggleCharacter("ReputationFrame"); 
@@ -434,7 +447,7 @@ ReputationWatchBar:SetScript('OnMouseUp', function(self)
 end);
 
 
-HonorWatchBar:SetScript('OnMouseUp', function(self)
+HonorWatchBar:SetScript("OnMouseUp", function(self)
 	
 	if GetMouseFocus() == self then				
 		local isInstance, instanceType = IsInInstance();
@@ -457,7 +470,7 @@ HonorWatchBar:SetScript('OnMouseUp', function(self)
 end);
 
 
-ArtifactWatchBar:SetScript('OnMouseUp', function(self)
+ArtifactWatchBar:SetScript("OnMouseUp", function(self)
 	
 	if GetMouseFocus() == self then
 
@@ -479,7 +492,13 @@ ArtifactWatchBar:SetScript('OnMouseUp', function(self)
 end);
 
 
-hooksecurefunc('MoveMicroButtons', function()
+PossessBarFrame:SetScript("OnShow", function()
+	for i = 1,2  do
+		_G["PossessBackground"..i]:SetParent(HiddenFrame);
+	end;
+end);
+
+hooksecurefunc("MoveMicroButtons", function()
 	if not OverrideActionBar:IsShown() then
 		addon:MoveMenuBags();
 	end;
