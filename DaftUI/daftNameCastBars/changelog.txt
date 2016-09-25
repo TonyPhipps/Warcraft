@@ -1,6 +1,7 @@
 70000.6
 -- Added option to show cast timer in level circle
 -- Added option to hide PVP Icons
+-- Added icon to distinguish uniterruptible spells
 -- Bug fixes
 
 70000.5
