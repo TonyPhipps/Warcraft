@@ -3,6 +3,8 @@ local addon = CreateFrame("Frame");
 
 
 addon:RegisterEvent("PLAYER_LOGIN");
+addon:RegisterEvent("UNIT_SPELLCAST_START");
+addon:RegisterEvent("UNIT_SPELLCAST_SENT");
 
 
 ---- FUNCTIONS ----
@@ -54,6 +56,10 @@ function addon:SetupFrames()
 			CastingBarFrame.Icon:SetPoint("LEFT", CastingBarFrame, "RIGHT", 5, 0);
 			CastingBarFrame.Icon.SetPoint = function() end;
 		end;
+		
+		if addonTable.PLAYER_HIDE_PVP_ICON then
+			PlayerPVPIcon:SetAlpha(0);
+		end;
 	end;
 
 
@@ -84,6 +90,10 @@ function addon:SetupFrames()
 			TargetFrameSpellBar.Icon:SetHeight(TargetFramePortrait:GetHeight());
 			TargetFrameSpellBar.Icon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask");
 		end;
+		
+		if addonTable.TARGET_HIDE_PVP_ICON then
+			TargetFrameTextureFramePVPIcon:SetAlpha(0);
+		end;
 	end;
 end;
 
@@ -92,7 +102,6 @@ function addon:SetupOnShowHide()
 	CastingBarFrame:HookScript("OnShow", function(self, event, ...)
 		
 		if addonTable.PLAYER_ENABLED then
-			print("test");
 			PlayerName:Hide();
 			PlayerStatusTexture:Hide();
 			PlayerFrameBackground:Hide();
@@ -100,14 +109,16 @@ function addon:SetupOnShowHide()
 			if addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
 				PlayerPortrait:Hide();
 
-				if (CastingBarFrame.Icon:GetTexture() == "INTERFACE\\ICONS\\thumbsdown") or (CastingBarFrame.Icon:GetTexture() == "Portrait2") then
+				if (CastingBarFrame.Icon:GetTexture() == "INTERFACE\\ICONS\\thumbsdown") 
+				or (CastingBarFrame.Icon:GetTexture() == "Portrait2") then
 					return;
 				else
 					SetPortraitToTexture(CastingBarFrame.Icon, CastingBarFrame.Icon:GetTexture());
 				end;
 			end;
 
-			if not addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
+			if not addonTable.PLAYER_BIG_SPELL_ICON 
+			and not addonTable.PLAYER_HIDE_SPELL_ICON then
 				CastingBarFrame.Icon:Show();
 			end;
 		end;
@@ -126,7 +137,8 @@ function addon:SetupOnShowHide()
 
 	TargetFrameSpellBar:HookScript("OnShow", function(self, event, ...)
 		if addonTable.TARGET_ENABLED then
-		
+			_, _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target");
+
 			TargetFrameTextureFrameName:Hide();
 			TargetFrameNameBackground:Hide();
 			TargetFramePortrait:Hide();
@@ -138,6 +150,14 @@ function addon:SetupOnShowHide()
 			if addonTable.TARGET_HIDE_SPELL_ICON then
 				TargetFrameSpellBar.Icon:Hide();
 			end;
+			
+			if notInterruptible then
+				TargetFrameTextureFrameQuestIcon:Show();
+				TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 0, 0, 1);
+			else
+				TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1);
+			end;
+			
 		end;
 	end);
 
@@ -147,8 +167,65 @@ function addon:SetupOnShowHide()
 			TargetFrameTextureFrameName:Show();
 			TargetFrameNameBackground:Show();
 			TargetFramePortrait:Show();
+			TargetFrameTextureFrameQuestIcon:Hide();
 		end;
 	end);
+end;
+
+
+function addon:SetupTimers()
+	if addonTable.PLAYER_TIMER then
+		CastingBarFrame.update = .1;
+		
+		CastingBarFrame:HookScript('OnUpdate', function(self, elapsed)
+
+			if self.update and self.update < elapsed then
+				
+				if self.casting then
+					PlayerLevelText:Show();
+					PlayerAttackIcon:SetAlpha(.2);
+					PlayerLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)));
+				
+				elseif self.channeling then
+					PlayerLevelText:SetText(format("%.1f", max(self.value, 0)));
+				
+				else
+					PlayerLevelText:SetText(UnitLevel("player"));
+					PlayerAttackIcon:SetAlpha(1);
+				end;
+				
+				self.update = .1;
+			
+			else
+				self.update = self.update - elapsed;
+			end;
+		end);
+	end;
+	
+	if addonTable.TARGET_TIMER then
+		TargetFrameSpellBar.update = .1;
+		
+		TargetFrameSpellBar:HookScript('OnUpdate', function(self, elapsed)
+
+			if self.update and self.update < elapsed then
+				
+				if self.casting then
+					TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)));
+				
+				elseif self.channeling then
+					TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.value, 0)));
+				
+				else
+					TargetFrameTextureFrameLevelText:SetText(UnitLevel("player"));
+				end;
+				
+				self.update = .1;
+			
+			else
+				self.update = self.update - elapsed;
+			end;
+		end);
+	end;
 end;
 
 
@@ -159,6 +236,27 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
 		addon:SetupFrames();
 		addon:SetupOnShowHide();
+		addon:SetupTimers();
+	end;
+	
+	if event == "UNIT_SPELLCAST_START" 
+	or event == "UNIT_SPELLCAST_SENT" then
+		local arg1 = ...;
+		
+		
+		if arg1 == "player" then
+			if addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
+				SetPortraitToTexture(CastingBarFrame.Icon, CastingBarFrame.Icon:GetTexture());
+			end;
+		end;
+		
+		if arg1 == "target" then
+			if addonTable.TARGET_BIG_SPELL_ICON then
+				TargetFrameSpellBar.Icon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask");
+			end;
+		end;
 	end;
 
 end);
+
+
