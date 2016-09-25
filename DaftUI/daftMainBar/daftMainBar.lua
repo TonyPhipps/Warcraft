@@ -436,7 +436,7 @@ MainMenuBarVehicleLeaveButton:HookScript("OnShow", function(self)
 	self:ClearAllPoints();
 	self:SetPoint("RIGHT", MainMenuBar, "LEFT", -3, -5);
 	self:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()+1);
-end)
+end);
 
 
 ReputationWatchBar:SetScript("OnMouseUp", function(self)
@@ -497,6 +497,23 @@ PossessBarFrame:SetScript("OnShow", function()
 		_G["PossessBackground"..i]:SetParent(HiddenFrame);
 	end;
 end);
+
+
+OverrideActionBar:HookScript("OnShow", function()
+	PetActionBarFrame:Hide();
+	
+	if UnitExists("pet") then
+		PetActionBarFrame:Show();
+	end;
+end);
+
+
+OverrideActionBar:HookScript("OnHide", function()
+	addon:MoveBarFrames();
+end);
+
+
+---- HOOKS ---- 
 
 hooksecurefunc("MoveMicroButtons", function()
 	if not OverrideActionBar:IsShown() then
