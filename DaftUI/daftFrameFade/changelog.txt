@@ -1,5 +1,6 @@
 70000.22
 -- Fixed bug causing all frames to not fade out if targeting self
+-- Added support for world quest fill bars to Quest Tracker Pulse feature
 
 70000.21
 -- Code efficiencies

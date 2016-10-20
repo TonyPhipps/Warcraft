@@ -102,83 +102,43 @@ end;
 
 
 local function DetectUrls()
-	function doColor(url)
-		url = " |cff99FF33|Hurl:"..url.."|h["..url.."]|h|r ";
-		return url;
-	end;
+	local newAddMsg = {}
+	local function AddMessage(frame, message, ...)
+		
+		if (message) then
+			message = gsub(message, '([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])', '|cffffffff|Hurl:%1|h[%1]|h|r');
+			message = gsub(message, " ([_A-Za-z0-9-%.]+@[_A-Za-z0-9-]+%.+[_A-Za-z0-9-%.]+)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
+			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?:%d%d?%d?%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
+			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
+			return newAddMsg[frame:GetName()](frame, message, ...);
+		end
+	end
 
-	function DetectUrl(self, event, msg, author, ...)
-		if strfind(msg, "(%a+)://(%S+)%s?") then
-			return false, gsub(msg, "(%a+)://(%S+)%s?", doColor("%1://%2")), author, ...;
-		end;
-		if strfind(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?") then
-			return false, gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", doColor("www.%1.%2")), author, ...;
-		end;
-		if strfind(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?") then
-			return false, gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", doColor("%1@%2%3%4")), author, ...;
-		end;
-		if strfind(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?") then
-			return false, gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?", doColor("%1.%2.%3.%4:%5")), author, ...;
-		end;
-		if strfind(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?") then
-			return false, gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", doColor("%1.%2.%3.%4")), author, ...;
-		end;
-		if strfind(msg, "[wWhH][wWtT][wWtT][\46pP]%S+[^%p%s]") then
-			return false, gsub(msg, "[wWhH][wWtT][wWtT][\46pP]%S+[^%p%s]", doColor("%1")), author, ...;
+	for i = 1, NUM_CHAT_WINDOWS do
+		
+		if i ~= 2 then
+			local frame = _G[format("%s%d", "ChatFrame", i)];
+			newAddMsg[format("%s%d", "ChatFrame", i)] = frame.AddMessage;
+			frame.AddMessage = AddMessage;
 		end;
 	end;
-
-	StaticPopupDialogs["URL"] = {
-		text = "URL COPY",
-		button2 = CANCEL,
-		hasEditBox = true,
-		hasWideEditBox = true,
-		timeout = 0,
-		exclusive = 1,
-		hideOnEscape = 1,
-		EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
-		whileDead = 1,
-		maxLetters = 255,
-	};
-
-	local SetHyperlink = _G.ItemRefTooltip.SetHyperlink;
 	
-	function _G.ItemRefTooltip:SetHyperlink(link, ...)
-		if link and (strsub(link, 1, 3) == "url") then
-			local url = strsub(link, 5);
-			local dialog = StaticPopup_Show("URL");
-			local editbox = _G[dialog:GetName().."EditBox"]  ;
-			
-			editbox:SetText(url);
-			editbox:SetFocus();
-			editbox:HighlightText();
-			
-			local button = _G[dialog:GetName().."Button2"];
-			button:ClearAllPoints();
-			button:SetPoint("CENTER", editbox, "CENTER", 0, -30);
-			
-			return;
-		 end;
-		 
-		 SetHyperlink(self, link, ...);
+	local orig = ChatFrame_OnHyperlinkShow;
+	function ChatFrame_OnHyperlinkShow(frame, link, text, button)
+		local type, value = link:match("(%a+):(.+)");
+		
+		if ( type == "url" ) then
+			local editBox = _G[frame:GetName()..'EditBox'];
+			if editBox then
+				editBox:Show();
+				editBox:SetText(value);
+				editBox:SetFocus();
+				editBox:HighlightText();
+			end;
+		else
+			orig(self, link, text, button);
+		end;
 	end;
-
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", DetectUrl);
-
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", DetectUrl);
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", DetectUrl);
 end;
 
 
@@ -280,10 +240,6 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 			AdjustScreenClamp();
 		end;
 
-		if addonTable.URLCOPY then
-			DetectUrls();
-		end;
-
 		if addonTable.MAXLINES then
 			ChangeMaxLines();
 		end;
@@ -299,6 +255,10 @@ addonName:SetScript("OnEvent", function(self, event, ...)
 
 	
 	if event == "PLAYER_LOGIN" then
+		
+		if addonTable.URLCOPY then
+			DetectUrls();
+		end;
 		
 		if addonTable.STICKY_CHANNELS then
 			MakeChannelsSticky();

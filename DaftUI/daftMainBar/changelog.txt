@@ -1,3 +1,7 @@
+70000.3
+-- Fixed issue where some action bars would no longer support interaction after overridebar situations.
+-- Fixed lua error that occasionally popped up with PetActionBar error
+
 70000.2
 -- Added PossessBarFrame support
 

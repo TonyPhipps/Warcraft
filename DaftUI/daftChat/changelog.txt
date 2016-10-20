@@ -1,0 +1,7 @@
+70000.2
+-- Fixed issue where links might cause a client crash.
+-- Links improved to support more link types
+-- Links now show in chat edit box rather than a popup window.
+
+70000.1
+-- Initial Release

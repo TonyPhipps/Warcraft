@@ -2,7 +2,6 @@ local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
 
 addon:RegisterEvent("PLAYER_LOGIN");
-addon:RegisterEvent("UNIT_SPELLCAST_SENT");
 
 
 ---- FUNCTIONS ----
@@ -125,6 +124,8 @@ end;
 
 
 function addon:ShowTargetCastBar()
+	_, _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target");
+
 	TargetFrameTextureFrameName:Hide();
 	TargetFrameNameBackground:Hide();
 	TargetFramePortrait:Hide();
@@ -149,7 +150,7 @@ end;
 function addon:SetupHooks()
 	
 	if addonTable.PLAYER_ENABLED then
-		CastingBarFrame.update = .1;
+		CastingBarFrame.update = 0;
 		CastingBarFrame:HookScript('OnUpdate', function(self, elapsed)
 			if self.update and self.update < elapsed then
 			
@@ -163,11 +164,9 @@ function addon:SetupHooks()
 					if addonTable.PLAYER_TIMER then
 						PlayerLevelText:SetText(format("%.1f", max(self.value, 0)));
 					end;
-				else	
-
 				end;
 				
-				self.update = .1;
+				self.update = 0;
 				
 			else
 				self.update = self.update - elapsed;
@@ -186,8 +185,7 @@ function addon:SetupHooks()
 	end;
 	
 	if addonTable.TARGET_ENABLED then
-		TargetFrameSpellBar.update = .1;
-		_, _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target");
+		TargetFrameSpellBar.update = 0;
 		TargetFrameSpellBar:HookScript("OnUpdate", function(self, elapsed)
 
 			if self.update and self.update < elapsed then
@@ -205,19 +203,20 @@ function addon:SetupHooks()
 					end;
 				end;
 				
-				self.update = .1;
+				self.update = 0;
 			
 			else
 				self.update = self.update - elapsed;
 			end;
 		end);
-
+		
 		TargetFrameSpellBar:HookScript("OnHide", function(self, event, ...)
 			TargetFrameTextureFrameName:Show();
 			TargetFrameNameBackground:Show();
 			TargetFramePortrait:Show();
 			TargetFrameTextureFrameQuestIcon:Hide();
 			TargetFrameTextureFrameLevelText:SetText(UnitLevel("player"));
+			TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1);
 		end);
 	end;
 end;
@@ -230,10 +229,6 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
 		addon:SetupFrames();
 		addon:SetupHooks();
-	end;
-	
-	if event == "UNIT_SPELLCAST_SENT" then
-		addon:ShowPlayerCastBar();
 	end;
 end);
 

@@ -11,6 +11,7 @@ addon:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
 addon:RegisterUnitEvent("UNIT_POWER_FREQUENT");
 addon:RegisterUnitEvent("QUEST_WATCH_LIST_CHANGED");
 addon:RegisterUnitEvent("QUEST_WATCH_UPDATE");
+addon:RegisterUnitEvent("UNIT_QUEST_LOG_CHANGED");
 
 
 ---- HELPER FUNCTIONS ----
@@ -414,6 +415,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.OBJECTIVETRACKER_PULSE then
 		
 		if event == "QUEST_WATCH_LIST_CHANGED" 
+		or event == "UNIT_QUEST_LOG_CHANGED"
 		or event == "QUEST_WATCH_UPDATE" then
 			addon:FadeFrameIn(ObjectiveTrackerFrame);
 			C_Timer.After(2, function() 

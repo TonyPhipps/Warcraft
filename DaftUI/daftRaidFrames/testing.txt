@@ -1,0 +1,17 @@
+raid frame experimentation
+/run CompactRaidFrame1:SetHeight(30);
+/run CompactRaidFrame1PowerBar:SetStatusBarColor(1, 1, 1);
+/run CompactRaidFrame2:SetPoint("TOPLEFT", CompactRaidFrame1, "BOTTOMLEFT", 0, 2);
+
+
+/run CompactPartyFrameMember1:SetHeight(30);
+/run CompactPartyFrameMember1PowerBar:SetStatusBarColor(1, 1, 1);
+
+
+CompactPartyFrameMember1Name:Hide()
+CompactPartyFrameMember1RoleIcon
+CompactPartyFrameMember1StatusText
+
+??CompactPartyFrameMember1.manabar:SetHeight(5)
+
+

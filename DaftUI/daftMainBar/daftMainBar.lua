@@ -7,6 +7,10 @@ addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 addon:RegisterEvent("UNIT_PET");
+addon:RegisterEvent("PET_BAR_SHOWGRID");
+addon:RegisterEvent("PET_BAR_HIDEGRID");
+addon:RegisterEvent("PET_BAR_HIDE");
+addon:RegisterEvent("PET_UI_UPDATE");
 
 
 ---- HELPER FUNCTIONS ----
@@ -214,7 +218,17 @@ function addon:MoveBarFrames()
 	
 	PetActionBarFrame.SetPoint = function() end;
 	PetActionBarFrame:SetScale(.8);
-	PetActionBarFrame:UnregisterEvent("PLAYER_CONTROL_LOST");
+	
+	
+	hooksecurefunc('PetActionBar_OnLoad', function()
+		PetActionBarFrame:UnregisterEvent("PLAYER_CONTROL_LOST");
+		PetActionBarFrame:UnregisterEvent("PLAYER_CONTROL_GAINED");
+		PetActionBarFrame:UnregisterEvent("PET_BAR_HIDE");
+		PetActionBarFrame:UnregisterEvent("PET_BAR_UPDATE_USABLE");
+		PetActionBarFrame:UnregisterEvent("PET_UI_UPDATE");
+		PetActionBarFrame:UnregisterEvent("UPDATE_VEHICLE_ACTIONBAR");
+	end);
+	
 end;
 
 
@@ -325,10 +339,7 @@ function addon:SetFonts()
 			_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
 		end;
 	end;
-end;
-
-
-function addon:SetFonts_Hooks()
+	
 	hooksecurefunc('ActionButton_OnUpdate', function(self)
 		local hotkey = _G[self:GetName()..'HotKey'];
 		hotkey:SetVertexColor(1, 1, 1);
@@ -413,7 +424,6 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.SKIN_FONTS then
 		if event == "PLAYER_ENTERING_WORLD" then 
 			addon:SetFonts();
-			addon:SetFonts_Hooks();
 		end;
 	end;
 	
@@ -505,11 +515,6 @@ OverrideActionBar:HookScript("OnShow", function()
 	if UnitExists("pet") then
 		PetActionBarFrame:Show();
 	end;
-end);
-
-
-OverrideActionBar:HookScript("OnHide", function()
-	addon:MoveBarFrames();
 end);
 
 
