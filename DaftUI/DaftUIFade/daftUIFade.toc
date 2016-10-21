@@ -1,0 +1,9 @@
+## Interface: 70000
+## Title: daftUIFade
+## Notes: Fades out entire UI when not in use.
+## Author: Daftwise - US Destromath
+## Version: 70000.1
+
+
+daftUIFade.lua
+Options.lua
