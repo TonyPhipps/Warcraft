@@ -12,7 +12,7 @@ function addon:FadeOut()
 end;
 
 
-addon:SetScript("OnUpdate", function(self, elapsed)
+addon:SetScript("OnUpdate", function()
  
 	if GetMouseFocus() then
 		if GetMouseFocus():GetName() ~= "WorldFrame" then
