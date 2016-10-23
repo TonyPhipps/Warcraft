@@ -22,6 +22,7 @@ addon:SetScript("OnUpdate", function()
 	
 	if ChatFrame1EditBox:IsShown()
 	or WorldMapFrame:IsShown()
+	or GameMenuFrame:IsShown()
 	or MailFrame:IsShown()
 	or GossipFrame:IsShown()
 	or GameTooltipTextLeft1:GetText()
