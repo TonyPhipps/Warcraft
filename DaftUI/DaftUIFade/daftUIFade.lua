@@ -2,7 +2,6 @@ local addonName, addonTable = ... ;
  
 local addon = CreateFrame("Frame");
  
- 
 function addon:FadeIn()
 	UIFrameFadeIn(UIParent, addonTable.TIMETOFADEIN, UIParent:GetAlpha(), addonTable.FADEIN);
 end;
@@ -13,6 +12,30 @@ end;
 
 
 addon:SetScript("OnUpdate", function()
+	
+	if UnitAffectingCombat("Player")
+	or InCombatLockdown() then
+		UIParent:SetAlpha(addonTable.FADEIN); -- UIFrameFadeIn causes access violation in combat
+		return;
+	end;
+	
+	
+	if ChatFrame1EditBox:IsShown()
+	or WorldMapFrame:IsShown()
+	or MailFrame:IsShown()
+	or GossipFrame:IsShown()
+	or GameTooltipTextLeft1:GetText()
+	or UnitCastingInfo("Player")
+	or UnitChannelInfo("Player")
+	or UnitExists("Target")
+	or MouseIsOver(ChatFrame1)
+	or MouseIsOver(ChatFrame2)
+	or MouseIsOver(ChatFrame3)
+	or MouseIsOver(ChatFrame4) then
+		addon:FadeIn();
+		return;
+	end;
+ 
  
 	if GetMouseFocus() then
 		if GetMouseFocus():GetName() ~= "WorldFrame" then
@@ -20,18 +43,5 @@ addon:SetScript("OnUpdate", function()
 		else
 			addon:FadeOut();
 		end;
-	end;
-
-	if UnitAffectingCombat("Player")
-	or InCombatLockdown()
-	or ChatFrame1EditBox:IsShown()
-	or WorldMapFrame:IsShown()
-	or MailFrame:IsShown()
-	or GossipFrame:IsShown()
-	or GameTooltipTextLeft1:GetText()
-	or UnitCastingInfo("Player")
-	or UnitChannelInfo("Player")
-	or UnitExists("Target") then
-		addon:FadeIn();
 	end;
 end);

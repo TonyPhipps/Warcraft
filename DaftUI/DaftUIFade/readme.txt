@@ -22,3 +22,5 @@ addonTable.FADEOUT = 0.05;
 
 
 [SIZE="1"]+Lightweight on code to stand the test of time (and patches).[/SIZE]
+
+[I]Special thanks to [URL="http://www.wowinterface.com/forums/member.php?u=333399"]Krainz[/URL] for introducing the idea to use UIParent.[/I]

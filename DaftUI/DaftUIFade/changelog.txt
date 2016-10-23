@@ -1,3 +1,12 @@
+70000.4
+--Added support for mousing over chat frames to fade in UI
+
+70000.3
+--Corrected bug that sometimes left UI faded during combat.
+
+70000.2
+--Corrected spamming ADDON_ACTION_BLOCKED events during combat.
+
 70000.1
 --Initial Release
 
