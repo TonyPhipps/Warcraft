@@ -4,6 +4,7 @@ Features:
 [LIST]
 [*]Since this fades UIParent, it will affect all addons.
 [*]Fades in UI when in combat or when casting outside combat.
+[*]Fades in UI when a window pops up.
 [*]Fades in UI when targeting anything or mousing over anything.
 [*]Fades in UI when world map, mailbox, or gossip frame is shown.
 [*]Fades in UI when typing a message in chat edit box or mousing over chat boxes.

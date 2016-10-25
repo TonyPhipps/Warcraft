@@ -1,3 +1,7 @@
+70000.5
+--Various popups now fade in UI
+--Game Menu (Default: ESC Key) now fades in UI
+
 70000.4
 --Added support for mousing over chat frames to fade in UI
 
