@@ -14,8 +14,14 @@ addon:RegisterUnitEvent("QUEST_WATCH_UPDATE");
 addon:RegisterUnitEvent("UNIT_QUEST_LOG_CHANGED");
 
 
----- HELPER FUNCTIONS ----
+local TopEdgeHover = CreateFrame("Frame");
+TopEdgeHover:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0);
+TopEdgeHover:SetSize(UIParent:GetWidth(), 50);
+TopEdgeHover:SetFrameStrata("BACKGROUND");
+TopEdgeHover:SetScript("OnEnter", function() end);	
 
+
+---- HELPER FUNCTIONS ----
 
 function addon:FadeFrameIn(Frame)
 
@@ -173,6 +179,10 @@ function addon:HookFrames()
 
 	if addonTable.BUFFS then
 		PlayerFrame:HookScript("OnEnter", function()
+			addon:FadeFrameIn(BuffFrame);
+		end);
+		
+		TopEdgeHover:HookScript("OnEnter", function()
 			addon:FadeFrameIn(BuffFrame);
 		end);
 	end;
@@ -340,9 +350,16 @@ function addon:HookFrames()
 		end;
 	end;
 	
+	
+	if addonTable.WORLDSTATEFRAME then
+		addon:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
+		
+		TopEdgeHover:HookScript("OnEnter", function()
+			addon:FadeFrameIn(WorldStateAlwaysUpFrame);
+		end);	
+	end;
+	
 	addon:SetupBasicFading(addonTable.VEHICLESEATINDICATOR, VehicleSeatIndicator);
-	addon:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
-
 end;
 
 

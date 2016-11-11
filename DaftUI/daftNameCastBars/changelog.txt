@@ -1,3 +1,6 @@
+70100.1
+-- Fix for Halloween costume items causing error on use.
+
 70000.7
 -- Code management improvements
 -- Fixed issue where corners of spell icon sometimes showed up briefly poking outside player frame

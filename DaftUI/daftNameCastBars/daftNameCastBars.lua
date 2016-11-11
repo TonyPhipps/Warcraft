@@ -109,7 +109,8 @@ function addon:ShowPlayerCastBar()
 		PlayerPortrait:Hide();
 
 		if (CastingBarFrame.Icon:GetTexture() == "INTERFACE\\ICONS\\thumbsdown") -- fixes "not found" error
-		or (CastingBarFrame.Icon:GetTexture() == "Portrait2") then
+		or (CastingBarFrame.Icon:GetTexture() == "Portrait2")
+		or (CastingBarFrame.Icon:GetTexture() == "Interface\Icons\pet_type_undead") then
 			return;
 		else
 			SetPortraitToTexture(CastingBarFrame.Icon, CastingBarFrame.Icon:GetTexture());

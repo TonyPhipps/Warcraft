@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: daftMoveCaptureBar
+## Notes: Moves capture bar, commonly seen in BGs, to top center
+## Author: Daftwise - US Destromath
+## Version: 70000.1
+
+
+daftMoveCaptureBar.lua

@@ -7,10 +7,6 @@ addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
 addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 addon:RegisterEvent("UNIT_PET");
-addon:RegisterEvent("PET_BAR_SHOWGRID");
-addon:RegisterEvent("PET_BAR_HIDEGRID");
-addon:RegisterEvent("PET_BAR_HIDE");
-addon:RegisterEvent("PET_UI_UPDATE");
 
 
 ---- HELPER FUNCTIONS ----
@@ -150,6 +146,7 @@ function addon:ResizeMainBar()
 	MainMenuBarRightEndCap:ClearAllPoints();
 	MainMenuBarRightEndCap:SetPoint("BOTTOMLEFT", MainMenuBar, "BOTTOMRIGHT", -40, 0);
 	MainMenuBarRightEndCap.SetPoint = function() end;
+	
 end;
 
 
@@ -218,16 +215,6 @@ function addon:MoveBarFrames()
 	
 	PetActionBarFrame.SetPoint = function() end;
 	PetActionBarFrame:SetScale(.8);
-	
-	
-	hooksecurefunc('PetActionBar_OnLoad', function()
-		PetActionBarFrame:UnregisterEvent("PLAYER_CONTROL_LOST");
-		PetActionBarFrame:UnregisterEvent("PLAYER_CONTROL_GAINED");
-		PetActionBarFrame:UnregisterEvent("PET_BAR_HIDE");
-		PetActionBarFrame:UnregisterEvent("PET_BAR_UPDATE_USABLE");
-		PetActionBarFrame:UnregisterEvent("PET_UI_UPDATE");
-		PetActionBarFrame:UnregisterEvent("UPDATE_VEHICLE_ACTIONBAR");
-	end);
 	
 end;
 
@@ -307,79 +294,61 @@ end;
 
 
 function addon:SetFonts()
+	local watchbars = {"ReputationWatchBar", "HonorWatchBar", "ArtifactWatchBar"}
+	
+	for _, watchbar in pairs(watchbars) do
+		_G[watchbar].OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		_G[watchbar].OverlayFrame.Text:SetShadowOffset(0, 0);
+	end;
+	
 	MainMenuBarExpText:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
 	MainMenuBarExpText:SetShadowOffset(0, 0);
 	
-	ReputationWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-	ReputationWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+	local bars = {"Action",
+		"MultiBarBottomLeft", "MultiBarBottomRight",
+		"MultiBarLeft", "MultiBarRight"};
 	
-	HonorWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-	HonorWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
-	
-	ArtifactWatchBar.OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-	ArtifactWatchBar.OverlayFrame.Text:SetShadowOffset(0, 0);
+	for _, bar in pairs(bars) do
+		for i = 1, 12 do
+			_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
+			_G[bar.."Button"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
+			_G[bar.."Button"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+			_G[bar.."Button"..i.."Name"]:ClearAllPoints();
+			_G[bar.."Button"..i.."Name"]:SetPoint('BOTTOM', 0, 0);
+			_G[bar.."Button"..i.."Name"]:SetFont('Fonts\\ARIALN.ttf', 10, 'THINOUTLINE', "");
+			
+			if addonTable.HIDE_HOTKEYS then
+				_G[bar.."Button"..i.."HotKey"].Show = function() end;
+				_G[bar.."Button"..i.."HotKey"]:Hide();
+			end;
+			
+			if addonTable.HIDE_MACRONAMES then
+				_G[bar.."Button"..i.."Name"]:Hide();
+			end;
+		end;
+	end;
 	
 	for i = 1, 10 do
 		_G["PetActionButton"..i.."HotKey"]:ClearAllPoints();
 		_G["PetActionButton"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
 		_G["PetActionButton"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-		_G["PetActionButton"..i.."HotKey"]:SetVertexColor(1, 1, 1);
-	end;
-	
-	for _, bar in next, {
-		"Action",
-		"MultiBarBottomLeft",
-		"MultiBarBottomRight",
-		"MultiBarLeft",
-		"MultiBarRight",} do
-			for i = 1, 12 do
-			_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
-			_G[bar.."Button"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
-			_G[bar.."Button"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-			_G[bar.."Button"..i.."HotKey"]:SetVertexColor(1, 1, 1);
-		end;
 	end;
 	
 	hooksecurefunc('ActionButton_OnUpdate', function(self)
-		local hotkey = _G[self:GetName()..'HotKey'];
-		hotkey:SetVertexColor(1, 1, 1);
-	end);
-end;
+		local inrange = IsActionInRange(self.action);
+		local isUsable, notEnoughMana = IsUsableAction(self.action);
 
-
-function addon:EnableHonorBar() -- experimental. seems to cuase parts of main bar to fail when outside pvp instances
-	HonorWatchBar.StatusBar:SetFrameStrata("MEDIUM");
-	HonorWatchBar.StatusBar:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()-1);
-	
-	if ReputationWatchBar:IsVisible() then
-		HonorWatchBar:Hide();
-	else
-		if not MainMenuExpBar:IsVisible() then
-			HonorWatchBar:Show();
-		end;
-	end;
-	
-	
-	ReputationWatchBar:SetScript('OnShow', function()
-		HonorWatchBar:Hide();
-	end);
-	
-	
-	ReputationWatchBar:SetScript('OnHide', function()
-		if not MainMenuExpBar:IsVisible() then
-			HonorWatchBar:Show();
-		end;
-	end);
-	
-	
-	HonorWatchBar:SetScript('OnHide', function()
-		if ReputationWatchBar:IsVisible() then
-			HonorWatchBar:Hide();
+		
+		if inrange == false then
+			self.icon:SetVertexColor(1.0, 0.1, 0.1);
+		elseif notEnoughMana then
+			self.icon:SetVertexColor(0.1, 0.1, 1.0);
 		else
-			if not MainMenuExpBar:IsVisible() then
-				HonorWatchBar:Show();
-			end;
+			self.icon:SetVertexColor(1, 1, 1);
 		end;
+		
+		
+		self.HotKey:SetVertexColor(1, 1, 1);
 	end);
 end;
 
@@ -387,11 +356,9 @@ end;
 ---- SCRIPTS ----
 
 addon:SetScript("OnEvent", function(self, event, ...) 
+	
 	if event == "PLAYER_LOGIN" then
-		local addonName = ...;
-		if addonName == addonName then
-			addon:ResizeMainBar();
-		end;
+		addon:ResizeMainBar();
 	end;
 	
 	if event == "UNIT_PET" then
@@ -404,38 +371,17 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		addon:MoveBarFrames();
 		addon:MoveMenuBags();
 		MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
-	end;
-	
-	if event == "UPDATE_VEHICLE_ACTIONBAR" then -- Avoids error on mounting flight path
-		PetActionBarFrame:Hide();
 		
-		if UnitExists("pet") then
-			PetActionBarFrame:Show();
-		end;
-	end;
-	
-	if addonTable.SHOW_HONORBAR then
-		if event == "ZONE_CHANGED_NEW_AREA"
-		or event == "PLAYER_ENTERING_WORLD" then 
-			addon:EnableHonorBar();
-		end;
-	end;
-	
-	if addonTable.SKIN_FONTS then
-		if event == "PLAYER_ENTERING_WORLD" then 
-			addon:SetFonts();
-		end;
-	end;
-	
-	if addonTable.HIDE_GRYPHONS then
-		if event == "PLAYER_ENTERING_WORLD" then 
+		if addonTable.HIDE_GRYPHONS then
 			MainMenuBarLeftEndCap:SetParent(HiddenFrame);
 			MainMenuBarRightEndCap:SetParent(HiddenFrame);
 		end;
-	end;
-	
-	if addonTable.HIDE_ART then
-		if event == "PLAYER_ENTERING_WORLD" then 
+		
+		if addonTable.SKIN_FONTS then
+			addon:SetFonts();
+		end;
+		
+		if addonTable.HIDE_ART then
 			addon.HideBlizzardArt();
 		end;
 	end;
@@ -509,19 +455,23 @@ PossessBarFrame:SetScript("OnShow", function()
 end);
 
 
-OverrideActionBar:HookScript("OnShow", function()
+OverrideActionBar:SetScript("OnShow", function()
 	PetActionBarFrame:Hide();
-	
-	if UnitExists("pet") then
-		PetActionBarFrame:Show();
-	end;
+	UpdateMicroButtonsParent(OverrideActionBar);
+	MoveMicroButtons("TOPLEFT", OverrideActionBarMicroBGMid, "TOPLEFT", -0, 0, true);
 end);
-
 
 ---- HOOKS ---- 
 
 hooksecurefunc("MoveMicroButtons", function()
-	if not OverrideActionBar:IsShown() then
+	if OverrideActionBar:IsShown() then
+		return;
+	else
 		addon:MoveMenuBags();
 	end;
 end);
+
+hooksecurefunc('PetActionBar_OnLoad', function()
+	PetActionBarFrame:UnregisterAllEvents();
+end);
+

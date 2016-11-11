@@ -1,3 +1,13 @@
+70100.1
+-- Various code adjustments.
+-- Removed SHOW_HONORBAR option and related code (in baseline UI now)
+-- Added option to hide macro names
+-- Added option to hide keybinding text
+-- SKIN_FONTS now highlights icon red when target is out of range. This is to offset breakage of hotkey text going red when out of range.
+-- SKIN_FONTS now also skins macro text 
+-- SKIN_FONTS now also highlights icon blue when player lacks resources to cast action
+-- Fixed micro menu overlapping action buttons in vehicle mode
+
 70000.3
 -- Fixed issue where some action bars would no longer support interaction after overridebar situations.
 -- Fixed lua error that occasionally popped up with PetActionBar error
