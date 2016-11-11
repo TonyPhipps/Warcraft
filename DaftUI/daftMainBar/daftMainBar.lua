@@ -293,29 +293,34 @@ function addon:HideBlizzardArt()
 end;
 
 
-function addon:SetFonts()
+function addon:SkinWatchbarText()
 	local watchbars = {"ReputationWatchBar", "HonorWatchBar", "ArtifactWatchBar"}
 	
 	for _, watchbar in pairs(watchbars) do
-		_G[watchbar].OverlayFrame.Text:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		_G[watchbar].OverlayFrame.Text:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
 		_G[watchbar].OverlayFrame.Text:SetShadowOffset(0, 0);
 	end;
 	
-	MainMenuBarExpText:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+	MainMenuBarExpText:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
 	MainMenuBarExpText:SetShadowOffset(0, 0);
-	
+end;
+
+
+function addon:SkinButtonText()
 	local bars = {"Action",
 		"MultiBarBottomLeft", "MultiBarBottomRight",
 		"MultiBarLeft", "MultiBarRight"};
 	
 	for _, bar in pairs(bars) do
 		for i = 1, 12 do
-			_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
-			_G[bar.."Button"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
-			_G[bar.."Button"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
-			_G[bar.."Button"..i.."Name"]:ClearAllPoints();
-			_G[bar.."Button"..i.."Name"]:SetPoint('BOTTOM', 0, 0);
-			_G[bar.."Button"..i.."Name"]:SetFont('Fonts\\ARIALN.ttf', 10, 'THINOUTLINE', "");
+			if addonTable.SKIN_FONTS then
+				_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
+				_G[bar.."Button"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3);
+				_G[bar.."Button"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
+				_G[bar.."Button"..i.."Name"]:ClearAllPoints();
+				_G[bar.."Button"..i.."Name"]:SetPoint("BOTTOM", 0, 0);
+				_G[bar.."Button"..i.."Name"]:SetFont("Fonts\\ARIALN.ttf", 10, "THINOUTLINE", "");
+			end;
 			
 			if addonTable.HIDE_HOTKEYS then
 				_G[bar.."Button"..i.."HotKey"].Show = function() end;
@@ -329,27 +334,33 @@ function addon:SetFonts()
 	end;
 	
 	for i = 1, 10 do
-		_G["PetActionButton"..i.."HotKey"]:ClearAllPoints();
-		_G["PetActionButton"..i.."HotKey"]:SetPoint('TOPRIGHT', 0, -3);
-		_G["PetActionButton"..i.."HotKey"]:SetFont('Fonts\\ARIALN.ttf', 14, 'THINOUTLINE', "");
+		if addonTable.SKIN_FONTS then
+			_G["PetActionButton"..i.."HotKey"]:ClearAllPoints();
+			_G["PetActionButton"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3);
+			_G["PetActionButton"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
+		end;
 	end;
 	
-	hooksecurefunc('ActionButton_OnUpdate', function(self)
-		local inrange = IsActionInRange(self.action);
-		local isUsable, notEnoughMana = IsUsableAction(self.action);
-
+	if addonTable.SKIN_FONTS then
+		hooksecurefunc("ActionButton_OnUpdate", function(self)
+			self.HotKey:SetVertexColor(1, 1, 1);
+			
+			local inrange = IsActionInRange(self.action);
+			local isUsable, notEnoughMana = IsUsableAction(self.action);
+			
+			if inrange == false then
+				self.icon:SetVertexColor(1.0, 0.1, 0.1);
+			elseif notEnoughMana then
+				self.icon:SetVertexColor(0.1, 0.1, 1.0);
+			else
+				self.icon:SetVertexColor(1, 1, 1);
+			end;
+		end);
 		
-		if inrange == false then
-			self.icon:SetVertexColor(1.0, 0.1, 0.1);
-		elseif notEnoughMana then
-			self.icon:SetVertexColor(0.1, 0.1, 1.0);
-		else
-			self.icon:SetVertexColor(1, 1, 1);
-		end;
-		
-		
-		self.HotKey:SetVertexColor(1, 1, 1);
-	end);
+		hooksecurefunc("PetActionButton_OnUpdate", function(self)
+			self.HotKey:SetVertexColor(1, 1, 1);
+		end);
+	end;
 end;
 
 
@@ -377,8 +388,11 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			MainMenuBarRightEndCap:SetParent(HiddenFrame);
 		end;
 		
-		if addonTable.SKIN_FONTS then
-			addon:SetFonts();
+		if (addonTable.SKIN_FONTS
+		or addonTable.HIDE_HOTKEYS 
+		or addonTable.HIDE_MACRONAMES) then
+			addon:SkinButtonText();
+			addon:SkinWatchbarText()
 		end;
 		
 		if addonTable.HIDE_ART then
@@ -408,7 +422,7 @@ HonorWatchBar:SetScript("OnMouseUp", function(self)
 	if GetMouseFocus() == self then				
 		local isInstance, instanceType = IsInInstance();
 		
-		if isInstance and (instanceType == 'pvp') then
+		if isInstance and (instanceType == "pvp") then
 			LoadAddOn("Blizzard_TalentUI");
 			
 			if PlayerTalentFrame:IsShown() then
@@ -471,7 +485,7 @@ hooksecurefunc("MoveMicroButtons", function()
 	end;
 end);
 
-hooksecurefunc('PetActionBar_OnLoad', function()
+hooksecurefunc("PetActionBar_OnLoad", function()
 	PetActionBarFrame:UnregisterAllEvents();
 end);
 

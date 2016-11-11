@@ -10,7 +10,7 @@ Click Honor bar outside a BG to open BG pane. Iniside a BG opens Honor Talents p
 
 
 Toggleable features
-Set hotkey/macro text to white color and arial typeface. This also highlights icons red when out of range, and blue when out of resources.
+Set hotkey/macro text to white color and Arial Narrow typeface. This also highlights icons red when out of range, and blue when out of resources.
 Hide gryphon art
 Hide all Blizzard art
 Hide keybind text
