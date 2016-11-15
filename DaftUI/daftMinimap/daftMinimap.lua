@@ -2,7 +2,47 @@ local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame", nil, UIParent);
 -- Minimap original code was from kaytotes's ImpBlizzardUI
 
+-- Helper Functions
 
+function addon:FadeFramesIn(frames)
+	for i, frame in next, frames do
+		local thisFrame = _G[frame];
+		
+		if thisFrame:IsShown() then
+			UIFrameFadeIn(thisFrame, .5, thisFrame:GetAlpha(), 1);
+		end;
+	end;
+end;
+
+
+function addon:FadeFramesOut(frames)
+	for i, frame in next, frames do
+		local thisFrame = _G[frame];
+		
+		if thisFrame:IsShown() then
+			UIFrameFadeOut(thisFrame, .5, thisFrame:GetAlpha(), 0);
+		end;
+	end;
+end;
+
+
+function addon:FadeFrames(frames)
+	
+	for i, frame in next, frames do
+		local thisFrame = _G[frame];
+		
+		Minimap:HookScript("OnEnter", function()
+			addon:FadeFramesIn(frames);
+		end);
+
+		WorldFrame:HookScript("OnEnter", function()
+			addon:FadeFramesOut(frames);
+		end);
+	end;
+end;
+
+
+-- Features
 local function UpdateMicroMenuList(newLevel)
     addon.microMenuList = {}; 
 
@@ -31,18 +71,117 @@ local function UpdateMicroMenuList(newLevel)
 end;
 
 
+local function EnableScrollZoom()
+	Minimap:EnableMouseWheel();
+	local function Zoom(self, direction)
+		if(direction > 0) then 
+			Minimap_ZoomIn();
+		else
+			Minimap_ZoomOut();
+		end;
+	end;
+	Minimap:SetScript("OnMouseWheel", Zoom);
+end;
+
+
+local function SkinButtons()
+	MiniMapTracking:SetScale(0.7);
+	MiniMapTracking:ClearAllPoints();
+	MiniMapTracking:SetPoint("TOP", Minimap, "TOP", -88, -20);
+	MiniMapTrackingButton:SetPushedTexture(nil);
+	
+	MiniMapMailFrame:SetScale(0.7);
+	MiniMapMailFrame:ClearAllPoints();
+	MiniMapMailFrame:SetPoint("BOTTOM", Minimap, "BOTTOM", 52, -24);
+	
+	GarrisonLandingPageMinimapButton:SetScale(.5);
+	GarrisonLandingPageMinimapButton:ClearAllPoints();
+	GarrisonLandingPageMinimapButton:SetPoint("TOP", Minimap, "TOP", -95, 3);
+	
+	QueueStatusMinimapButton:SetScale(0.7);
+	QueueStatusMinimapButton:ClearAllPoints();
+	QueueStatusMinimapButton:SetPoint("BOTTOM", Minimap, "BOTTOM", -45, -23);
+	
+	GameTimeFrame:SetScale(0.55);
+	GameTimeFrame:ClearAllPoints();
+	GameTimeFrame:SetPoint("TOP", Minimap, "TOP", 83, -2);
+end;
+
+
+local function FadeMinimapZone()
+	local frames = {"MinimapBorderTop", "MinimapZoneText"};
+	addon:FadeFrames(frames);
+end;
+
+
+local function SkinMinimapZone()
+	MinimapZoneText:ClearAllPoints();
+	MinimapZoneText:SetPoint("TOP", Minimap, "TOP", 0, 15);
+	MiniMapWorldMapButton:Hide();
+end;
+
+
+local function FadeButtons()
+	local frames = {"GarrisonLandingPageMinimapButton", "MiniMapTracking", "GameTimeFrame"};
+	
+	addon:FadeFrames(frames);
+end;
+
+local function FadeClock()
+	local frames = {"TimeManagerClockButton"};
+	addon:FadeFrames(frames);
+end;
+
+
 local function HandleEvents(self, event, ...)
     
 	if(event == "PLAYER_ENTERING_WORLD") then
-        UpdateMicroMenuList(UnitLevel("player"));
-    end;
+		MinimapCluster:SetScale(addonTable.MINIMAP_SCALE);
+		
+		if addonTable.FADE_ZONETEXT then
+			FadeMinimapZone();
+		end;
+		
+		if addonTable.SKIN_ZONETEXT then
+			SkinMinimapZone();
+		end;
+		
+		if addonTable.MICROMENU then
+			UpdateMicroMenuList(UnitLevel("player"));
+		end;
+		
+		if addonTable.SCROLL_ZOOM then
+			EnableScrollZoom();
+		end;
+		
+		if addonTable.HIDE_ZOOM then
+			MinimapZoomIn:Hide();
+			MinimapZoomOut:Hide();
+		end;
+		
+		if addonTable.SKIN_BUTTONS then
+			SkinButtons();
+		end;
+		
+		if addonTable.FADE_BUTTONS then
+			FadeButtons();
+		end;
+		
+		if addonTable.FADE_CLOCK then
+			FadeClock();
+		end;
+	end;
 
 
     if(event == "PLAYER_LEVEL_UP") then
-        local newLevel, _, _, _, _, _, _, _, _ = ...;
-        UpdateMicroMenuList(newLevel);
+        if addonTable.MICROMENU then
+			local newLevel, _, _, _, _, _, _, _, _ = ...;
+			UpdateMicroMenuList(newLevel);
+		end;
     end;
 end;
+
+
 
 
 local function Init()
@@ -53,13 +192,15 @@ local function Init()
 
     addon.microMenu = CreateFrame("Frame", "RightClickMenu", UIParent, "UIDropDownMenuTemplate");
 	
+
+	
 	-- Scripts
-	Minimap:SetScript("OnMouseUp", function(self, btn)
+	MinimapZoneTextButton:SetScript("OnMouseUp", function(self, btn)
 		
 		if btn == "RightButton" then
 			EasyMenu(addon.microMenuList, addon.microMenu, "cursor", 0, 0, "MENU", 3);
 		else
-			Minimap_OnClick(self);
+			--Minimap_OnClick(self);
 		end;
 	end);
 end;

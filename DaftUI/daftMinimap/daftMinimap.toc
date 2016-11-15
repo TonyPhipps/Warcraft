@@ -2,6 +2,7 @@
 ## Title: daftMinimap
 ## Author: Daftwise - US Destromath
 ## Notes: Tweaks to minimap according to Daft's liking.
-## Version: 70100.1
+## Version: 70100.2
 
 daftMinimap.lua
+Options.lua
