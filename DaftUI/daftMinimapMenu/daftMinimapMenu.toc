@@ -1,7 +1,0 @@
-## Interface: 70000
-## Title: daftMinimapMenu
-## Author: Daftwise - US Destromath
-## Notes: Adds a micro menu to right click on minimap
-## Version: 70000.1
-
-daftMinimapMenu.lua
