@@ -30,11 +30,13 @@ end;
 --Feature functions
 
 function addon:setPosition()
-	DressUpFrame:ClearAllPoints();
-	DressUpFrame:SetPoint("TOP", WorldFrame, "TOP", 12, 0);
-		
-	-- Fix Character frame pushing
-	UIPanelWindows["CharacterFrame"] =	{ area = "left", pushable = 0, whileDead = 1};
+	if addonTable.MOVE_TO_CENTER then
+		DressUpFrame:ClearAllPoints();
+		DressUpFrame:SetPoint("TOP", WorldFrame, "TOP", 12, 0);
+			
+		-- Fix Character frame pushing
+		UIPanelWindows["CharacterFrame"] =	{ area = "left", pushable = 0, whileDead = 1};
+	end;
 end;
 
 function addon:setHidden()
