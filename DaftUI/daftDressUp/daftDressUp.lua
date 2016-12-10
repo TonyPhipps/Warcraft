@@ -1,39 +1,84 @@
-local horizontalScale = 0.5;
-local verticalScale = 1.0;
+local addonName, addonTable = ... ;
+local addon = CreateFrame("Frame");
 
-local function HideRegions(Frame)
+addon:RegisterEvent("PLAYER_ENTERING_WORLD");
+
+
+--Helper Functions
+
+function addon:HideFrameTextures(Frame)
+	
 	for _, Region in pairs({ Frame:GetRegions() }) do
+	
 		if Region:IsObjectType("Texture") then 
 			Region:Hide();
-		end
-	end
-end
+		end;
+	end;
+end;
 
-HideRegions(DressUpFrame)
 
-DressUpFrameCloseButton:Hide();
-DressUpFrameTitleText:Hide();
+--Feature functions
 
-DressUpModelControlFrame:ClearAllPoints()
-DressUpModelControlFrame:SetPoint("BOTTOM", DressUpModel, "TOP", 0, 0)
+function addon:setPosition()
+	if addonTable.Reposition then
+		DressUpFrame:ClearAllPoints();
+		DressUpFrame:SetPoint("TOP", WorldFrame, "TOP", 0, 0);
+		
+		-- Fix Character frame pushing
+			UIPanelWindows["CharacterFrame"] =	{ area = "left", pushable = 0, whileDead = 1};
+	end;
+end;
 
-DressUpFrameResetButton:ClearAllPoints()
-DressUpFrameResetButton:SetPoint("BOTTOMRIGHT", DressUpModelControlFrame, "BOTTOMLEFT", 0, 0)
-DressUpFrameCancelButton:SetPoint("BOTTOMLEFT", DressUpModelControlFrame, "BOTTOMRIGHT", 0, 0)
+function addon:setHidden()
+	addon:HideFrameTextures(DressUpFrame);
+	
+	DressUpFrame:HookScript("OnShow", function()
+		DressUpFrameTitleText:Hide();
+		DressUpFrameCloseButton:Hide();
+		DressUpFrameResetButton:Hide();
+		DressUpFrameCancelButton:Hide();
+	end);
+	
+	
+	DressUpModel:HookScript("OnEnter", function()
+		DressUpFrameCancelButton:Show();
+		DressUpFrameResetButton:Show();
+		DressUpFrameOutfitDropDown:Show()
+	end);
 
-DressUpFrameOutfitDropDown:ClearAllPoints()
-DressUpFrameOutfitDropDown:SetPoint("BOTTOMLEFT", DressUpFrameResetButton, "TOPLEFT", -15, 5)
+	WorldFrame:HookScript("OnEnter", function()
+		DressUpFrameCancelButton:Hide();
+		DressUpFrameResetButton:Hide();
+		DressUpFrameOutfitDropDown:Hide()
+	end);
+end;
 
-DressUpModel:ClearAllPoints()
-DressUpModel:SetPoint("TOP", WorldFrame, "TOP", 0, -50)
-DressUpModel:SetSize(GetScreenWidth()*horizontalScale, GetScreenHeight()*verticalScale);
 
--- WardrobeCollectionFrame:HookScript("OnShow", function()
-	-- DressUpModel:ClearAllPoints()
-	-- DressUpModel:SetPoint("LEFT", WardrobeCollectionFrame, "RIGHT", 0, -50)
--- end)
+--Events
 
--- WardrobeCollectionFrame:HookScript("OnHide", function()
-	-- DressUpModel:ClearAllPoints()
-	-- DressUpModel:SetSize(GetScreenWidth()*horizontalScale, GetScreenHeight()*verticalScale);
--- end)
+addon:SetScript("OnEvent", function(self, event, ...) 
+	
+	if event == "PLAYER_ENTERING_WORLD" then
+		
+		if addonTable.HIDE_ART then
+			addon:setHidden();
+		end;
+		
+		DressUpFrame:SetScale(addonTable.SCALE);
+	end;
+end);
+
+
+--Hooks
+
+CharacterFrame:HookScript("OnShow", function()
+	addon:setPosition();
+end);
+
+DressUpFrame:HookScript("OnShow", function()
+	addon:setPosition();
+end);
+
+hooksecurefunc("UpdateUIPanelPositions", function()
+	addon:setPosition();
+end);

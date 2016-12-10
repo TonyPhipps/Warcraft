@@ -2,7 +2,7 @@
 ## Title: daftMainBar
 ## Author: Daftwise - US Destromath
 ## Notes: Changes MainMenuBar to Daft's liking.
-## Version: 70100.2
+## Version: 70100.3
 
 daftMainBar.lua
 Options.lua

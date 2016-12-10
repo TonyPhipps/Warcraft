@@ -10,7 +10,7 @@ addonTable.SELL_GREYS = true;
 -- Friend play / multiboxing
 addonTable.ACCEPT_GROUP = true; -- Accept group invites (only from friends / guildies)
 addonTable.ACCEPT_QUESTS = false; -- Accept shared quests (only when in a group)
-addonTable.ACCEPT_SUMMON = true; -- Accept summons (only when not in combat)
+addonTable.ACCEPT_SUMMON = false; -- Accept summons (only when not in combat)
 addonTable.FOLLOW = true; -- Allow command !follow to follow requester (from friends / guildies)
 addonTable.INVITE = false; -- Enable auto-inviting others to group who say trigger phrase
 addonTable.INVITE_AUTORAID = false; -- Convert to raid when group is large (only when INVITE is enabled)

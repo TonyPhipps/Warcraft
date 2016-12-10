@@ -76,6 +76,7 @@ function addon:ResizeMainBar()
 	MainMenuBarTexture2, MainMenuBarTexture3,
 	MainMenuBarPageNumber, ActionBarUpButton, ActionBarDownButton, 						--button of Bar Number, up, down
 	StanceBarLeft, StanceBarMiddle, StanceBarRight, } do								--BG of Stance
+		
 		texture:SetParent(HiddenFrame);
 		HiddenFrame:Hide();
 	end;
@@ -373,8 +374,16 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	end;
 	
 	if event == "UNIT_PET" then
+		
 		if UnitExists("pet") then
-			PetActionBarFrame:Show();
+			isProtected = false;
+			isProtected, explicit = PetActionBarFrame:IsProtected();
+		
+			if isProtected then
+				return;
+			else
+				PetActionBarFrame:Show();
+			end;
 		end;
 	end;
 	
@@ -392,7 +401,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		or addonTable.HIDE_HOTKEYS 
 		or addonTable.HIDE_MACRONAMES) then
 			addon:SkinButtonText();
-			addon:SkinWatchbarText()
+			addon:SkinWatchbarText();
 		end;
 		
 		if addonTable.HIDE_ART then
@@ -470,7 +479,14 @@ end);
 
 
 OverrideActionBar:SetScript("OnShow", function()
-	PetActionBarFrame:Hide();
+	isProtected, explicit = PetActionBarFrame:IsProtected();
+		
+	if isProtected then
+		return;
+	else
+		PetActionBarFrame:Hide();
+	end;
+		
 	UpdateMicroButtonsParent(OverrideActionBar);
 	MoveMicroButtons("TOPLEFT", OverrideActionBarMicroBGMid, "TOPLEFT", -0, 0, true);
 end);
@@ -485,7 +501,7 @@ hooksecurefunc("MoveMicroButtons", function()
 	end;
 end);
 
-hooksecurefunc("PetActionBar_OnLoad", function()
-	PetActionBarFrame:UnregisterAllEvents();
-end);
+-- hooksecurefunc("PetActionBar_OnLoad", function()
+	-- PetActionBarFrame:UnregisterAllEvents();
+-- end);
 

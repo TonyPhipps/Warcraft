@@ -1,13 +1,18 @@
 local addonName, addonTable = ... ;
  
 local addon = CreateFrame("Frame");
- 
+
 addon:SetScript("OnUpdate", function()
 
 	if UnitAffectingCombat("Player")
 	or InCombatLockdown() then
 		UIParent:SetAlpha(addonTable.FADEIN); -- UIFrameFadeIn causes access violation in combat
 		return;
+	end;
+	
+	MouseFrame = false;
+	if GetMouseFocus() then
+		MouseFrame = GetMouseFocus():GetName();
 	end;
 	
 	if ChatFrame1EditBox:IsShown()
@@ -17,7 +22,6 @@ addon:SetScript("OnUpdate", function()
 	or GameMenuFrame:IsShown()
 	or StaticPopup1:IsShown()
 	or MirrorTimer1:IsShown()
-	or TalkingHeadFrame:IsShown()
 	or LFGDungeonReadyPopup:IsShown()
 	or LFDRoleCheckPopup:IsShown()
 	or LevelUpDisplay:IsShown()
@@ -34,17 +38,10 @@ addon:SetScript("OnUpdate", function()
 	or MouseIsOver(ChatFrame1)
 	or MouseIsOver(ChatFrame2)
 	or MouseIsOver(ChatFrame3)
+	or MouseFrame ~= "WorldFrame"
 	or MouseIsOver(ChatFrame4) then
 		UIFrameFadeIn(UIParent, addonTable.TIMETOFADEIN, UIParent:GetAlpha(), addonTable.FADEIN);
-		return;
-	end;
- 
-	if GetMouseFocus() then
-
-		if GetMouseFocus():GetName() ~= "WorldFrame" then
-			UIFrameFadeIn(UIParent, addonTable.TIMETOFADEIN, UIParent:GetAlpha(), addonTable.FADEIN);
-		else
-			UIFrameFadeOut(UIParent, addonTable.TIMETOFADEOUT, UIParent:GetAlpha(), addonTable.FADEOUT);
-		end;
+	else
+		UIFrameFadeOut(UIParent, addonTable.TIMETOFADEOUT, UIParent:GetAlpha(), addonTable.FADEOUT);
 	end;
 end);

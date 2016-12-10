@@ -1,42 +1,35 @@
 local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame", nil, UIParent);
--- Minimap original code was from kaytotes's ImpBlizzardUI
+-- Minimap menu original code was from kaytotes's ImpBlizzardUI
 
 -- Helper Functions
 
-function addon:FadeFramesIn(frames)
-	for i, frame in next, frames do
+function addon:FadeFramesIn(frame)
 		local thisFrame = _G[frame];
 		
 		if thisFrame:IsShown() then
 			UIFrameFadeIn(thisFrame, .5, thisFrame:GetAlpha(), 1);
 		end;
-	end;
 end;
 
 
-function addon:FadeFramesOut(frames)
-	for i, frame in next, frames do
+function addon:FadeFramesOut(frame)
 		local thisFrame = _G[frame];
 		
 		if thisFrame:IsShown() then
 			UIFrameFadeOut(thisFrame, .5, thisFrame:GetAlpha(), 0);
 		end;
-	end;
 end;
 
 
 function addon:FadeFrames(frames)
 	
 	for i, frame in next, frames do
-		local thisFrame = _G[frame];
-		
 		Minimap:HookScript("OnEnter", function()
-			addon:FadeFramesIn(frames);
+			addon:FadeFramesIn(frame);
 		end);
-
 		WorldFrame:HookScript("OnEnter", function()
-			addon:FadeFramesOut(frames);
+			addon:FadeFramesOut(frame);
 		end);
 	end;
 end;
