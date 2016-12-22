@@ -69,19 +69,59 @@ end;
 
 ---- HELPER FUNCTIONS ----
 local function UnitIsInFriendList(name)
+
 	ShowFriends();
 
+	-- Check character friends
 	for i = 1, GetNumFriends() do
-		local friend = GetFriendInfo(i);
-		if (friend == name) then
+		if name == GetFriendInfo(i) or name == strsplit("-", GetFriendInfo(i), 2) then
 			return true;
 		end;
 	end;
 
-	for i = 1, BNGetNumFriends() do
-		local _, _, _, _, friend, _, client = BNGetFriendInfo(i);
-		if (friend == name) and (client == 'WoW') then
-			return true;
+	-- Add realm name, defaulting to player realm
+	local _, realm = UnitFullName(name);
+	
+	if not realm or realm == "" then 
+		_, myRealm = UnitFullName("player");
+	end;
+
+	if not string.find(name, "-") then
+		name = name .. "-" .. myRealm;
+	end;
+
+	-- Check Battle.net friends
+	local numFriends = BNGetNumFriends();
+	
+	for i = 1, numFriends do
+		local numBnetFriends = BNGetNumFriendGameAccounts(i)
+	
+		for j = 1, numBnetFriends do
+			local _, friendName, client, realm = BNGetFriendGameAccountInfo(i, j);
+			local friendNameFull = friendName .. "-" ..realm;
+			
+			if client == "WoW" and friendNameFull == name then
+				return true;
+			end;
+		end;
+	end;
+
+	-- Check guild roster
+	local numGuildies = GetNumGuildMembers();
+	
+	for i = 1, numGuildies do
+		local gName, _, _, _, _, _, _, _, gOnline, _, _, _, _, gMobile = GetGuildRosterInfo(i);
+		
+		if gOnline and not gMobile then
+			local gCompare = gName;
+			
+			if not string.find(gName, "-") then
+				gCompare = gName .. "-" .. realm;
+			end;
+			
+			if gCompare == name then
+				return true;
+			end;
 		end;
 	end;
 
@@ -244,11 +284,12 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		if event == "PARTY_INVITE_REQUEST" then
 			local sender = ...;
 			
-			if UnitIsInMyGuild(sender) or UnitIsInFriendList(sender) then
+			if UnitIsInFriendList(sender) then
 				AcceptGroup();
 				
 				for i = 1, STATICPOPUP_NUMDIALOGS do
 					local dialog = _G['StaticPopup' .. i];
+					print(dialog.which);
 					
 					if (dialog.which == 'PARTY_INVITE') then
 						dialog.inviteAccepted = 1;
@@ -338,7 +379,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			local senderName = Ambiguate(sender, "short");
 			local inRange = CheckInteractDistance(senderName, 4);
 			
-			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
+			if UnitInParty(senderName) or UnitIsInFriendList(senderName) then
 
 				if message == "!follow" then
 				
@@ -414,7 +455,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			local message, sender = ...;
 			local senderName = Ambiguate(sender, "short");
 			
-			if UnitIsInMyGuild(senderName) or UnitIsInFriendList(senderName) then
+			if UnitIsInFriendList(senderName) then
 			
 				if message == "!leader" and addonTable.PROMOTE_LEADER then
 					PromoteToLeader(senderName);

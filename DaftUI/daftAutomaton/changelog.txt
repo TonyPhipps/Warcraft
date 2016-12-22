@@ -1,0 +1,51 @@
+TODO:
+-- Accept Bind on Pickup messages when there is nobody else in the group.
+-- Add auto /say "Sapped by X"
+
+70100.1
+-- Fixed cross-realm issues with auto follow, auto accepts
+
+70000.10
+-- Resurrect bug fix.
+
+70000.9
+-- Fixed cinematic bug disabling all sound when cinematics end
+
+70000.8
+-- Added support for /yell
+-- Added ACCEPT_QUESTS for accepting quests from friends/guildies
+-- Added SHARE_QUESTS
+-- Added PROMOTE_LEADER
+-- Added PROMOTE_ASSISTANT
+-- Changed default INVITE_TRIGGER from !invite to just "invite"
+-- Added Party and raid chat support for !follow
+-- Grouped and sorted options
+-- Added range checking for !follow
+-- Bug fixes
+
+70000.7
+-- Fixed lua error when entering cinematics with the cinematic option on
+
+70000.6
+-- added repair
+-- added enable sound for cinematics
+-- added screenshot for achievements
+-- !follow command now watches most chat channels
+-- added INVITE_VERBOSE to check for the trigger anywhere in message
+
+70000.5
+-- Added support to summon favorite mount when receiving !follow command.
+
+70000.4
+-- Removed very verbose checking of chat for auto invite trigger. Now message must contain ONLY the trigger. A lot of false positives, otherwise.
+-- Addon will now automatically disable autoinvite when leaving a group.
+
+70000.3
+-- Added support for !follow
+-- Fixed auto invite bug
+
+70000.2
+-- Fixed bug when sending/receiving invites
+
+70000.1
+-- Initial release

@@ -5,19 +5,17 @@ local addon = CreateFrame("Frame", nil, UIParent);
 -- Helper Functions
 
 function addon:FadeFramesIn(frame)
-		local thisFrame = _G[frame];
 		
-		if thisFrame:IsShown() then
-			UIFrameFadeIn(thisFrame, .5, thisFrame:GetAlpha(), 1);
+		if frame:IsShown() then
+			UIFrameFadeIn(frame, .5, frame:GetAlpha(), 1);
 		end;
 end;
 
 
 function addon:FadeFramesOut(frame)
-		local thisFrame = _G[frame];
 		
-		if thisFrame:IsShown() then
-			UIFrameFadeOut(thisFrame, .5, thisFrame:GetAlpha(), 0);
+		if frame:IsShown() then
+			UIFrameFadeOut(frame, .5, frame:GetAlpha(), 0);
 		end;
 end;
 
@@ -25,11 +23,13 @@ end;
 function addon:FadeFrames(frames)
 	
 	for i, frame in next, frames do
+		local thisFrame = _G[frame];
+		
 		Minimap:HookScript("OnEnter", function()
-			addon:FadeFramesIn(frame);
+			addon:FadeFramesIn(thisFrame);
 		end);
 		WorldFrame:HookScript("OnEnter", function()
-			addon:FadeFramesOut(frame);
+			addon:FadeFramesOut(thisFrame);
 		end);
 	end;
 end;

@@ -1,8 +1,8 @@
 70100.1
 -- Added options for scale, move to center, and mouseover to show interface
+-- Fixed bug where CharacterFrame would move around unexpectedly.
+-- Improved compatibility with Dresser addon
 
 70000.1
 -- Initial release.
-
-70000.
 -- Added variables to allow user to set vertical and horizontal scale. Clamped to top of world frame rather than center.
