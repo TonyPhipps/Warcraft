@@ -81,10 +81,8 @@ local function UnitIsInFriendList(name)
 
 	-- Add realm name, defaulting to player realm
 	local _, realm = UnitFullName(name);
-	
-	if not realm or realm == "" then 
-		_, myRealm = UnitFullName("player");
-	end;
+	local _, myRealm = UnitFullName("player");
+
 
 	if not string.find(name, "-") then
 		name = name .. "-" .. myRealm;
