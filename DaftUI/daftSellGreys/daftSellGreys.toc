@@ -1,7 +1,0 @@
-## Interface: 70000
-## Title: daftSellGreys
-## Author: Daftwise - US Destromath
-## Notes: Automatically sells grey quality items at any merchant.
-## Version: 70000.1
-
-daftSellGreys.lua
