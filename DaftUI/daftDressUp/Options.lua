@@ -1,6 +1,6 @@
 local addonName, addonTable = ... ;
 
-addonTable.SCALE = 2.3;
+addonTable.SCALE = 1.95;
 
 addonTable.HIDE = true;
 

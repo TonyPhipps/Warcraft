@@ -1,6 +1,6 @@
-## Interface: 70100
+## Interface: 70300
 ## Title: daftDressUp
-## Version: 70100.1
+## Version: 70300.1
 ## Author: Daftwise - US Destromath
 ## Notes: Enlarge and center dressup frame; remove textures.
 

@@ -49,7 +49,9 @@ function addon:setHidden()
 		DressUpFrameTitleText:Hide();
 		DressUpFrameCancelButton:Hide();
 		DressUpFrameResetButton:Hide();
-		DressUpFrameOutfitDropDown:Hide()
+		DressUpFrameOutfitDropDown:Hide();
+		MaximizeMinimizeFrame:Hide();
+		DressUpFrameInset:Hide();
 	end);
 	
 	
@@ -59,7 +61,9 @@ function addon:setHidden()
 		DressUpFrameCloseButton:Show();
 		DressUpFrameCancelButton:Show();
 		DressUpFrameResetButton:Show();
-		DressUpFrameOutfitDropDown:Show()
+		DressUpFrameOutfitDropDown:Show();
+		MaximizeMinimizeFrame:Show();
+		DressUpFrameInset:Show();
 	end);
 
 	WorldFrame:HookScript("OnEnter", function()
@@ -69,7 +73,9 @@ function addon:setHidden()
 		DressUpFrameTitleText:Hide();
 		DressUpFrameCancelButton:Hide();
 		DressUpFrameResetButton:Hide();
-		DressUpFrameOutfitDropDown:Hide()
+		DressUpFrameOutfitDropDown:Hide();
+		MaximizeMinimizeFrame:Hide();
+		DressUpFrameInset:Hide();
 	end);
 end;
 
