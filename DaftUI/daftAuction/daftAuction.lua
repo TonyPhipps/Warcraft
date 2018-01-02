@@ -49,7 +49,7 @@ addon:SetScript("OnEvent", function(self, event)
 					if selectedItemQuality == 3 then myBuyoutPrice = addonTable.RARE_PRICE end;
 					if selectedItemQuality == 4 then myBuyoutPrice = addonTable.EPIC_PRICE end;
 				
-				elseif PRICEBY == "VENDOR" then
+				elseif addonTable.PRICEBY == "VENDOR" then
 				
 					if selectedItemQuality == 0 then myBuyoutPrice = selectedItemVendorPrice * addonTable.POOR_MULTIPLIER end;
 					if selectedItemQuality == 1 then myBuyoutPrice = selectedItemVendorPrice * addonTable.COMMON_MULTIPLIER end;
