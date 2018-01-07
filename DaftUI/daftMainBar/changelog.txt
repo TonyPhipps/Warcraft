@@ -1,3 +1,6 @@
+70300.1
+-- Fixed flickering pet bar hotkeys by disabling font skinning.
+
 70100.3
 -- Fixed hidden protected function error.
 

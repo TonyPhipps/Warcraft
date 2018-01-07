@@ -224,17 +224,17 @@ function addon:MoveMenuBags()
 	
 	-- Micro Menu
 	local menuButtons = {
-	"CharacterMicroButton",
-	"SpellbookMicroButton",
-	"TalentMicroButton",
-	"AchievementMicroButton",
-	"QuestLogMicroButton",
-	"GuildMicroButton",
-	"LFDMicroButton",
-	"CollectionsMicroButton",
-	"EJMicroButton",
-	"StoreMicroButton",
-	"MainMenuMicroButton",
+		"CharacterMicroButton",
+		"SpellbookMicroButton",
+		"TalentMicroButton",
+		"AchievementMicroButton",
+		"QuestLogMicroButton",
+		"GuildMicroButton",
+		"LFDMicroButton",
+		"CollectionsMicroButton",
+		"EJMicroButton",
+		"StoreMicroButton",
+		"MainMenuMicroButton",
 	};
 	
 	CharacterMicroButton:ClearAllPoints();
@@ -245,11 +245,11 @@ function addon:MoveMenuBags()
 
 	-- Bags
 	local bagButtons = {
-	"MainMenuBarBackpackButton",
-	"CharacterBag0Slot",
-	"CharacterBag1Slot",
-	"CharacterBag2Slot",
-	"CharacterBag3Slot",
+		"MainMenuBarBackpackButton",
+		"CharacterBag0Slot",
+		"CharacterBag1Slot",
+		"CharacterBag2Slot",
+		"CharacterBag3Slot",
 	};
 	
 	MainMenuBarBackpackButton:ClearAllPoints();
@@ -358,9 +358,10 @@ function addon:SkinButtonText()
 			end;
 		end);
 		
-		hooksecurefunc("PetActionButton_OnUpdate", function(self)
-			self.HotKey:SetVertexColor(1, 1, 1);
-		end);
+		-- Code below causes flickering of hotkey text when font skinning is enabled.
+		--hooksecurefunc("PetActionButton_OnUpdate", function(self)
+		--	self.HotKey:SetVertexColor(1, 1, 1);
+		--end);
 	end;
 end;
 
@@ -495,13 +496,9 @@ end);
 
 hooksecurefunc("MoveMicroButtons", function()
 	if OverrideActionBar:IsShown() then
-		return;
+		CharacterMicroButton:ClearAllPoints();
+		CharacterMicroButton:SetPoint("TOP", UIParent, "BOTTOM", -10, 0);
 	else
 		addon:MoveMenuBags();
 	end;
 end);
-
--- hooksecurefunc("PetActionBar_OnLoad", function()
-	-- PetActionBarFrame:UnregisterAllEvents();
--- end);
-
