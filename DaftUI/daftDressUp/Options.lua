@@ -1,7 +1,7 @@
-local addonName, addonTable = ... ;
+local addonName, addonTable = ... 
 
-addonTable.SCALE = 1.95;
+addonTable.SCALE = 1.95
 
-addonTable.HIDE = true;
+addonTable.HIDE = true
 
-addonTable.MOVE_TO_CENTER = true;
+addonTable.MOVE_TO_CENTER = true

@@ -1,12 +1,24 @@
 local addonName, addonTable = ... ;
 local addon = CreateFrame("Frame");
 local HiddenFrame = CreateFrame("Frame", nil);
+HiddenFrame:Hide();
+
+local MicroButtonArray = {
+	"CharacterMicroButton",
+	"SpellbookMicroButton",
+	"TalentMicroButton",
+	"AchievementMicroButton",
+	"QuestLogMicroButton",
+	"GuildMicroButton",
+	"LFDMicroButton",
+	"CollectionsMicroButton",
+	"EJMicroButton",
+	"StoreMicroButton",
+	"MainMenuMicroButton"
+}
 
 addon:RegisterEvent("PLAYER_LOGIN");
 addon:RegisterEvent("PLAYER_ENTERING_WORLD");
-addon:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR");
-addon:RegisterEvent("ZONE_CHANGED_NEW_AREA");
-addon:RegisterEvent("UNIT_PET");
 
 
 ---- HELPER FUNCTIONS ----
@@ -71,291 +83,123 @@ end;
 
 ---- FUNCTIONS ----
 
-function addon:ResizeMainBar()
-	for _, texture in next, {
-	MainMenuBarTexture2, MainMenuBarTexture3,
-	MainMenuBarPageNumber, ActionBarUpButton, ActionBarDownButton, 						--button of Bar Number, up, down
-	StanceBarLeft, StanceBarMiddle, StanceBarRight, } do								--BG of Stance
-		
-		texture:SetParent(HiddenFrame);
-		HiddenFrame:Hide();
-	end;
-	
-	for _, bar in next, {
-	MainMenuBar, MainMenuBarArtFrame,
-	MainMenuExpBar, MainMenuBarMaxLevelBar,
-	ReputationWatchBar, ReputationWatchBar.StatusBar,
-	HonorWatchBar, HonorWatchBar.StatusBar,
-	ArtifactWatchBar, ArtifactWatchBar.StatusBar,}  do
-		bar:SetWidth(512);
-	end;
-	
-	for i = 0, 1  do 
-		_G["SlidingActionBarTexture"..i]:SetParent(HiddenFrame);
-	end;	
-	
-	for i = 10, 19 do
-		_G["MainMenuXPBarDiv"..i]:SetParent(HiddenFrame);
-	end;
-	
-	ReputationWatchBar.StatusBar.WatchBarTexture0:SetWidth(128);
-	ReputationWatchBar.StatusBar.WatchBarTexture1:SetWidth(128);
-	ReputationWatchBar.StatusBar.WatchBarTexture2:SetWidth(128);
-	ReputationWatchBar.StatusBar.WatchBarTexture3:SetWidth(128);
+function addon:SetScalingAlpha()
 
-	ArtifactWatchBar.StatusBar.WatchBarTexture0:SetWidth(128);
-	ArtifactWatchBar.StatusBar.WatchBarTexture1:SetWidth(128);
-	ArtifactWatchBar.StatusBar.WatchBarTexture2:SetWidth(128);
-	ArtifactWatchBar.StatusBar.WatchBarTexture3:SetWidth(128);
+	MainMenuBar:SetAlpha(addonTable.MAINBAR_ALPHA)
 
-	HonorWatchBar.StatusBar.WatchBarTexture0:SetWidth(128);
-	HonorWatchBar.StatusBar.WatchBarTexture1:SetWidth(128);
-	HonorWatchBar.StatusBar.WatchBarTexture2:SetWidth(128);
-	HonorWatchBar.StatusBar.WatchBarTexture3:SetWidth(128);
+	StatusTrackingBarManager:SetScale(addonTable.EXPBAR_SCALE)
+	StatusTrackingBarManager:SetAlpha(addonTable.EXPBAR_ALPHA)
 
-	ReputationWatchBar.StatusBar.XPBarTexture0:SetWidth(128);
-	ReputationWatchBar.StatusBar.XPBarTexture1:SetWidth(128);
-	ReputationWatchBar.StatusBar.XPBarTexture2:SetWidth(128);
-	ReputationWatchBar.StatusBar.XPBarTexture3:SetWidth(128);
+	MicroButtonAndBagsBar:SetScale(addonTable.BAGBAR_SCALE)
+	MicroButtonAndBagsBar:SetAlpha(addonTable.EXPBAR_ALPHA)
 
-	ArtifactWatchBar.StatusBar.XPBarTexture0:SetWidth(128);
-	ArtifactWatchBar.StatusBar.XPBarTexture1:SetWidth(128);
-	ArtifactWatchBar.StatusBar.XPBarTexture2:SetWidth(128);
-	ArtifactWatchBar.StatusBar.XPBarTexture3:SetWidth(128);
+	MultiBarLeft:SetAlpha(addonTable.LEFTBAR_ALPHA)
+	MultiBarRight:SetAlpha(addonTable.RIGHTBAR_ALPHA)
 
-	HonorWatchBar.StatusBar.XPBarTexture0:SetWidth(128);
-	HonorWatchBar.StatusBar.XPBarTexture1:SetWidth(128);
-	HonorWatchBar.StatusBar.XPBarTexture2:SetWidth(128);
-	HonorWatchBar.StatusBar.XPBarTexture3:SetWidth(128);
+	for _, MicroButton in pairs(MicroButtonArray) do
 
-	MainMenuBar:ClearAllPoints();
-	MainMenuBar:SetPoint("BOTTOM", WorldFrame, "BOTTOM", 0, -1);
-	MainMenuBar.SetPoint = function() end;
-	
-	MainMenuBarTexture0:ClearAllPoints();
-	MainMenuBarTexture0:SetPoint("RIGHT", MainMenuBar, "CENTER", 0, -4);
-	MainMenuBarTexture0.SetPoint = function() end;
-	
-	MainMenuBarTexture1:ClearAllPoints();
-	MainMenuBarTexture1:SetPoint("LEFT", MainMenuBar, "CENTER", 0, -4);
-	MainMenuBarTexture1.SetPoint = function() end;
-	
-	MainMenuBarLeftEndCap:ClearAllPoints();
-	MainMenuBarLeftEndCap:SetPoint("BOTTOMRIGHT", MainMenuBar, "BOTTOMLEFT", 40, 0);
-	MainMenuBarLeftEndCap.SetPoint = function() end;
-	
-	MainMenuBarRightEndCap:ClearAllPoints();
-	MainMenuBarRightEndCap:SetPoint("BOTTOMLEFT", MainMenuBar, "BOTTOMRIGHT", -40, 0);
-	MainMenuBarRightEndCap.SetPoint = function() end;
-	
+		_G[MicroButton]:SetScale(addonTable.MENUBAR_SCALE)
+		_G[MicroButton]:SetAlpha(addonTable.MENUBAR_ALPHA)
+
+	end
+end
+
+
+function addon:HideBarArt()
+
+	MainMenuBarArtFrameBackground:Hide()
+	MicroButtonAndBagsBar.MicroBagBar:Hide()
+	ActionBarUpButton:Hide()
+	ActionBarDownButton:Hide()
+	MainMenuBarArtFrame.PageNumber:Hide()
+
 end;
 
 
-function addon:MoveBarFrames()
-	
-	MultiBarBottomLeft:ClearAllPoints();
-	MultiBarBottomLeft:SetPoint("BOTTOMLEFT", ActionButton1, "TOPLEFT", 0, 32);
-	MultiBarBottomLeft.SetPoint = function() end;
-	
-	
-	MultiBarBottomRight:ClearAllPoints();
-	MultiBarBottomRight:SetPoint("BOTTOM", MultiBarBottomLeft, "TOP", 0, 5);
-	MultiBarBottomRight.SetPoint = function() end;
-	
+function addon:HideMenuArt()
 
-	MultiBarRight:ClearAllPoints();
-	MultiBarRight:SetPoint("RIGHT", WorldFrame, "RIGHT", 0, 0);
-	MultiBarRight.SetPoint = function() end;
-
-	
-	-- Stance Bar
-	StanceBarFrame:ClearAllPoints();
-	
-	if MultiBarBottomRight:IsShown() then	
-		StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomRight, "TOPLEFT", -10, 5);
-	
-	elseif MultiBarBottomLeft:IsShown() then
-		StanceBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
-	
-	else
-		StanceBarFrame:SetPoint("BOTTOMLEFT", ActionButton1, "TOPLEFT", 0, 32);
-	end;
-	
-	StanceBarFrame.SetPoint = function() end;
-	
-	
-	-- Possess Bar
-	PossessBarFrame:ClearAllPoints();
-	
-	if MultiBarBottomRight:IsShown() then	
-		PossessBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomRight, "TOPLEFT", -10, 5);
-	
-	elseif MultiBarBottomLeft:IsShown() then
-		PossessBarFrame:SetPoint("BOTTOMLEFT", MultiBarBottomLeft, "TOPLEFT", -10, 5);
-	
-	else
-		PossessBarFrame:SetPoint("BOTTOMLEFT", ActionButton1, "TOPLEFT", 0, 32);
-	end;
-	
-	
-	PossessBarFrame.SetPoint = function() end;
-
-	
-	-- Pet Bar
-	PetActionBarFrame:ClearAllPoints();
-	
-	if MultiBarBottomRight:IsShown() then	
-		PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomRight, "TOPRIGHT", 100, 5);
-	
-	elseif MultiBarBottomLeft:IsShown() then
-		PetActionBarFrame:SetPoint("BOTTOMRIGHT", MultiBarBottomLeft, "TOPRIGHT", 100, 5);
-	
-	else
-		PetActionBarFrame:SetPoint("BOTTOMRIGHT", MainMenuBar, "TOPRIGHT", 100, 11);
-	end;
-	
-	PetActionBarFrame.SetPoint = function() end;
-	PetActionBarFrame:SetScale(.8);
+	MicroButtonAndBagsBar.MicroBagBar:Hide()	
 	
 end;
 
-
-function addon:MoveMenuBags()
+-- function addon:SkinWatchbarText()
+-- 	local watchbars = {"StatusTrackingBarManager", "StatusTrackingBarManager"}
 	
-	-- Micro Menu
-	local menuButtons = {
-		"CharacterMicroButton",
-		"SpellbookMicroButton",
-		"TalentMicroButton",
-		"AchievementMicroButton",
-		"QuestLogMicroButton",
-		"GuildMicroButton",
-		"LFDMicroButton",
-		"CollectionsMicroButton",
-		"EJMicroButton",
-		"StoreMicroButton",
-		"MainMenuMicroButton",
-	};
+-- 	for _, watchbar in pairs(watchbars) do
+-- 		_G[watchbar].OverlayFrame.Text:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
+-- 		_G[watchbar].OverlayFrame.Text:SetShadowOffset(0, 0);
+-- 	end;
 	
-	CharacterMicroButton:ClearAllPoints();
-	CharacterMicroButton:SetPoint("BOTTOMLEFT", MainMenuBar, "TOPLEFT", 0, -13);
-	addon:ScaleFrames(menuButtons, .7);
-	addon:FadeFrames(menuButtons);
-	addon:SetFramesStrata(menuButtons, "DIALOG");
-
-	-- Bags
-	local bagButtons = {
-		"MainMenuBarBackpackButton",
-		"CharacterBag0Slot",
-		"CharacterBag1Slot",
-		"CharacterBag2Slot",
-		"CharacterBag3Slot",
-	};
-	
-	MainMenuBarBackpackButton:ClearAllPoints();
-	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", ActionButton12, "TOPRIGHT", 0, 6);
-	addon:ScaleFrames(bagButtons, .85);
-	addon:FadeFrames(bagButtons);
-	addon:SetFramesStrata(bagButtons, "DIALOG");
-end;
-
-
-function addon:HideBlizzardArt()
-	HiddenFrame:Hide();
-	
-	MainMenuBarLeftEndCap:SetParent(HiddenFrame);
-	MainMenuBarRightEndCap:SetParent(HiddenFrame);
-	
-	for i = 0,3  do
-		_G["MainMenuBarTexture"..i]:SetParent(HiddenFrame);
-		_G["MainMenuMaxLevelBar"..i]:SetParent(HiddenFrame);
-		ReputationWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(HiddenFrame);
-		ArtifactWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(HiddenFrame);
-		HonorWatchBar.StatusBar["WatchBarTexture"..i]:SetParent(HiddenFrame);
-		ReputationWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
-		ArtifactWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
-		HonorWatchBar.StatusBar["XPBarTexture"..i]:SetParent(HiddenFrame);
-	end;
-	
-	for i = 0,1  do
-		_G["SlidingActionBarTexture"..i]:SetParent(HiddenFrame);
-	end;
-	
-	for i = 1,19 do
-		_G["MainMenuXPBarDiv"..i]:SetParent(HiddenFrame);
-	end;
-	
-	for _, texture in next, {
-	MainMenuBarPageNumber, ActionBarUpButton, ActionBarDownButton, 						--button of Bar Number, up, down
-	MainMenuXPBarTextureLeftCap, MainMenuXPBarTextureRightCap, MainMenuXPBarTextureMid, --Art between xp and bar1	
-	StanceBarLeft, StanceBarMiddle, StanceBarRight, } do								--BG of Stance
-		texture:SetParent(HiddenFrame);
-	end;
-end;
-
-
-function addon:SkinWatchbarText()
-	local watchbars = {"ReputationWatchBar", "HonorWatchBar", "ArtifactWatchBar"}
-	
-	for _, watchbar in pairs(watchbars) do
-		_G[watchbar].OverlayFrame.Text:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
-		_G[watchbar].OverlayFrame.Text:SetShadowOffset(0, 0);
-	end;
-	
-	MainMenuBarExpText:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
-	MainMenuBarExpText:SetShadowOffset(0, 0);
-end;
+-- 	MainMenuBarExpText:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
+-- 	MainMenuBarExpText:SetShadowOffset(0, 0);
+-- end;
 
 
 function addon:SkinButtonText()
-	local bars = {"Action",
-		"MultiBarBottomLeft", "MultiBarBottomRight",
-		"MultiBarLeft", "MultiBarRight"};
+	
+	local bars = {
+		"Action",
+		"MultiBarBottomLeft", 
+		"MultiBarBottomRight",
+		"MultiBarLeft", 
+		"MultiBarRight"
+	};
 	
 	for _, bar in pairs(bars) do
+		
 		for i = 1, 12 do
+			
 			if addonTable.SKIN_FONTS then
+				
 				_G[bar.."Button"..i.."HotKey"]:ClearAllPoints();
 				_G[bar.."Button"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3);
 				_G[bar.."Button"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
+				
 				_G[bar.."Button"..i.."Name"]:ClearAllPoints();
 				_G[bar.."Button"..i.."Name"]:SetPoint("BOTTOM", 0, 0);
 				_G[bar.."Button"..i.."Name"]:SetFont("Fonts\\ARIALN.ttf", 10, "THINOUTLINE", "");
+
 			end;
 			
 			if addonTable.HIDE_HOTKEYS then
+				
 				_G[bar.."Button"..i.."HotKey"].Show = function() end;
 				_G[bar.."Button"..i.."HotKey"]:Hide();
+
 			end;
 			
 			if addonTable.HIDE_MACRONAMES then
+				
 				_G[bar.."Button"..i.."Name"]:Hide();
+
 			end;
 		end;
 	end;
 	
 	for i = 1, 10 do
+
 		if addonTable.SKIN_FONTS then
+
 			_G["PetActionButton"..i.."HotKey"]:ClearAllPoints();
 			_G["PetActionButton"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3);
 			_G["PetActionButton"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "");
+
 		end;
 	end;
 	
-	if addonTable.SKIN_FONTS then
+	if addonTable.SKIN_COLORSTATE then
+		
 		hooksecurefunc("ActionButton_OnUpdate", function(self)
-			self.HotKey:SetVertexColor(1, 1, 1);
 			
+			self.HotKey:SetVertexColor(1, 1, 1);
 			local inrange = IsActionInRange(self.action);
 			local isUsable, notEnoughMana = IsUsableAction(self.action);
 			
-			if inrange == false then
-				self.icon:SetVertexColor(1.0, 0.1, 0.1);
-			elseif notEnoughMana then
-				self.icon:SetVertexColor(0.1, 0.1, 1.0);
-			else
-				self.icon:SetVertexColor(1, 1, 1);
+			if inrange == false then self.icon:SetVertexColor(1.0, 0.1, 0.1);
+			elseif notEnoughMana then self.icon:SetVertexColor(0.1, 0.1, 1.0);
+			else self.icon:SetVertexColor(1, 1, 1);
 			end;
+
 		end);
 		
 		-- Code below causes flickering of hotkey text when font skinning is enabled.
@@ -371,134 +215,37 @@ end;
 addon:SetScript("OnEvent", function(self, event, ...) 
 	
 	if event == "PLAYER_LOGIN" then
-		addon:ResizeMainBar();
-	end;
-	
-	if event == "UNIT_PET" then
-		
-		if UnitExists("pet") then
-			isProtected = false;
-			isProtected, explicit = PetActionBarFrame:IsProtected();
-		
-			if isProtected then
-				return;
-			else
-				PetActionBarFrame:Show();
-			end;
-		end;
+		addon.SetScalingAlpha()
 	end;
 	
 	if event == "PLAYER_ENTERING_WORLD" then 
-		addon:MoveBarFrames();
-		addon:MoveMenuBags();
-		MainMenuBar:SetScale(addonTable.MAIN_BAR_SCALE);
 		
+		addon.SetScalingAlpha()
+
 		if addonTable.HIDE_GRYPHONS then
-			MainMenuBarLeftEndCap:SetParent(HiddenFrame);
-			MainMenuBarRightEndCap:SetParent(HiddenFrame);
+			MainMenuBarArtFrame.LeftEndCap:Hide()
+			MainMenuBarArtFrame.RightEndCap:Hide()
 		end;
-		
+
+		if addonTable.HIDE_BAR_ART then
+			addon.HideBarArt();
+		end;
+
+		if addonTable.HIDE_MENU_ART then
+			addon.HideMenuArt();
+		end;
+
 		if (addonTable.SKIN_FONTS
+		or addonTable.SKIN_COLORSTATE
 		or addonTable.HIDE_HOTKEYS 
 		or addonTable.HIDE_MACRONAMES) then
 			addon:SkinButtonText();
-			addon:SkinWatchbarText();
-		end;
-		
-		if addonTable.HIDE_ART then
-			addon.HideBlizzardArt();
+			--addon:SkinWatchbarText();
 		end;
 	end;
 end);
 
 
-MainMenuBarVehicleLeaveButton:HookScript("OnShow", function(self)
-	self:ClearAllPoints();
-	self:SetPoint("RIGHT", MainMenuBar, "LEFT", -3, -5);
-	self:SetFrameLevel(MainMenuBarArtFrame:GetFrameLevel()+1);
-end);
-
-
-ReputationWatchBar:SetScript("OnMouseUp", function(self)
-
-	if GetMouseFocus() == self then				
-		ToggleCharacter("ReputationFrame"); 
-	end;
-end);
-
-
-HonorWatchBar:SetScript("OnMouseUp", function(self)
-	
-	if GetMouseFocus() == self then				
-		local isInstance, instanceType = IsInInstance();
-		
-		if isInstance and (instanceType == "pvp") then
-			LoadAddOn("Blizzard_TalentUI");
-			
-			if PlayerTalentFrame:IsShown() then
-				HideUIPanel(PlayerTalentFrame);
-			
-			else
-				PlayerTalentFrame:Show();
-				PlayerTalentTab_OnClick(_G["PlayerTalentFrameTab"..PVP_TALENTS_TAB]);
-			end;
-		
-		else
-			TogglePVPUI();
-		end;
-	end;
-end);
-
-
-ArtifactWatchBar:SetScript("OnMouseUp", function(self)
-	
-	if GetMouseFocus() == self then
-
-		if IsAddOnLoaded("Blizzard_ArtifactUI") then
-			
-			if ArtifactFrame:IsShown() then
-				HideUIPanel(ArtifactFrame);
-			
-			else
-				SocketInventoryItem(16);
-				SocketInventoryItem(17);
-			end;	
-
-		else
-			SocketInventoryItem(16);
-			SocketInventoryItem(17);
-		end;
-	end;
-end);
-
-
-PossessBarFrame:SetScript("OnShow", function()
-	for i = 1,2  do
-		_G["PossessBackground"..i]:SetParent(HiddenFrame);
-	end;
-end);
-
-
-OverrideActionBar:SetScript("OnShow", function()
-	isProtected, explicit = PetActionBarFrame:IsProtected();
-		
-	if isProtected then
-		return;
-	else
-		PetActionBarFrame:Hide();
-	end;
-		
-	UpdateMicroButtonsParent(OverrideActionBar);
-	MoveMicroButtons("TOPLEFT", OverrideActionBarMicroBGMid, "TOPLEFT", -0, 0, true);
-end);
-
----- HOOKS ---- 
-
-hooksecurefunc("MoveMicroButtons", function()
-	if OverrideActionBar:IsShown() then
-		CharacterMicroButton:ClearAllPoints();
-		CharacterMicroButton:SetPoint("TOP", UIParent, "BOTTOM", -10, 0);
-	else
-		addon:MoveMenuBags();
-	end;
+MainMenuBarVehicleLeaveButton:HookScript("Onhide", function(self)
+	addon.SetScalingAlpha();
 end);

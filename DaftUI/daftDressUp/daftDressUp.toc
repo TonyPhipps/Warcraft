@@ -1,7 +1,7 @@
-## Interface: 70300
+## Interface: 80000
 ## Title: daftDressUp
-## Version: 70300.1
-## Author: Daftwise - US Destromath
+## Version: 80000.1
+## Author: Daftsage - US Emerald Dream
 ## Notes: Enlarge and center dressup frame; remove textures.
 
 daftDressUp.lua

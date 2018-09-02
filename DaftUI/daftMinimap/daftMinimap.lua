@@ -13,7 +13,6 @@ end;
 
 
 function addon:FadeFramesOut(frame)
-		
 		if frame:IsShown() then
 			UIFrameFadeOut(frame, .5, frame:GetAlpha(), 0);
 		end;
@@ -25,12 +24,14 @@ function addon:FadeFrames(frames)
 	for i, frame in next, frames do
 		local thisFrame = _G[frame];
 		
-		Minimap:HookScript("OnEnter", function()
-			addon:FadeFramesIn(thisFrame);
-		end);
-		WorldFrame:HookScript("OnEnter", function()
-			addon:FadeFramesOut(thisFrame);
-		end);
+		if thisFrame:GetAlpha() ~= -1 then -- Fixes bug that sometimes occurs after zoning
+			Minimap:HookScript("OnEnter", function()
+				addon:FadeFramesIn(thisFrame);
+			end);
+			WorldFrame:HookScript("OnEnter", function()
+				addon:FadeFramesOut(thisFrame);
+			end);
+		end;
 	end;
 end;
 
