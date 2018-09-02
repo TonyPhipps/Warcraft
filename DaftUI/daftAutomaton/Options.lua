@@ -29,4 +29,4 @@ addonTable.RELEASE_WORLD = true			-- Release spirit instantly (when in world zon
 
 -- Miscellaneous
 addonTable.SCREENSHOT_ACHIEVEMENTS = true -- Take a screenshot every time an achievement is earned
-addonTable.TOGGLE_CINEMATIC_SOUND = false -- Enable sound for cinematics; reverts settings afterward
+addonTable.TOGGLE_CINEMATIC_SOUND = true -- Enable sound for cinematics; reverts settings afterward
