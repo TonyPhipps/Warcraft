@@ -36,6 +36,14 @@ addon:SetScript("OnEvent", function(self, event, ...)
 			MainMenuBarArtFrame.RightEndCap:Hide()
 		end
 
+		if addonTable.HIDE_BAGS then
+			addon:HideBags()
+		end
+
+		if addonTable.HIDE_MENU then
+			addon:HideMenu()
+		end
+
 		if addonTable.HIDE_ACTIONBAR_BG then
 			addon.HideActionBarBG()
 		end
@@ -92,20 +100,25 @@ function addon:HideActionBarBG()
 	ActionBarUpButton:Hide()
 	ActionBarDownButton:Hide()
 	MainMenuBarArtFrame.PageNumber:Hide()
-
 end
 
 
 function addon:HideMenuBG()
 
 	MicroButtonAndBagsBar.MicroBagBar:Hide()
-	
 end
 
 function addon:HideBags()
 
-	MicroButtonAndBagsBar.MicroBagBar:Hide()
+	MicroButtonAndBagsBar:Hide()
+end
+
+function addon:HideMenu()
 	
+	for _, MicroButton in pairs(MicroButtonArray) do
+				
+		_G[MicroButton]:Hide()
+	end
 end
 
 function addon:SkinButtonText()

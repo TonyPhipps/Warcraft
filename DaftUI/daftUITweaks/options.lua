@@ -18,8 +18,10 @@ addonTable.SKIN_FONTS = true
 addonTable.HIDE_HOTKEYS = false
 addonTable.HIDE_MACRONAMES = false
 addonTable.HIDE_ACTIONBAR_BG = false
-addonTable.HIDE_MENU_BG = false
 addonTable.HIDE_GRYPHONS = false
+addonTable.HIDE_BAGS = true
+addonTable.HIDE_MENU = true
+addonTable.HIDE_MENU_BG = true
 
 -- Name Cast Bars
 addonTable.PLAYER_ENABLED = true
@@ -46,8 +48,20 @@ addonTable.INCLUDE_QUEST = true
 addonTable.INCLUDE_BOOKS = true
 
 -- UI Colors (class colors by default)
-addonTable.CUSTOM = false;
-addonTable.R = 0.2;
-addonTable.G = 0.2;
-addonTable.B = 0.2;
-addonTable.A = 1;
+addonTable.CUSTOM = false
+addonTable.R = 0.2
+addonTable.G = 0.2
+addonTable.B = 0.2
+addonTable.A = 1
+
+-- Minimap
+addonTable.MINIMAP_SCALE = 1.3
+addonTable.FADE_BUTTONS = true
+addonTable.FADE_CLOCK = true
+addonTable.FADE_MAIL = true
+addonTable.FADE_ZONETEXT = true
+addonTable.HIDE_ZOOM = true
+addonTable.MICROMENU = true
+addonTable.SCROLL_ZOOM = true
+addonTable.SKIN_BUTTONS = true
+addonTable.SKIN_ZONETEXT = true
