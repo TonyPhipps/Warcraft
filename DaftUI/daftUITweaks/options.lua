@@ -12,13 +12,13 @@ addonTable.EXPBAR_SCALE = 1.0 -- 0.8 allows right click mouselook under bar!
 addonTable.MENUBAR_SCALE = 1.0
 addonTable.BAGBAR_SCALE = 1.0
 
-addonTable.SKIN_COLORSTATE = true
+addonTable.SKIN_BUTTONERRORS = true
 addonTable.SKIN_FONTS = true
 
 addonTable.HIDE_HOTKEYS = false
 addonTable.HIDE_MACRONAMES = false
-addonTable.HIDE_ACTIONBAR_BG = true
-addonTable.HIDE_MENU_BG = true
+addonTable.HIDE_ACTIONBAR_BG = false
+addonTable.HIDE_MENU_BG = false
 addonTable.HIDE_GRYPHONS = false
 
 -- Name Cast Bars
@@ -44,3 +44,10 @@ addonTable.GOSSIP_SCALE = 1.75
 addonTable.INCLUDE_MERCHANT = true
 addonTable.INCLUDE_QUEST = true
 addonTable.INCLUDE_BOOKS = true
+
+-- UI Colors (class colors by default)
+addonTable.CUSTOM = false;
+addonTable.R = 0.2;
+addonTable.G = 0.2;
+addonTable.B = 0.2;
+addonTable.A = 1;

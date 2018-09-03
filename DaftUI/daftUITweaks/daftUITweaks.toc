@@ -13,3 +13,4 @@ CastBars.lua
 ClassIconPortraits.lua
 DressUp.lua
 Gossip.lua
+UIColors.lua
