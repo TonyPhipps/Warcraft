@@ -223,10 +223,3 @@ function addon:SetButtonStatusColors()
 	--	self.HotKey:SetVertexColor(1, 1, 1)
 	--end)
 end
-
-
----- SCRIPTS ----
-
-MainMenuBarVehicleLeaveButton:HookScript("Onhide", function(self)
-	addon.SetScalingAlpha()
-end)
