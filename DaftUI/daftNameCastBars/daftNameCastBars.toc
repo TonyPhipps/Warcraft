@@ -1,8 +1,0 @@
-## Interface: 80000
-## Title: daftNameCastBars
-## Author: Daftsage - US Emerald Dream
-## Notes: Adjust spell cast bar to appear inside player/target frames
-## Version: 80000.1
-
-daftNameCastBars.lua
-Options.lua

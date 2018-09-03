@@ -1,8 +1,0 @@
-## Interface: 70000
-## Title: daftRoleIcons
-## Notes: Shows the unit's role icon on unit frames
-## Author: Daftwise - US Destromath
-## Version: 70000.1
-
-
-daftRoleIcons.lua

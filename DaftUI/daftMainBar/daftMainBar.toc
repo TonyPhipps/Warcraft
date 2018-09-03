@@ -1,8 +1,0 @@
-## Interface: 80000
-## Title: daftMainBar
-## Author: Daftsage - US Emerald Dream
-## Notes: Quality of life tweaks to the main bar.
-## Version: 80000.1
-
-daftMainBar.lua
-Options.lua

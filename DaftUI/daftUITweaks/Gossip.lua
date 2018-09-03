@@ -16,16 +16,16 @@ addon:RegisterEvent("ITEM_TEXT_BEGIN");
 ---- HELPER FUNCTIONS ----
 
 function addon:ResizeFrame(thisFrame)
-		thisFrame:ClearAllPoints();
-		thisFrame:SetScale(addonTable.SCALE);
+		--thisFrame:ClearAllPoints();
+		thisFrame:SetScale(addonTable.GOSSIP_SCALE);
 		thisFrame:SetPoint("TOPLEFT", 13, -13);
-		thisFrame.SetPoint = function() end;
+		--thisFrame.SetPoint = function() end;
 end;
 
 
 function addon:HookAdventureMapQuest()
 	AdventureMapQuestChoiceDialog:HookScript("OnShow", function(self)
-		AdventureMapQuestChoiceDialog:SetScale(addonTable.SCALE);
+		AdventureMapQuestChoiceDialog:SetScale(addonTable.GOSSIP_SCALE);
 	end);
 end;
 
@@ -34,7 +34,7 @@ end;
 
 addon:SetScript("OnEvent", function(self, event, ...)
 	
-	if addonTable.QUEST then
+	if addonTable.INCLUDE_QUEST then
 
 	if event == "GOSSIP_SHOW"
 		or event == "QUEST_DETAIL"
@@ -53,14 +53,14 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	end;
 	
 	
-	if addonTable.MERCHANT then
+	if addonTable.INCLUDE_MERCHANT then
 		if event == "MERCHANT_SHOW" then
 			addon:ResizeFrame(MerchantFrame);
 		end;
 	end;
 	
 	
-	if addonTable.BOOKS then
+	if addonTable.INCLUDE_BOOKS then
 		if event == "ITEM_TEXT_BEGIN" then
 			addon:ResizeFrame(ItemTextFrame);
 		end;

@@ -1,7 +1,8 @@
-local daftRoleIcons = CreateFrame("Frame")
-daftRoleIcons:RegisterEvent("PLAYER_TARGET_CHANGED")
+local addon = CreateFrame("Frame")
 
-daftRoleIcons:SetScript("OnEvent", function(self, event, ...)
+addon:RegisterEvent("PLAYER_TARGET_CHANGED")
+
+addon:SetScript("OnEvent", function(self, event, ...)
 
 	if not UnitInParty("target") and not UnitInRaid("target") then 
 		TargetRoleIcon:Hide()

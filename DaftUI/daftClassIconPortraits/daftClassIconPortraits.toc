@@ -1,8 +1,0 @@
-## Interface: 80000
-## Title: daftClassIconPortraits
-## Notes: Replaces unit portraits with their class icon for player characters.
-## Author: Daftsage - US Emerald Dream
-## Version: 80000.1
-
-
-daftClassIconPortraits.lua
