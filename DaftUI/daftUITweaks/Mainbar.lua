@@ -45,58 +45,16 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		end
 
 		if (addonTable.SKIN_FONTS
-		or addonTable.SKIN_COLORSTATE
 		or addonTable.HIDE_HOTKEYS 
 		or addonTable.HIDE_MACRONAMES) then
 			addon:SkinButtonText()
 		end
 
-		if addonTable.SKIN_COLORSTATE then
+		if addonTable.SKIN_BUTTONERRORS then
 			addon:SetButtonStatusColors()
 		end
     end
 end)
-
-
-
----- HELPER FUNCTIONS ----
-
-function addon:FadeFramesIn(frames)
-	for i, addon in next, frames do
-		local thisFrame = _G[addon]
-		
-		if thisFrame:IsShown() then
-			UIFrameFadeIn(thisFrame, .5, thisFrame:GetAlpha(), 1)
-		end
-	end
-end
-
-
-function addon:FadeFramesOut(frames)
-	for i, addon in next, frames do
-		local thisFrame = _G[addon]
-		
-		if thisFrame:IsShown() then
-			UIFrameFadeOut(thisFrame, .5, thisFrame:GetAlpha(), 0)
-		end
-	end
-end
-
-
-function addon:FadeFrames(frames)
-	
-	for i, addon in next, frames do
-		local thisFrame = _G[addon]
-		
-		thisFrame:HookScript("OnEnter", function()
-			addon:FadeFramesIn(frames)
-		end)
-
-		WorldFrame:HookScript("OnEnter", function()
-			addon:FadeFramesOut(frames)
-		end)
-	end
-end
 
 
 ---- FUNCTIONS ----
