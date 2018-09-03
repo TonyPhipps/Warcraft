@@ -22,4 +22,3 @@ addonTable.PLAYER = true;
 addonTable.RAIDMANAGER = true;
 addonTable.TARGET = true;
 addonTable.VEHICLESEATINDICATOR = true;
-addonTable.WORLDSTATEFRAME = true;  -- pvp and zone-wide progress frame

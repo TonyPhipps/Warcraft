@@ -114,12 +114,7 @@ function addon:FadeOutAll()
 	
 	if addonTable.VEHICLESEATINDICATOR then
 		addon:FadeFrameOut(VehicleSeatIndicator);
-	end;
-	
-	if addonTable.WORLDSTATEFRAME then
-		addon:FadeFrameOut(WorldStateAlwaysUpFrame);
-	end;
-	
+	end;	
 end;
 
 
@@ -348,15 +343,6 @@ function addon:HookFrames()
 				addon:FadeFrameIn(ObjectiveTrackerFrame);
 			end);
 		end;
-	end;
-	
-	
-	if addonTable.WORLDSTATEFRAME then
-		addon:SetupBasicFading(addonTable.WORLDSTATEFRAME, WorldStateAlwaysUpFrame);
-		
-		TopEdgeHover:HookScript("OnEnter", function()
-			addon:FadeFrameIn(WorldStateAlwaysUpFrame);
-		end);	
 	end;
 	
 	addon:SetupBasicFading(addonTable.VEHICLESEATINDICATOR, VehicleSeatIndicator);
