@@ -4,5 +4,6 @@
 ## Notes: Performs things automatically.
 ## Version: 80000.1
 
-daftAutomaton.lua
 Options.lua
+daftAutomaton.lua
+Auction.lua
