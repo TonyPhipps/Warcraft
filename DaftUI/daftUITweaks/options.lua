@@ -65,3 +65,9 @@ addonTable.MICROMENU = true
 addonTable.SCROLL_ZOOM = true
 addonTable.SKIN_BUTTONS = true
 addonTable.SKIN_ZONETEXT = true
+
+-- Full UI Fading
+addonTable.TIMETOFADEIN = 0.1
+addonTable.TIMETOFADEOUT = 10.0
+addonTable.FADEIN = 1.0
+addonTable.FADEOUT = 0.0
