@@ -39,11 +39,11 @@ addon:SetScript("OnUpdate", function()
 	or MouseIsOver(ChatFrame3)
 	or MouseIsOver(ChatFrame4) 
 	or MouseFrame ~= "WorldFrame" then
-		if not CinematicFrame:IsShown() then
+		if not CinematicFrame:IsShown() and not MovieFrame:IsShown() then
 			UIFrameFadeIn(UIParent, addonTable.TIMETOFADEIN, UIParent:GetAlpha(), addonTable.FADEIN)
 		end
 	else
-		if not CinematicFrame:IsShown() then
+		if not CinematicFrame:IsShown() and not MovieFrame:IsShown() then
 			UIFrameFadeOut(UIParent, addonTable.TIMETOFADEOUT, UIParent:GetAlpha(), addonTable.FADEOUT)
 		end
 	end
