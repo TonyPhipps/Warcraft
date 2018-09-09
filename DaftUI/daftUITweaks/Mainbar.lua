@@ -64,7 +64,7 @@ if addonTable.ENABLE_MAINBAR then
 				addon:SetButtonStatusColors()
 			end
 
-			if addonTable.VCenterRightBars then
+			if addonTable.CENTER_RIGHT_BARS then
 				addon:CenterRightBars()
 			end
 		end
