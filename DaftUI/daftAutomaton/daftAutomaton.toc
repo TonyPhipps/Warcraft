@@ -2,8 +2,10 @@
 ## Title: daftAutomaton
 ## Author: Daftsage - US Emerald Dream
 ## Notes: Performs things automatically.
-## Version: 80000.1
+## Version: 80000.2
 
 Options.lua
 daftAutomaton.lua
 Auction.lua
+FastLoot.lua
+CombatNamePlates.lua

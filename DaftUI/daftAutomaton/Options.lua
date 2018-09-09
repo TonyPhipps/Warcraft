@@ -27,13 +27,7 @@ addonTable.RELEASE_PVP = true			-- Release spirit instantly (when in PvP instanc
 addonTable.RELEASE_WORLD = true			-- Release spirit instantly (when in world zones)
 
 
--- Miscellaneous
-addonTable.SCREENSHOT_ACHIEVEMENTS = true -- Take a screenshot every time an achievement is earned
-addonTable.TOGGLE_CINEMATIC_SOUND = false -- Enable sound for cinematics reverts settings afterward
-
-
 -- Auction
-
 addonTable.UNDERCUT = .97 -- .97 is a 3% undercut
 
 addonTable.POOR_MULTIPLIER = 20 -- Multipliers used when no matching auctions are found
@@ -41,3 +35,10 @@ addonTable.COMMON_MULTIPLIER = 30
 addonTable.UNCOMMMON_MULTIPLIER = 40
 addonTable.RARE_MULTIPLIER = 50
 addonTable.EPIC_MULTIPLIER = 60
+
+
+-- Miscellaneous
+addonTable.SCREENSHOT_ACHIEVEMENTS = true -- Take a screenshot every time an achievement is earned
+addonTable.TOGGLE_CINEMATIC_SOUND = false -- Enable sound for cinematics reverts settings afterward
+addonTable.FASTLOOT = true -- Makes auto looting even faster!
+addonTable.COMBAT_NAMEPLATES = true
