@@ -22,8 +22,6 @@ addonTable.ENABLE_MAINBAR = false
     addonTable.MENUBAR_SCALE = 1.0
     addonTable.BAGBAR_SCALE = 1.0
 
-    addonTable.CENTER_RIGHT_BARS = false
-
     addonTable.SKIN_BUTTONERRORS = false
     addonTable.SKIN_FONTS = false
 
