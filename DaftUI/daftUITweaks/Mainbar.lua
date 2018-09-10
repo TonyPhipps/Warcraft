@@ -99,6 +99,13 @@ if addonTable.ENABLE_MAINBAR then
 		end
 	end
 
+	function addon:CenterRightBars()
+
+		MultiBarRight:ClearAllPoints()
+		MultiBarRight:SetPoint("RIGHT", WorldFrame, "RIGHT", 0, 0)
+		MultiBarRight.SetPoint = function() end
+	end
+
 	function addon:HideActionBarBG()
 
 		MainMenuBarArtFrameBackground:Hide()
