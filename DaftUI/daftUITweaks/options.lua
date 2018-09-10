@@ -38,7 +38,7 @@ addonTable.ENABLE_MAINBAR = false
 
 -- UI Colors (class colors by default)
 addonTable.ENABLE_UICOLORS = false
-    addonTable.CUSTOM = true
+    addonTable.CUSTOM = false
     addonTable.R = 0
     addonTable.G = 0
     addonTable.B = 0
