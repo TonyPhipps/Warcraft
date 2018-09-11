@@ -43,6 +43,12 @@ addonTable.ENABLE_UICOLORS = false
     addonTable.G = 0
     addonTable.B = 0
     addonTable.A = 1
+
+-- PlayerFrame Styling
+addonTable.ENABLE_PLAYERFRAME = false
+
+-- TargetFrame Styling
+addonTable.ENABLE_TARGETFRAME = false
     
 
 -- Cast Bars

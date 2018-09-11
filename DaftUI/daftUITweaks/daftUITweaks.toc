@@ -2,7 +2,7 @@
 ## Title: daftUITweaks
 ## Author: Daftsage - US Emerald Dream
 ## Notes: Quality of life tweaks to the default UI.
-## Version: 80000.5
+## Version: 80000.6
 
 options.lua
 core.lua
@@ -16,3 +16,5 @@ Gossip.lua
 Minimap.lua
 UIColors.lua
 UIFade.lua
+PlayerFrame.lua
+TargetFrame.lua

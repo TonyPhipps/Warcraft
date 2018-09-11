@@ -103,6 +103,7 @@ if addonTable.ENABLE_CASTBARS then
 
 		CastingBarFrame.Text:SetFontObject(GameFontNormalSmall)
 		CastingBarFrame.Text:SetVertexColor(1, 1, 1)
+		CastingBarFrame.Text:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
 		
 		if addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
 			
@@ -148,6 +149,8 @@ if addonTable.ENABLE_CASTBARS then
 
 		TargetFrameSpellBar.Text:ClearAllPoints()
 		TargetFrameSpellBar.Text:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -1)
+		TargetFrameSpellBar.Text:SetVertexColor(1, 1, 1)
+		TargetFrameSpellBar.Text:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
 		
 		if addonTable.TARGET_BIG_SPELL_ICON then
 			
