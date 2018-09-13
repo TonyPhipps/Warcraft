@@ -3,8 +3,6 @@ local addon = CreateFrame("Frame")
 
 if addonTable.ENABLE_CASTBARS then
 
-	addon:RegisterEvent("PLAYER_LOGIN")
-
 
 	---- FUNCTIONS ----
 
@@ -43,7 +41,7 @@ if addonTable.ENABLE_CASTBARS then
 
 	function addon:ShowTargetCastBar()
 		
-		_, _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target")
+		_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target")
 
 		TargetFrameTextureFrameName:Hide()
 		TargetFrameNameBackground:Hide()
@@ -100,10 +98,6 @@ if addonTable.ENABLE_CASTBARS then
 		CastingBarFrame.Flash:SetPoint("CENTER", CastingBarFrame.Border, "CENTER", 0, 0)
 		CastingBarFrame.Flash.SetPoint = function() end
 		CastingBarFrame.Flash:SetTexture("Interface\\CastingBar\\UI-CastingBar-Flash-Small")
-
-		CastingBarFrame.Text:SetFontObject(GameFontNormalSmall)
-		CastingBarFrame.Text:SetVertexColor(1, 1, 1)
-		CastingBarFrame.Text:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
 		
 		if addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
 			
@@ -149,8 +143,6 @@ if addonTable.ENABLE_CASTBARS then
 
 		TargetFrameSpellBar.Text:ClearAllPoints()
 		TargetFrameSpellBar.Text:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -1)
-		TargetFrameSpellBar.Text:SetVertexColor(1, 1, 1)
-		TargetFrameSpellBar.Text:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
 		
 		if addonTable.TARGET_BIG_SPELL_ICON then
 			
