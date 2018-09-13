@@ -51,14 +51,12 @@ if addonTable.ENABLE_FONTS then
             _G[bar.."Button"..i.."HotKey"]:ClearAllPoints()
             _G[bar.."Button"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3)
             StyleFonts(bar.."Button"..i.."HotKey")
-            --_G[bar.."Button"..i.."HotKey"]:SetTextColor(1, 1, 1, 1)
-            --_G[bar.."Button"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
+            _G[bar.."Button"..i.."HotKey"]:SetTextColor(1, 1, 1, 1)
+            _G[bar.."Button"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
             
             _G[bar.."Button"..i.."Name"]:ClearAllPoints()
             _G[bar.."Button"..i.."Name"]:SetPoint("BOTTOM", 0, 0)
             StyleFonts(bar.."Button"..i.."Name")
-            --_G[bar.."Button"..i.."Name"]:SetTextColor(1, 1, 1, 1)
-            --_G[bar.."Button"..i.."Name"]:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
         end
 
         for i = 1, 10 do
@@ -66,8 +64,6 @@ if addonTable.ENABLE_FONTS then
             _G["PetActionButton"..i.."HotKey"]:ClearAllPoints()
             _G["PetActionButton"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3)
             StyleFonts("PetActionButton"..i.."HotKey")
-            --_G["PetActionButton"..i.."HotKey"]:SetTextColor(1, 1, 1, 1)
-            --_G["PetActionButton"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
 		end	
     end
 

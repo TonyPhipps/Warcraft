@@ -54,10 +54,9 @@ if addonTable.ENABLE_MAINBAR then
 				addon.HideMenuBG()
 			end
 
-			if (addonTable.SKIN_FONTS
-			or addonTable.HIDE_HOTKEYS 
+			if (addonTable.HIDE_HOTKEYS 
 			or addonTable.HIDE_MACRONAMES) then
-				addon:SkinButtonText()
+				addon:HideButtonText()
 			end
 
 			if addonTable.SKIN_BUTTONERRORS then
@@ -132,7 +131,7 @@ if addonTable.ENABLE_MAINBAR then
 		end
 	end
 
-	function addon:SkinButtonText()
+	function addon:HideButtonText()
 		
 		local bars = {
 			"Action",
@@ -145,19 +144,7 @@ if addonTable.ENABLE_MAINBAR then
 		for _, bar in pairs(bars) do
 			
 			for i = 1, 12 do
-				
-				if addonTable.SKIN_FONTS then
-					
-					_G[bar.."Button"..i.."HotKey"]:ClearAllPoints()
-					_G[bar.."Button"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3)
-					_G[bar.."Button"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "")
-					
-					_G[bar.."Button"..i.."Name"]:ClearAllPoints()
-					_G[bar.."Button"..i.."Name"]:SetPoint("BOTTOM", 0, 0)
-					_G[bar.."Button"..i.."Name"]:SetFont("Fonts\\ARIALN.ttf", 10, "THINOUTLINE", "")
-
-				end
-				
+								
 				if addonTable.HIDE_HOTKEYS then
 					
 					_G[bar.."Button"..i.."HotKey"].Show = function() end
@@ -172,17 +159,6 @@ if addonTable.ENABLE_MAINBAR then
 				end
 			end
 		end
-		
-		for i = 1, 10 do
-
-			if addonTable.SKIN_FONTS then
-
-				_G["PetActionButton"..i.."HotKey"]:ClearAllPoints()
-				_G["PetActionButton"..i.."HotKey"]:SetPoint("TOPRIGHT", 0, -3)
-				_G["PetActionButton"..i.."HotKey"]:SetFont("Fonts\\ARIALN.ttf", 14, "THINOUTLINE", "")
-
-			end
-		end	
 	end
 
 	function addon:SetButtonStatusColors()
@@ -193,16 +169,13 @@ if addonTable.ENABLE_MAINBAR then
 			local inrange = IsActionInRange(self.action)
 			local isUsable, notEnoughMana = IsUsableAction(self.action)
 			
-			if inrange == false then self.icon:SetVertexColor(1.0, 0.1, 0.1)
-			elseif notEnoughMana then self.icon:SetVertexColor(0.1, 0.1, 1.0)
-			else self.icon:SetVertexColor(1, 1, 1)
+			if inrange == false then 
+				self.icon:SetVertexColor(1.0, 0.1, 0.1)
+			elseif notEnoughMana then 
+				self.icon:SetVertexColor(0.1, 0.1, 1.0)
+			else 
+				self.icon:SetVertexColor(1, 1, 1)
 			end
-
 		end)
-		
-		-- Code below causes flickering of hotkey text when font skinning is enabled.
-		--hooksecurefunc("PetActionButton_OnUpdate", function(self)
-		--	self.HotKey:SetVertexColor(1, 1, 1)
-		--end)
 	end
 end
