@@ -3,69 +3,92 @@ local addon = CreateFrame("Frame")
 
 if addonTable.ENABLE_GOSSIP then
 	
-	addon:RegisterEvent("ADVENTURE_MAP_OPEN")
+
+	-- EVENTS
+
 	addon:RegisterEvent("GOSSIP_SHOW")
-	addon:RegisterEvent("GOSSIP_CLOSED")
-	addon:RegisterEvent("PLAYER_LOGIN")
 	addon:RegisterEvent("QUEST_DETAIL")
+	addon:RegisterEvent("QUEST_GREETING")
 	addon:RegisterEvent("QUEST_COMPLETE")
 	addon:RegisterEvent("QUEST_FINISHED")
 	addon:RegisterEvent("QUEST_PROGRESS")
-	addon:RegisterEvent("MERCHANT_SHOW")
-	addon:RegisterEvent("ITEM_TEXT_BEGIN")
 
-	---- HELPER FUNCTIONS ----
+
+	-- FUNCTIONS
 
 	function addon:ResizeFrame(thisFrame)
-			--thisFrame:ClearAllPoints()
 			thisFrame:SetScale(addonTable.GOSSIP_SCALE)
 			thisFrame:SetPoint("TOPLEFT", 13, -13)
-			--thisFrame.SetPoint = function() end
+	end
+
+	function PrintGossip()
+
+		if QuestFrame:IsShown() then
+			
+			if QuestFrameDetailPanel:IsShown() then
+				DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. QuestInfoDescriptionText:GetText() .. '"' .. " (for " .. QuestInfoTitleHeader:GetText() .. ")", "MONSTER_SAY")
+			elseif QuestFrameProgressPanel:IsShown() then
+				DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. QuestProgressText:GetText() .. '"' .. " (for " .. QuestProgressTitleText:GetText() .. ")", "MONSTER_SAY")
+			elseif QuestFrameRewardPanel:IsShown() then
+				DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. QuestInfoRewardText:GetText() .. '"' .. " (for " .. QuestInfoTitleHeader:GetText() .. ")", "MONSTER_SAY")
+			elseif QuestFrameGreetingPanel:IsShown() then
+				DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. GreetingText:GetText() .. '"', "MONSTER_SAY")
+			end
+		end
+
+		if GossipFrame:IsShown() then
+			DEFAULT_CHAT_FRAME:AddMessage(GossipFrameNpcNameText:GetText() .. ' says, "' .. GossipGreetingText:GetText() .. '"', "MONSTER_SAY")
+		end
 	end
 
 
-	function addon:HookAdventureMapQuest()
-		AdventureMapQuestChoiceDialog:HookScript("OnShow", function(self)
-			AdventureMapQuestChoiceDialog:SetScale(addonTable.GOSSIP_SCALE)
-		end)
-	end
+	-- SCRIPTS
 
-
-	---- EVENT HANDLER ----
-
-	addon:SetScript("OnEvent", function(self, event, ...)
+	if addonTable.GOSSIP_TOCHAT then
 		
-		if addonTable.GOSSIP_QUEST then
+		addon:SetScript("OnEvent", function(self, event, ...)
 
-		if event == "GOSSIP_SHOW"
+			if event == "GOSSIP_SHOW"
 			or event == "QUEST_DETAIL"
 			or event == "GOSSIP_CLOSED"
 			or event == "QUEST_COMPLETE"
 			or event == "QUEST_FINISHED"
+			or event == "QUEST_GREETING"
 			or event == "QUEST_PROGRESS" then
-				addon:ResizeFrame(QuestFrame)
-				addon:ResizeFrame(GossipFrame)
-				addon:ResizeFrame(QuestLogPopupDetailFrame)
+
+				PrintGossip()
 			end
-			
-			if event == "ADVENTURE_MAP_OPEN" then
-				addon:HookAdventureMapQuest()
-			end
-		end
-		
-		
-		if addonTable.GOSSIP_MERCHANT then
-			if event == "MERCHANT_SHOW" then
-				addon:ResizeFrame(MerchantFrame)
-			end
-		end
-		
-		
-		if addonTable.GOSSIP_BOOKS then
-			if event == "ITEM_TEXT_BEGIN" then
-				addon:ResizeFrame(ItemTextFrame)
-			end
-		end
+		end)
+	end
+
+	-- HOOKS
+
+	GossipFrame:HookScript("OnShow", function(self, event)
+		addon:ResizeFrame(self)
 	end)
+
+	if addonTable.GOSSIP_QUEST then
+		
+		QuestFrame:HookScript("OnShow", function(self, event)
+			addon:ResizeFrame(self)
+		end)
+
+		QuestLogPopupDetailFrame:HookScript("OnShow", function(self, event)
+			addon:ResizeFrame(self)
+		end)
+	end
+
+	if addonTable.GOSSIP_BOOKS then
+		ItemTextFrame:HookScript("OnShow", function(self)
+			addon:ResizeFrame(self)
+		end)
+	end
+
+	if addonTable.GOSSIP_MERCHANT then
+			
+		MerchantFrame:HookScript("OnShow", function(self)
+			addon:ResizeFrame(self)
+		end)
+	end
 end
 
