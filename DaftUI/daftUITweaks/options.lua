@@ -2,19 +2,19 @@ local addonName, addonTable = ...
 
 
 -- Full UI Fading
-addonTable.ENABLE_UIFADE = false
+addonTable.ENABLE_UIFADE = true
     addonTable.TIMETOFADEIN = 0.1
-    addonTable.TIMETOFADEOUT = 10.0
+    addonTable.TIMETOFADEOUT = 5.0 -- apparently 5.0 is the longest supported
     addonTable.FADEIN = 1.0
     addonTable.FADEOUT = 0.0
 
 
 -- Mainbar
-addonTable.ENABLE_MAINBAR = false
-    addonTable.MAINBAR_ALPHA = 1.0
-    addonTable.EXPBAR_ALPHA = 1.0
-    addonTable.LEFTBAR_ALPHA = 1.0
-    addonTable.RIGHTBAR_ALPHA = 1.0
+addonTable.ENABLE_MAINBAR = true
+    addonTable.MAINBAR_ALPHA = 0.9
+    addonTable.EXPBAR_ALPHA = 0.9
+    addonTable.LEFTBAR_ALPHA = 0.6
+    addonTable.RIGHTBAR_ALPHA = 0.6
     addonTable.BAGBAR_ALPHA = 1.0
     addonTable.MENUBAR_ALPHA = 1.0
 
@@ -22,37 +22,33 @@ addonTable.ENABLE_MAINBAR = false
     addonTable.MENUBAR_SCALE = 1.0
     addonTable.BAGBAR_SCALE = 1.0
 
-    addonTable.CENTER_RIGHT_BARS = false
+    addonTable.CENTER_RIGHT_BARS = true
 
-    addonTable.SKIN_BUTTONERRORS = false
-    addonTable.SKIN_FONTS = false
+    addonTable.SKIN_BUTTONERRORS = true
+    addonTable.SKIN_FONTS = true
 
     addonTable.HIDE_HOTKEYS = false
-    addonTable.HIDE_MACRONAMES = false
+    addonTable.HIDE_MACRONAMES = true
     addonTable.HIDE_ACTIONBAR_BG = false
     addonTable.HIDE_GRYPHONS = false
-    addonTable.HIDE_BAGS = false
-    addonTable.HIDE_MENU = false
-    addonTable.HIDE_MENU_BG = false
+    addonTable.HIDE_BAGS = true
+    addonTable.HIDE_MENU = true
+    addonTable.HIDE_MENU_BG = true
 
 
 -- UI Colors (class colors by default)
-addonTable.ENABLE_UICOLORS = false
+addonTable.ENABLE_UICOLORS = true
     addonTable.CUSTOM = false
     addonTable.R = 0
     addonTable.G = 0
     addonTable.B = 0
     addonTable.A = 1
-
--- PlayerFrame Styling
-addonTable.ENABLE_PLAYERFRAME = false
-
--- TargetFrame Styling
-addonTable.ENABLE_TARGETFRAME = false
     
+-- Change frame fonts to white Arial
+addonTable.ENABLE_FONTS = true
 
 -- Cast Bars
-addonTable.ENABLE_CASTBARS = false
+addonTable.ENABLE_CASTBARS = true
     addonTable.PLAYER_ENABLED = true
         addonTable.PLAYER_BIG_SPELL_ICON = true
         addonTable.PLAYER_HIDE_SPELL_ICON = false
@@ -67,7 +63,7 @@ addonTable.ENABLE_CASTBARS = false
 
 
 -- Minimap
-addonTable.ENABLE_MINIMAP = false
+addonTable.ENABLE_MINIMAP = true
     addonTable.MINIMAP_SCALE = 1.3
     addonTable.FADE_BUTTONS = true
     addonTable.FADE_CLOCK = true
@@ -83,30 +79,31 @@ addonTable.ENABLE_MINIMAP = false
 
 
 -- Dress Up Frame
-addonTable.ENABLE_DRESSUP = false
+addonTable.ENABLE_DRESSUP = true
     addonTable.DRESSUP_SCALE = 1.95
     addonTable.DRESSUP_MOUSEOVER = true
     addonTable.DRESSUP_CENTER = true
 
 
 -- Gossip
-addonTable.ENABLE_GOSSIP = false
+addonTable.ENABLE_GOSSIP = true
     addonTable.GOSSIP_SCALE = 1.75
     addonTable.GOSSIP_MERCHANT = true
     addonTable.GOSSIP_QUEST = true
     addonTable.GOSSIP_BOOKS = true
+    addonTable.GOSSIP_TOCHAT = true
 
 
 -- Class Icon Portraits
-addonTable.CLASS_PORTRAIT = false
+addonTable.CLASS_PORTRAIT = true
 
 
 -- Class Colored Health Bars
-addonTable.CLASS_HEALTH = false
+addonTable.CLASS_HEALTH = true
 
 
 -- Target Role Icons
-addonTable.TARGET_ROLE = false
+addonTable.TARGET_ROLE = true
 
 
 
