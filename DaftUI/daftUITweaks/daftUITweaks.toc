@@ -16,5 +16,4 @@ Gossip.lua
 Minimap.lua
 UIColors.lua
 UIFade.lua
-PlayerFrame.lua
-TargetFrame.lua
+Fonts.lua
