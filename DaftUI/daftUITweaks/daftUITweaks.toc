@@ -2,15 +2,15 @@
 ## Title: daftUITweaks
 ## Author: Daftsage - US Emerald Dream
 ## Notes: Quality of life tweaks to the default UI.
+## SavedVariables: daftUITweaksDB
 ## Version: 80000.6
 
-options.lua
-core.lua
+Options.lua
+OptionsPanel.lua
 MainBar.lua
-TargetRoleIcon.lua
-ClassColoredHealthBars.lua
+TargetFrame.lua
+UnitFrames.lua
 CastBars.lua
-ClassIconPortraits.lua
 DressUp.lua
 Gossip.lua
 Minimap.lua

@@ -1,24 +1,27 @@
 local addonName, addonTable = ... 
-local addon = CreateFrame("Frame")
-
-if addonTable.ENABLE_CASTBARS then
+local frame = CreateFrame("Frame")
 
 
-	---- FUNCTIONS ----
+-- EVENTS
 
-	function addon:ShowPlayerCastBar()
+frame:RegisterEvent("ADDON_LOADED")
+
+
+-- FUNCTIONS
+
+	local function ShowPlayerCastBar()
 		
 		PlayerName:Hide()
 		PlayerStatusTexture:Hide()
 		PlayerFrameBackground:Hide()
 		
-		if addonTable.PLAYER_TIMER then
+		if addonTable.db.PLAYER_TIMER then
 			
 			PlayerAttackIcon:SetAlpha(.2)
 			PlayerRestIcon:SetAlpha(.2)
 		end
 		
-		if addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
+		if addonTable.db.PLAYER_BIG_SPELL_ICON and not addonTable.db.PLAYER_HIDE_SPELL_ICON then
 
 			PlayerPortrait:Hide()
 
@@ -31,15 +34,14 @@ if addonTable.ENABLE_CASTBARS then
 			end
 		end
 
-		if not addonTable.PLAYER_BIG_SPELL_ICON 
-		and not addonTable.PLAYER_HIDE_SPELL_ICON then
+		if not addonTable.db.PLAYER_BIG_SPELL_ICON 
+		and not addonTable.db.PLAYER_HIDE_SPELL_ICON then
 		
 			CastingBarFrame.Icon:Show()
 		end
 	end
 
-
-	function addon:ShowTargetCastBar()
+	local function ShowTargetCastBar()
 		
 		_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target")
 
@@ -47,12 +49,12 @@ if addonTable.ENABLE_CASTBARS then
 		TargetFrameNameBackground:Hide()
 		TargetFramePortrait:Hide()
 			
-		if addonTable.TARGET_BIG_SPELL_ICON then
+		if addonTable.db.TARGET_BIG_SPELL_ICON then
 		
 			TargetFramePortrait:Hide()
 		end
 
-		if addonTable.TARGET_HIDE_SPELL_ICON then
+		if addonTable.db.TARGET_HIDE_SPELL_ICON then
 		
 			TargetFrameSpellBar.Icon:Hide()
 		end
@@ -67,10 +69,7 @@ if addonTable.ENABLE_CASTBARS then
 		end
 	end
 
-
-	-- FRAMES
-
-	if addonTable.PLAYER_ENABLED then
+	local function SetupPlayerFrame()
 
 		CastingBarFrame:SetFrameStrata("BACKGROUND")
 		CastingBarFrame.Border:Hide()
@@ -99,7 +98,7 @@ if addonTable.ENABLE_CASTBARS then
 		CastingBarFrame.Flash.SetPoint = function() end
 		CastingBarFrame.Flash:SetTexture("Interface\\CastingBar\\UI-CastingBar-Flash-Small")
 		
-		if addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
+		if addonTable.db.PLAYER_BIG_SPELL_ICON and not addonTable.db.PLAYER_HIDE_SPELL_ICON then
 			
 			CastingBarFrame.Icon:Show()
 			CastingBarFrame.Icon:ClearAllPoints()
@@ -109,61 +108,21 @@ if addonTable.ENABLE_CASTBARS then
 			CastingBarFrame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		end
 		
-		if not addonTable.PLAYER_BIG_SPELL_ICON and not addonTable.PLAYER_HIDE_SPELL_ICON then
+		if not addonTable.db.PLAYER_BIG_SPELL_ICON and not addonTable.db.PLAYER_HIDE_SPELL_ICON then
 			
 			CastingBarFrame.Icon:ClearAllPoints()
 			CastingBarFrame.Icon:SetPoint("LEFT", CastingBarFrame, "RIGHT", 5, 0)
 			CastingBarFrame.Icon.SetPoint = function() end
 		end
 		
-		if addonTable.PLAYER_HIDE_PVP_ICON then
+		if addonTable.db.PLAYER_HIDE_PVP_ICON then
 			
 			PlayerPVPIcon:SetAlpha(0)
 		end
-	end
 
 
-	if addonTable.TARGET_ENABLED then
-		
-		TargetFrameSpellBar:SetFrameStrata("BACKGROUND")
+		-- HOOKS
 
-		TargetFrameSpellBar:ClearAllPoints()
-		TargetFrameSpellBar:SetPoint("TOPLEFT",TargetFrame,"TOPLEFT",7,-22)
-		TargetFrameSpellBar:SetPoint("BOTTOMRIGHT",TargetFrame,"BOTTOMRIGHT",-109.5, 60)
-		TargetFrameSpellBar.SetPoint = function() end
-		
-		TargetFrameSpellBar.Flash:ClearAllPoints()
-		TargetFrameSpellBar.Flash:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -2)
-		TargetFrameSpellBar.Flash:SetWidth(TargetFrameSpellBar:GetWidth()*1.38)
-		TargetFrameSpellBar.Flash:SetHeight(TargetFrameSpellBar:GetHeight()*3.6)
-		TargetFrameSpellBar.Flash.SetPoint = function() end
-
-		TargetFrameSpellBar.BorderShield:SetAlpha(0)
-		TargetFrameSpellBar.Border:SetAlpha(0)
-
-		TargetFrameSpellBar.Text:ClearAllPoints()
-		TargetFrameSpellBar.Text:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -1)
-		
-		if addonTable.TARGET_BIG_SPELL_ICON then
-			
-			TargetFrameSpellBar.Icon:ClearAllPoints()
-			TargetFrameSpellBar.Icon:SetPoint("CENTER", TargetFramePortrait, "CENTER", 0, 0)
-			TargetFrameSpellBar.Icon:SetWidth(TargetFramePortrait:GetWidth())
-			TargetFrameSpellBar.Icon:SetHeight(TargetFramePortrait:GetHeight())
-			TargetFrameSpellBar.Icon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask")
-		end
-		
-		if addonTable.TARGET_HIDE_PVP_ICON then
-			
-			TargetFrameTextureFramePVPIcon:SetAlpha(0)
-		end
-	end
-
-
-	-- HOOKS
-		
-	if addonTable.PLAYER_ENABLED then
-		
 		CastingBarFrame.update = 0
 		CastingBarFrame:HookScript('OnUpdate', function(self, elapsed)
 		
@@ -171,17 +130,17 @@ if addonTable.ENABLE_CASTBARS then
 			
 				if self.casting then		
 					
-					addon:ShowPlayerCastBar()
+					ShowPlayerCastBar()
 					
-					if addonTable.PLAYER_TIMER then
+					if addonTable.db.PLAYER_TIMER then
 					
 						PlayerLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
 					end
 				elseif self.channeling then
 					
-					addon:ShowPlayerCastBar()
+					ShowPlayerCastBar()
 					
-					if addonTable.PLAYER_TIMER then
+					if addonTable.db.PLAYER_TIMER then
 					
 						PlayerLevelText:SetText(format("%.1f", max(self.value, 0)))
 					end
@@ -204,9 +163,45 @@ if addonTable.ENABLE_CASTBARS then
 			PlayerRestIcon:SetAlpha(1)
 		end)
 	end
-	
-	if addonTable.TARGET_ENABLED then
+
+	local function SetupTargetFrame()
+
+		TargetFrameSpellBar:SetFrameStrata("BACKGROUND")
+
+		TargetFrameSpellBar:ClearAllPoints()
+		TargetFrameSpellBar:SetPoint("TOPLEFT",TargetFrame,"TOPLEFT",7,-22)
+		TargetFrameSpellBar:SetPoint("BOTTOMRIGHT",TargetFrame,"BOTTOMRIGHT",-109.5, 60)
+		TargetFrameSpellBar.SetPoint = function() end
 		
+		TargetFrameSpellBar.Flash:ClearAllPoints()
+		TargetFrameSpellBar.Flash:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -2)
+		TargetFrameSpellBar.Flash:SetWidth(TargetFrameSpellBar:GetWidth()*1.38)
+		TargetFrameSpellBar.Flash:SetHeight(TargetFrameSpellBar:GetHeight()*3.6)
+		TargetFrameSpellBar.Flash.SetPoint = function() end
+
+		TargetFrameSpellBar.BorderShield:SetAlpha(0)
+		TargetFrameSpellBar.Border:SetAlpha(0)
+
+		TargetFrameSpellBar.Text:ClearAllPoints()
+		TargetFrameSpellBar.Text:SetPoint("CENTER", TargetFrameSpellBar, "CENTER", 0, -1)
+		
+		if addonTable.db.TARGET_BIG_SPELL_ICON then
+			
+			TargetFrameSpellBar.Icon:ClearAllPoints()
+			TargetFrameSpellBar.Icon:SetPoint("CENTER", TargetFramePortrait, "CENTER", 0, 0)
+			TargetFrameSpellBar.Icon:SetWidth(TargetFramePortrait:GetWidth())
+			TargetFrameSpellBar.Icon:SetHeight(TargetFramePortrait:GetHeight())
+			TargetFrameSpellBar.Icon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask")
+		end
+		
+		if addonTable.db.TARGET_HIDE_PVP_ICON then
+			
+			TargetFrameTextureFramePVPIcon:SetAlpha(0)
+		end
+
+		
+		-- HOOKS
+
 		TargetFrameSpellBar.update = 0
 		TargetFrameSpellBar:HookScript("OnUpdate", function(self, elapsed)
 
@@ -214,18 +209,18 @@ if addonTable.ENABLE_CASTBARS then
 					
 				if self.casting then
 					
-					addon:ShowTargetCastBar()
+					ShowTargetCastBar()
 					
-					if addonTable.TARGET_TIMER then
+					if addonTable.db.TARGET_TIMER then
 					
 						TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
 					end
 				
 				elseif self.channeling then
 					
-					addon:ShowTargetCastBar()
+					ShowTargetCastBar()
 					
-					if addonTable.TARGET_TIMER then
+					if addonTable.db.TARGET_TIMER then
 					
 						TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.value, 0)))
 					end
@@ -248,4 +243,26 @@ if addonTable.ENABLE_CASTBARS then
 		end)
 	end
 
-end
+
+-- SCRIPTS
+
+frame:SetScript("OnEvent", function(self, event, arg1)
+	
+	if event == "ADDON_LOADED" and arg1 == "daftUITweaks" then
+		
+		addonTable.db = daftUITweaksDB
+		
+		if addonTable.db.ENABLE_CASTBARS then
+
+			if addonTable.db.CASTBARS_PLAYER then
+				SetupPlayerFrame()
+			end
+
+			if addonTable.db.CASTBARS_TARGET then
+				SetupTargetFrame()
+			end
+	end
+
+		frame:UnregisterEvent("ADDON_LOADED")
+	end
+end)

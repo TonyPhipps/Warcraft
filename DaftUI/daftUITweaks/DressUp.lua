@@ -1,113 +1,146 @@
 local addonName, addonTable = ... 
-local addon = CreateFrame("Frame")
+local frame = CreateFrame("Frame")
 
-if addonTable.ENABLE_DRESSUP then
+-- EVENTS
 
-	addon:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("ADDON_LOADED")
 
 
-	--Helper Functions
+local function Setup()
 
-	function addon:HideFrameTextures(Frame)
+	frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+end
+
+--Helper Functions
+
+local function HideFrameTextures(Frame)
 		
-		for _, Region in pairs({ Frame:GetRegions() }) do
-		
-			if Region:IsObjectType("Texture") then 
-				Region:Hide()
-			end
+	for _, Region in pairs({ Frame:GetRegions() }) do
+	
+		if Region:IsObjectType("Texture") then 
+			Region:SetAlpha(0)
 		end
 	end
+end
 
-	function addon:ShowFrameTextures(Frame)
-		
-		for _, Region in pairs({ Frame:GetRegions() }) do
-		
-			if Region:IsObjectType("Texture") then 
-				Region:Show()
-			end
+local function ShowFrameTextures(Frame)
+	
+	for _, Region in pairs({ Frame:GetRegions() }) do
+	
+		if Region:IsObjectType("Texture") then 
+			Region:SetAlpha(1)
 		end
 	end
+end
 
+--Feature functions
 
-	--Feature functions
+local function SetPosition()
+	if addonTable.db.DRESSUP_CENTER then
+		DressUpFrame:ClearAllPoints()
+		DressUpFrame:SetPoint("TOP", WorldFrame, "TOP", 12, 0)
+			
+		-- Fix Character frame pushing
+		UIPanelWindows["CharacterFrame"] =	{ area = "left", pushable = 0, whileDead = 1 }
+	end
+end
 
-	function addon:setPosition()
-		if addonTable.DRESSUP_CENTER then
-			DressUpFrame:ClearAllPoints()
-			DressUpFrame:SetPoint("TOP", WorldFrame, "TOP", 12, 0)
-				
-			-- Fix Character frame pushing
-			UIPanelWindows["CharacterFrame"] =	{ area = "left", pushable = 0, whileDead = 1}
-		end
+local function SetupMouseover()
+	
+	local function HideStuff()
+
+		HideFrameTextures(DressUpFrame)
+		DressUpFrameCloseButton:SetAlpha(0)
+		DressUpFrameTitleText:SetAlpha(0)
+		DressUpFrameCancelButton:SetAlpha(0)
+		DressUpFrameResetButton:SetAlpha(0)
+		DressUpFrameOutfitDropDown:SetAlpha(0)
+		MaximizeMinimizeFrame:SetAlpha(0)
+		DressUpFrameInset:SetAlpha(0)
 	end
 
-	function addon:setHidden()
-		
-		
-		DressUpFrame:HookScript("OnShow", function()
-			addon:HideFrameTextures(DressUpFrame)
-			
-			DressUpFrameCloseButton:Hide()
-			DressUpFrameTitleText:Hide()
-			DressUpFrameCancelButton:Hide()
-			DressUpFrameResetButton:Hide()
-			DressUpFrameOutfitDropDown:Hide()
-			MaximizeMinimizeFrame:Hide()
-			DressUpFrameInset:Hide()
-		end)
-		
-		
-		DressUpModel:HookScript("OnEnter", function()
-			addon:ShowFrameTextures(DressUpFrame)
-			
-			DressUpFrameCloseButton:Show()
-			DressUpFrameCancelButton:Show()
-			DressUpFrameResetButton:Show()
-			DressUpFrameOutfitDropDown:Show()
-			MaximizeMinimizeFrame:Show()
-			DressUpFrameInset:Show()
-		end)
+	local function ShowStuff()
 
-		WorldFrame:HookScript("OnEnter", function()
-			addon:HideFrameTextures(DressUpFrame)
-			
-			DressUpFrameCloseButton:Hide()
-			DressUpFrameTitleText:Hide()
-			DressUpFrameCancelButton:Hide()
-			DressUpFrameResetButton:Hide()
-			DressUpFrameOutfitDropDown:Hide()
-			MaximizeMinimizeFrame:Hide()
-			DressUpFrameInset:Hide()
-		end)
+		ShowFrameTextures(DressUpFrame)
+		DressUpFrameCloseButton:SetAlpha(1)
+		DressUpFrameCancelButton:SetAlpha(1)
+		DressUpFrameResetButton:SetAlpha(1)
+		DressUpFrameOutfitDropDown:SetAlpha(1)
+		MaximizeMinimizeFrame:SetAlpha(1)
+		DressUpFrameInset:SetAlpha(1)
 	end
-
-
-	--Events
-
-	addon:SetScript("OnEvent", function(self, event, ...) 
-		
-		if event == "PLAYER_ENTERING_WORLD" then
-			
-			if addonTable.DRESSUP_MOUSEOVER then
-				addon:setHidden()
-			end
-			
-			DressUpFrame:SetScale(addonTable.DRESSUP_SCALE)
-		end
-	end)
-
-
-	--Hooks
-
-	CharacterFrame:HookScript("OnShow", function()
-		addon:setPosition()
-	end)
 
 	DressUpFrame:HookScript("OnShow", function()
-		addon:setPosition()
+		
+		HideStuff()
+	end)
+	
+	DressUpFrame:HookScript("OnEnter", function()
+		
+		ShowStuff()
 	end)
 
-	hooksecurefunc("UpdateUIPanelPositions", function()
-		addon:setPosition()
+	DressUpModel:HookScript("OnEnter", function()
+		
+		ShowStuff()
+	end)
+
+	DressUpFrameResetButton:HookScript("OnEnter", function()
+		
+		ShowStuff()
+	end)
+
+	MaximizeMinimizeFrame.MinimizeButton:HookScript("OnEnter", function()
+		
+		ShowStuff()
+	end)
+
+	WorldFrame:HookScript("OnEnter", function()
+		
+		HideStuff()
 	end)
 end
+
+-- SCRIPTS
+
+frame:SetScript("OnEvent", function(self, event, arg1)
+	
+	if event == "ADDON_LOADED" and arg1 == "daftUITweaks" then
+		
+		addonTable.db = daftUITweaksDB
+		
+        if addonTable.db.ENABLE_DRESSUP then
+            
+            Setup()
+		end
+		
+		frame:SetScript("OnEvent", function(self, event, ...) 
+		
+			if event == "PLAYER_ENTERING_WORLD" then
+				
+				if addonTable.db.DRESSUP_MOUSEOVER then
+					SetupMouseover()
+				end
+				
+				DressUpFrame:SetScale(addonTable.db.DRESSUP_SCALE)
+			end
+		end)
+	
+	
+		--Hooks
+	
+		CharacterFrame:HookScript("OnShow", function()
+			SetPosition()
+		end)
+	
+		DressUpFrame:HookScript("OnShow", function()
+			SetPosition()
+		end)
+	
+		hooksecurefunc("UpdateUIPanelPositions", function()
+			SetPosition()
+		end)
+	
+		frame:UnregisterEvent("ADDON_LOADED")
+	end
+end)

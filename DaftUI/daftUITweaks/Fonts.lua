@@ -1,14 +1,22 @@
 local addonName, addonTable = ... 
-local addon = CreateFrame("Frame")
+local frame = CreateFrame("Frame")
 
-if addonTable.ENABLE_FONTS then
 
-    
+-- EVENTS
+
+frame:RegisterEvent("ADDON_LOADED")
+
+
+-- FUNCTIONS
+
+local function SetupFonts()
+
+
     -- EVENTS
     
-    addon:RegisterEvent("PLAYER_ENTERING_WORLD")
-    addon:RegisterEvent("UNIT_ENTERED_VEHICLE")
-    addon:RegisterEvent("UNIT_EXITED_VEHICLE")
+    frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+    frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
+    frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 
 
     -- FUNCTIONS
@@ -70,7 +78,7 @@ if addonTable.ENABLE_FONTS then
 
     -- SCRIPTS
 
-    addon:SetScript("OnEvent", function(self, event, ...) 
+    frame:SetScript("OnEvent", function(self, event, ...) 
 		
 		if event == "PLAYER_ENTERING_WORLD" then
 			
@@ -97,5 +105,22 @@ if addonTable.ENABLE_FONTS then
     hooksecurefunc("TargetFrame_CheckClassification", StyleFonts)
     hooksecurefunc("TargetofTarget_Update", StyleFonts)
     hooksecurefunc("PetActionButton_OnUpdate", StyleButtonFonts)
-
 end
+
+
+-- SCRIPTS
+
+frame:SetScript("OnEvent", function(self, event, arg1)
+	
+	if event == "ADDON_LOADED" and arg1 == "daftUITweaks" then
+		
+		addonTable.db = daftUITweaksDB
+		
+        if addonTable.db.ENABLE_FONTS then
+            
+            SetupFonts()
+        end
+	
+		frame:UnregisterEvent("ADDON_LOADED")
+	end
+end)

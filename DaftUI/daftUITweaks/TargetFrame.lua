@@ -1,28 +1,75 @@
 local addonName, addonTable = ... 
-local addon = CreateFrame("Frame")
+local frame = CreateFrame("Frame")
 
-if addonTable.ENABLE_TARGETFRAME then
 
-    -- FUNCTIONS
+-- EVENTS
+
+frame:RegisterEvent("ADDON_LOADED")
+
+-- FUNCTIONS
+
+local function SetupTargetRoleIcon()
+
+        frame:RegisterEvent("PLAYER_TARGET_CHANGED")
     
-    function StyleTargetFrame()
-
-        TargetFrameTextureFrameName:SetVertexColor(1, 1, 1)
-        TargetFrameTextureFrameName:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
-
-        TargetFrameTextureFrameLevelText:SetVertexColor(1, 1, 1)
-        TargetFrameTextureFrameLevelText:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
-        
-        TargetFrameToTTextureFrameName:SetVertexColor(1, 1, 1)
-        TargetFrameToTTextureFrameName:SetFont("Fonts\\ARIALN.ttf", 13, "THINOUTLINE", "")
-    end
-
+        frame:SetScript("OnEvent", function(self, event, ...)
     
-    -- HOOKS
+            if not UnitInParty("target") and not UnitInRaid("target") then 
+                TargetRoleIcon:Hide()
+                return
+            end
+            
+            local role = UnitGroupRolesAssigned("target")
+    
+            TargetRoleIconTexture:ClearAllPoints()
+            
+            if role == "DAMAGER" then
+                TargetRoleIconTexture:SetTexCoord(0.3125, 0.34375, 0.3125, 0.640625, 0.609375, 0.343375, 0.609375, 0.64025)
+                TargetRoleIcon:Show()
+            
+            elseif role == "HEALER" then
+                TargetRoleIconTexture:SetTexCoord(0.3125, 0.015625, 0.3125, 0.3125, 0.609375, 0.015625, 0.609375, 0.3125)
+                TargetRoleIcon:Show()
+            
+            elseif role == "TANK" then
+                TargetRoleIconTexture:SetTexCoord(0, 0.34375, 0, 0.640625, 0.296875, 0.34375, 0.29675, 0.640625)
+                TargetRoleIcon:Show()
+            
+            else
+                TargetRoleIcon:Hide()
+            end
+            
+            TargetRoleIconTexture:SetAllPoints()
+                
+        end)
+    
+        CreateFrame("Frame","TargetRoleIcon",TargetFrame)
+            TargetRoleIcon:SetWidth(19)
+            TargetRoleIcon:SetHeight(19)
+            TargetRoleIcon:SetPoint("CENTER",17,31)
+            TargetRoleIcon:CreateTexture("TargetRoleIconTexture")
+            TargetRoleIconTexture:SetAllPoints()
+            TargetRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES")
+            TargetRoleIcon:Hide()
 
-    hooksecurefunc('TargetFrame_CheckDead', StyleTargetFrame)
-    hooksecurefunc('TargetFrame_Update', StyleTargetFrame)
-    hooksecurefunc('TargetFrame_CheckFaction', StyleTargetFrame)
-    hooksecurefunc('TargetFrame_CheckClassification', StyleTargetFrame)
-    hooksecurefunc('TargetofTarget_Update', StyleTargetFrame)
 end
+
+-- SCRIPTS
+
+frame:SetScript("OnEvent", function(self, event, arg1)
+	
+	if event == "ADDON_LOADED" and arg1 == "daftUITweaks" then
+		
+		addonTable.db = daftUITweaksDB
+		
+        if addonTable.db.TARGET_ROLE then
+            
+            SetupTargetRoleIcon()
+        end
+	
+		frame:UnregisterEvent("ADDON_LOADED")
+	end
+end)
+
+
+
