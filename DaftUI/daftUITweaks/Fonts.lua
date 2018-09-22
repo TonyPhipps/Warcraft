@@ -104,7 +104,7 @@ local function SetupFonts()
     hooksecurefunc("TargetFrame_CheckFaction", StyleFonts)
     hooksecurefunc("TargetFrame_CheckClassification", StyleFonts)
     hooksecurefunc("TargetofTarget_Update", StyleFonts)
-    hooksecurefunc("PetActionButton_OnUpdate", StyleButtonFonts)
+    --hooksecurefunc("PetActionButton_OnUpdate", StyleButtonFonts)
 end
 
 
