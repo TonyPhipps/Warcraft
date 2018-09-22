@@ -3,6 +3,11 @@ local addon = CreateFrame("Frame")
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+local function HasSoulstone()
+	local options = GetSortedSelfResurrectOptions()
+	return options and options[1] and options[1].name
+end
+
 local function RegisterEvents()
 	
 	if addonTable.INVITE then
@@ -320,6 +325,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.RELEASE_PVP then
 		
 		if event == 'PLAYER_DEAD' then
+		
 		local isInstance, instanceType = IsInInstance()
 		
 			if HasSoulstone() then
