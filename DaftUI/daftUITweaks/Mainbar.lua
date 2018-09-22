@@ -79,12 +79,10 @@ end
 local function HideMenu()
 	
 	for _, MicroButton in pairs(MicroButtonArray) do
-				
-		_G[MicroButton]:Hide()
 
-		_G[MicroButton]:SetScript("OnEvent", function(self, event, arg1)
-			_G[MicroButton]:Hide()
-		end)
+		_G[MicroButton]:ClearAllPoints()
+		_G[MicroButton]:SetPoint("LEFT", WorldFrame, "RIGHT", 0, 0)
+		--_G[MicroButton]:Hide() -- Repeated achievement frame errors
 	end
 end
 
