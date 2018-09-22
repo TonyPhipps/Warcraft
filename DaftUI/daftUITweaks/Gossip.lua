@@ -13,6 +13,7 @@ local function Setup()
 	frame:RegisterEvent("QUEST_COMPLETE")
 	frame:RegisterEvent("QUEST_FINISHED")
 	frame:RegisterEvent("QUEST_PROGRESS")
+	frame:RegisterEvent("ITEM_TEXT_READY")
 end
 
 -- FUNCTIONS
@@ -40,6 +41,10 @@ local function PrintGossip()
 	if GossipFrame:IsShown() then
 		DEFAULT_CHAT_FRAME:AddMessage(GossipFrameNpcNameText:GetText() .. ' says, "' .. GossipGreetingText:GetText() .. '"', "MONSTER_SAY")
 	end
+
+	if ItemTextFrame:IsShown() then
+		DEFAULT_CHAT_FRAME:AddMessage(ItemTextFrame.TitleText:GetText() .. ' says, "' .. ItemTextGetText() .. '"', "MONSTER_SAY")
+	end
 end
 
 
@@ -64,7 +69,8 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 					or event == "QUEST_COMPLETE"
 					or event == "QUEST_FINISHED"
 					or event == "QUEST_GREETING"
-					or event == "QUEST_PROGRESS" then
+					or event == "QUEST_PROGRESS"
+					or event == "ITEM_TEXT_READY" then
 		
 						PrintGossip()
 					end
