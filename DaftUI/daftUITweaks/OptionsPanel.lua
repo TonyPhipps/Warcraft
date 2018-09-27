@@ -163,6 +163,8 @@ Options:SetScript("OnShow", function(self)
 		end)
     
     function self:refresh()
+		UIFADE_IN:SetValue(daftUITweaksDB.UIFADE_IN)
+		UIFADE_OUT:SetValue(daftUITweaksDB.UIFADE_OUT)
 		UICOLORS_CUSTOM_R:SetValue(daftUITweaksDB.UICOLORS_CUSTOM_R)
 		UICOLORS_CUSTOM_G:SetValue(daftUITweaksDB.UICOLORS_CUSTOM_G)
 		UICOLORS_CUSTOM_B:SetValue(daftUITweaksDB.UICOLORS_CUSTOM_B)
