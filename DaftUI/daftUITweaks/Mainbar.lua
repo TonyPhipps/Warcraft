@@ -82,8 +82,21 @@ local function HideMenu()
 
 		_G[MicroButton]:ClearAllPoints()
 		_G[MicroButton]:SetPoint("LEFT", WorldFrame, "RIGHT", 0, 0)
-		--_G[MicroButton]:Hide() -- Repeated achievement frame errors
+		
+		if MicroButton ~= "AchievementMicroButton" then -- Avoids errors with AchievementMicroButton_Update
+			_G[MicroButton]:HookScript("OnShow", function() 
+				_G[MicroButton]:Hide()
+			end)
+		end
 	end
+
+	TalentMicroButtonAlert:HookScript("OnShow", function() 
+		TalentMicroButtonAlert:Hide()
+	end)
+
+	CharacterMicroButtonAlert:HookScript("OnShow", function() 
+		CharacterMicroButtonAlert:Hide()
+	end)
 end
 
 local function HideButtonText()
