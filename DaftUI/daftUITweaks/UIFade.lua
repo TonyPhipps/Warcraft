@@ -9,16 +9,19 @@ frame:RegisterEvent("ADDON_LOADED")
 
 local function FadeUI()
 
-	if addonTable.db.ENABLE_UIFADE then
+	if not CinematicFrame:IsShown() 
+	and not MovieFrame:IsShown() then
 
-		if UnitAffectingCombat("Player") -- UIFrameFadeIn causes access violation in combat
+		if UnitAffectingCombat("Player")
 		or InCombatLockdown() then
 			UIParent:SetAlpha(addonTable.db.UIFADE_IN)
 			return
 		else
 		
-			MouseFrame = false
+			local MouseFrame = false
+			
 			if GetMouseFocus() then
+				
 				MouseFrame = GetMouseFocus():GetName()
 			end
 			
@@ -35,8 +38,12 @@ local function FadeUI()
 			or RolePollPopup:IsShown()
 			or ReadyCheckFrame:IsShown()
 			or BonusRollFrame:IsShown()
-			or QuestLogPopupDetailFrame:IsShown()
-			or GameTooltipTextLeft1:GetText()
+			or QuestFrame:IsShown()
+			or TalkingHeadFrame:IsShown()
+			or InterfaceOptionsFrame:IsShown()
+			or GameTooltip:IsShown()
+			or RaidWarningFrame:IsShown()
+			or SubZoneTextFrame:IsShown()
 			or UnitCastingInfo("Player")
 			or UnitCastingInfo("Vehicle")
 			or UnitChannelInfo("Player")
@@ -47,13 +54,21 @@ local function FadeUI()
 			or MouseIsOver(ChatFrame3)
 			or MouseIsOver(ChatFrame4) 
 			or MouseFrame ~= "WorldFrame" then
-				if not CinematicFrame:IsShown() and not MovieFrame:IsShown() then
-					UIFrameFadeIn(UIParent, 0.5, UIParent:GetAlpha(), addonTable.db.UIFADE_IN)
-				end
+				
+				local fadeInfo = {}
+				fadeInfo.mode = "IN"
+				fadeInfo.startAlpha = UIParent:GetAlpha()
+				fadeInfo.timeToFade = 0.5
+				fadeInfo.endAlpha = addonTable.db.UIFADE_IN
+				UIFrameFade(UIParent, fadeInfo)
 			else
-				if not CinematicFrame:IsShown() and not MovieFrame:IsShown() then
-					UIFrameFadeOut(UIParent, 5, UIParent:GetAlpha(), addonTable.db.UIFADE_OUT)
-				end
+
+				local fadeInfo = {}
+				fadeInfo.mode = "OUT"
+				fadeInfo.startAlpha = UIParent:GetAlpha()
+				fadeInfo.timeToFade = 3.0
+				fadeInfo.endAlpha = addonTable.db.UIFADE_OUT
+				UIFrameFade(UIParent, fadeInfo)
 			end
 		end
 	end
@@ -74,13 +89,17 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 		frame:SetScript("OnEvent", function(self, event)
 	
 			if event == "PLAYER_ENTER_COMBAT" then
+				
 				FadeUI()
 			end
 		end)
 	
 		frame:SetScript("OnUpdate", function()
-	
-			FadeUI()
+			
+			if addonTable.db.ENABLE_UIFADE then
+				
+				FadeUI()
+			end
 		end)
 
 		frame:UnregisterEvent("ADDON_LOADED")
