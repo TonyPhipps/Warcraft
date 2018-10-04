@@ -1,8 +1,0 @@
-## Interface: 70300
-## Title: daftAuction
-## Notes: A few little auction house selling helpers.
-## Author: Daftsage - US Emerald Dream
-## Version: 70300.1
-
-daftAuction.lua
-Options.lua

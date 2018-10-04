@@ -1,8 +1,0 @@
-## Interface: 70100
-## Title: daftMinimap
-## Author: Daftwise - US Destromath
-## Notes: Tweaks to minimap according to Daft's liking.
-## Version: 70100.3
-
-daftMinimap.lua
-Options.lua
