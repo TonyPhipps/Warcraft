@@ -1,6 +1,6 @@
 ## Interface: 80000
 ## Title: daftUITweaks
-## Author: Daftsage - US Emerald Dream
+## Author: Daftwise - US Destromath
 ## Notes: Quality of life tweaks to the default UI.
 ## SavedVariables: daftUITweaksDB
 ## Version: 80000.6.3
