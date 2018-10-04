@@ -25,11 +25,10 @@ frame:RegisterEvent("ADDON_LOADED")
 
 			PlayerPortrait:Hide()
 
-			if (CastingBarFrame.Icon:GetTexture() == "INTERFACE\\ICONS\\thumbsdown") -- fixes "not found" error
-			or (CastingBarFrame.Icon:GetTexture() == "Portrait2")
-			or (CastingBarFrame.Icon:GetTexture() == "Interface\Icons\pet_type_undead") then
+			if (CastingBarFrame.Icon:GetTexture() == "456031") then -- avoid some problem icons
 				return
 			else
+				--print(CastingBarFrame.Icon:GetTexture()) -- DEBUG
 				SetPortraitToTexture(CastingBarFrame.Icon, CastingBarFrame.Icon:GetTexture())
 			end
 		end
