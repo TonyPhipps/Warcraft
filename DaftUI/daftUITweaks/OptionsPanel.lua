@@ -86,6 +86,18 @@ Options:SetScript("OnShow", function(self)
 			addonTable.db.ENABLE_UIFADE = self:GetChecked()
 		end)
 
+	local UIFADE_NAMES = CreateCheckbox("Fade Names", "Hide names when UI is faded out", 16, -4, ENABLE_UIFADE, Options)
+		UIFADE_NAMES:SetChecked(addonTable.db.UIFADE_NAMES)
+		UIFADE_NAMES:SetScript("OnClick", function(self)
+			addonTable.db.UIFADE_NAMES = self:GetChecked()
+		end)
+
+	local UIFADE_MINIMAP = CreateCheckbox("Fade Minimap Icons", "Hide player arrow, gathering nodes, artifact/quest regions, quest pointer arrow when UI is faded out.", 0, -4, UIFADE_NAMES, Options)
+		UIFADE_MINIMAP:SetChecked(addonTable.db.UIFADE_MINIMAP)
+		UIFADE_MINIMAP:SetScript("OnClick", function(self)
+			addonTable.db.UIFADE_MINIMAP = self:GetChecked()
+		end)
+
     local UIFADE_IN = CreateSlider("$parentFADEIN", Options, "0.1", "1.0", "Fade In Alpha", "Adjusts the alpha when UI is faded in.")
 		UIFADE_IN:SetPoint("LEFT", ENABLE_UIFADE.label, "RIGHT", 80, 0)
 		UIFADE_IN:SetMinMaxValues(0.1, 1.0)
@@ -106,13 +118,13 @@ Options:SetScript("OnShow", function(self)
             addonTable.db.UIFADE_OUT = value
 		end)
 
-	local ENABLE_UICOLORS = CreateCheckbox("Colorize UI", "Set a hue on multiple UI elements based on character class OR a custom color.", 0, -40, ENABLE_UIFADE, Options)
+	local ENABLE_UICOLORS = CreateCheckbox("Colorize UI", "Set a hue on multiple UI elements based on character class OR a custom color.", -16, -40, UIFADE_MINIMAP, Options)
 		ENABLE_UICOLORS:SetChecked(addonTable.db.ENABLE_UICOLORS)
 		ENABLE_UICOLORS:SetScript("OnClick", function(self)
 			addonTable.db.ENABLE_UICOLORS = self:GetChecked()
 		end)
 
-	local UICOLORS_CUSTOM = CreateCheckbox("Use Custom Colors", "Use a custom color, rather than class colors.", 0, -4, ENABLE_UICOLORS, Options)
+	local UICOLORS_CUSTOM = CreateCheckbox("Use Custom Colors", "Use a custom color, rather than class colors.", 16, -4, ENABLE_UICOLORS, Options)
 		UICOLORS_CUSTOM:SetChecked(addonTable.db.UICOLORS_CUSTOM)
 		UICOLORS_CUSTOM:SetScript("OnClick", function(self)
 			addonTable.db.UICOLORS_CUSTOM = self:GetChecked()
@@ -683,6 +695,47 @@ OptionsMinimap:SetScript("OnShow", function(self)
     
     function self:refresh()
 		MINIMAP_SCALE:SetValue(daftUITweaksDB.MINIMAP_SCALE)
+    end
+
+	self:refresh()
+	self:SetScript("OnShow", nil)
+end)
+
+-- Raid Panel
+local OptionsRaid = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+	OptionsRaid.name = "Raid Frames"
+	OptionsRaid.parent = addonName
+	InterfaceOptions_AddCategory(OptionsRaid, addonName)
+	OptionsRaid:Hide()
+
+OptionsRaid:SetScript("OnShow", function(self)
+
+    local title = OptionsRaid:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+		title:SetPoint("TOPLEFT", 16, -16)
+		title:SetText(addonName .. " - Raid & Compact Party Frames")
+    
+    local SubText = OptionsRaid:CreateFontString("$parentSubText", "ARTWORK", "GameFontHighlightSmall")
+		SubText:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
+		SubText:SetText(GetAddOnMetadata(addonName, "Notes"))
+    
+	local RAID_SCALE = CreateSlider("$parentRAID_SCALE", OptionsRaid, "0.1", "2.0", "Raid Scale", "Adjusts the scale of the raid and compact party frames.")
+		RAID_SCALE:SetPoint("TOPLEFT", SubText, "BOTTOMLEFT", 0, -16)
+		RAID_SCALE:SetMinMaxValues(0.1, 2.0)
+		RAID_SCALE:SetValueStep(0.1)
+		RAID_SCALE:SetScript("OnValueChanged", function(self, value)
+			value = floor(value * 10) / 10
+			self.value:SetText(value)
+            addonTable.db.RAID_SCALE = value
+		end)
+    
+	local RAID_ANCHOR = CreateCheckbox("Anchor Raid Frames to Top Left", "Rather than leaving a space for party/target frames, move raid frames to the far upper left corner.", 0, -32, RAID_SCALE, OptionsRaid)
+		RAID_ANCHOR:SetChecked(addonTable.db.RAID_ANCHOR)
+		RAID_ANCHOR:SetScript("OnClick", function(self)
+			addonTable.db.RAID_ANCHOR = self:GetChecked()
+		end)
+    
+    function self:refresh()
+		RAID_SCALE:SetValue(daftUITweaksDB.RAID_SCALE)
     end
 
 	self:refresh()

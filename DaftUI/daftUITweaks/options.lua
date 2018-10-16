@@ -5,6 +5,8 @@ addonTable.db = {
     ENABLE_UIFADE = true,
         UIFADE_IN = 1.0,
         UIFADE_OUT = 0.0,
+        UIFADE_MINIMAP = false,
+        UIFADE_NAMES = false,
 
 
     -- Mainbar
@@ -93,7 +95,7 @@ addonTable.db = {
         GOSSIP_QUEST = true,
         GOSSIP_BOOKS = true,
         GOSSIP_GARRISON = true,
-        GOSSIP_TOCHAT = true,
+        GOSSIP_TOCHAT = false,
 
 
     -- Player Frame
@@ -105,5 +107,9 @@ addonTable.db = {
 
 
     -- Target Frame
-    TARGET_ROLE = true
+    TARGET_ROLE = true,
+
+    -- Raid Frame
+    RAID_SCALE = 1.0,
+    RAID_ANCHOR = false
 }
