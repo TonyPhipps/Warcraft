@@ -25,10 +25,10 @@ frame:RegisterEvent("ADDON_LOADED")
 
 			PlayerPortrait:Hide()
 
-			if (CastingBarFrame.Icon:GetTexture() == "456031") then -- avoid some problem icons
+			if (CastingBarFrame.Icon:GetTexture() == 456031) then -- avoid some problem icons
 				return
 			else
-				--print(CastingBarFrame.Icon:GetTexture()) -- DEBUG
+				-- print(CastingBarFrame.Icon:GetTexture()) -- DEBUG
 				SetPortraitToTexture(CastingBarFrame.Icon, CastingBarFrame.Icon:GetTexture())
 			end
 		end
