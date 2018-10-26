@@ -19,10 +19,34 @@ local NameCVarArray = {
 	"UnitNameEnemyPlayerName",
 	"UnitNameEnemyPetName",
 	"UnitNameEnemyGuardianName",
-	"UnitNameEnemyTotemName"
-}  
+	"UnitNameEnemyTotemName",
+	"UnitNameNPC"
+}
 
-local function HideFunction()
+local FrameArray = {
+	"ChatFrame1EditBox",
+	"WorldMapFrame",
+	"MailFrame",
+	"GossipFrame",
+	"GameMenuFrame",
+	"StaticPopup1",
+	"MirrorTimer1",
+	"LFGDungeonReadyPopup",
+	"LFDRoleCheckPopup",
+	"LevelUpDisplay",
+	"RolePollPopup",
+	"ReadyCheckFrame",
+	"BonusRollFrame",
+	"QuestFrame",
+	"ItemTextFrame",
+	"TalkingHeadFrame",
+	"InterfaceOptionsFrame",
+	"GameTooltip",
+	"RaidWarningFrame",
+	"SpellBookFrame",
+}
+
+local function HideFunction(fadeInfo)
 
 	local frame = CreateFrame("Frame")
 
@@ -61,10 +85,6 @@ local function ShowFunction()
 				end
 			end
 
-			for i = 1, 4 do
-				_G["CompactPartyFrameMember"..i.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
-			end
-
 			if addonTable.db.UIFADE_MINIMAP then
 				MinimapCluster:Show()
 			end
@@ -91,27 +111,17 @@ local function FadeUI()
 				
 				MouseFrame = GetMouseFocus():GetName()
 			end
+
+			local WatchedFrameShowing = false
 			
-			if ChatFrame1EditBox:IsShown()
-			or WorldMapFrame:IsShown()
-			or MailFrame:IsShown()
-			or GossipFrame:IsShown()
-			or GameMenuFrame:IsShown()
-			or StaticPopup1:IsShown()
-			or MirrorTimer1:IsShown()
-			or LFGDungeonReadyPopup:IsShown()
-			or LFDRoleCheckPopup:IsShown()
-			or LevelUpDisplay:IsShown()
-			or RolePollPopup:IsShown()
-			or ReadyCheckFrame:IsShown()
-			or BonusRollFrame:IsShown()
-			or QuestFrame:IsShown()
-			or ItemTextFrame:IsShown()
-			or TalkingHeadFrame:IsShown()
-			or InterfaceOptionsFrame:IsShown()
-			or GameTooltip:IsShown()
-			or RaidWarningFrame:IsShown()
-			or SpellBookFrame:IsShown()
+			for _, Frame in pairs(FrameArray) do
+				if _G[Frame]:IsShown() then
+					WatchedFrameShowing = true
+				end
+			end
+			
+			if 
+			WatchedFrameShowing == true
 			or UnitCastingInfo("Player")
 			or UnitCastingInfo("Vehicle")
 			or UnitChannelInfo("Player")
@@ -123,7 +133,6 @@ local function FadeUI()
 			or MouseIsOver(ChatFrame4) 
 			or MouseFrame ~= "WorldFrame" then
 				
-				
 				local fadeInfo = {}
 				fadeInfo.mode = "IN"
 				fadeInfo.startAlpha = UIParent:GetAlpha()
@@ -131,6 +140,20 @@ local function FadeUI()
 				fadeInfo.endAlpha = addonTable.db.UIFADE_IN
 				fadeInfo.finishedFunc = ShowFunction()
 				UIFrameFade(UIParent, fadeInfo)
+
+				if IsInGroup(Party) then
+					for i = 1, 5 do
+						_G["CompactPartyFrameMember"..i.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
+					end
+				end
+	
+				if IsInGroup(Raid) and not CompactPartyFrame:IsShown() then
+					for i = 1, floor(GetNumGroupMembers()/5 + 0.9) do	
+						for j = 1, 5 do
+							_G["CompactRaidGroup"..i.."Member"..j.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
+						end
+					end
+				end
 			else
 
 				local fadeInfo = {}
@@ -138,15 +161,25 @@ local function FadeUI()
 				fadeInfo.startAlpha = UIParent:GetAlpha()
 				fadeInfo.timeToFade = 3.0
 				fadeInfo.endAlpha = addonTable.db.UIFADE_OUT
-				fadeInfo.finishedFunc = HideFunction()
+				fadeInfo.finishedFunc = HideFunction(fadeInfo)
 				UIFrameFade(UIParent, fadeInfo)
-				for i = 1, 4 do
-					UIFrameFade(_G["CompactPartyFrameMember"..i.."Background"], fadeInfo)
+				
+				if IsInGroup(Party) then
+					for i = 1, 5 do
+						UIFrameFade(_G["CompactPartyFrameMember"..i.."Background"], fadeInfo)
+					end
+				end
+	
+				if IsInGroup(Raid) then
+					for i = 1, floor(GetNumGroupMembers()/5 + 0.9) do
+						for j = 1, 5 do
+							UIFrameFade(_G["CompactRaidGroup"..i.."Member"..j.."Background"], fadeInfo)
+						end
+					end
 				end
 			end
 		end
 	end
-	
 end
 
 
@@ -161,10 +194,13 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 		frame:RegisterEvent("PLAYER_ENTER_COMBAT")
 	
 		frame:SetScript("OnEvent", function(self, event)
-	
-			if event == "PLAYER_ENTER_COMBAT" then
-				
-				FadeUI()
+			
+			if addonTable.db.ENABLE_UIFADE then
+
+				if event == "PLAYER_ENTER_COMBAT" then
+					
+					FadeUI()
+				end
 			end
 		end)
 	
