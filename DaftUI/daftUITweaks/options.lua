@@ -110,6 +110,5 @@ addonTable.db = {
     TARGET_ROLE = true,
 
     -- Raid Frame
-    RAID_SCALE = 1.0,
-    RAID_ANCHOR = false
+    RAID_SCALE = 1.0
 }

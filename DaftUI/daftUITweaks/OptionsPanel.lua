@@ -728,12 +728,6 @@ OptionsRaid:SetScript("OnShow", function(self)
             addonTable.db.RAID_SCALE = value
 		end)
     
-	local RAID_ANCHOR = CreateCheckbox("Anchor Raid Frames to Top Left", "Rather than leaving a space for party/target frames, move raid frames to the far upper left corner.", 0, -32, RAID_SCALE, OptionsRaid)
-		RAID_ANCHOR:SetChecked(addonTable.db.RAID_ANCHOR)
-		RAID_ANCHOR:SetScript("OnClick", function(self)
-			addonTable.db.RAID_ANCHOR = self:GetChecked()
-		end)
-    
     function self:refresh()
 		RAID_SCALE:SetValue(daftUITweaksDB.RAID_SCALE)
     end

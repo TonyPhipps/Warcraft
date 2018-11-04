@@ -141,13 +141,12 @@ local function FadeUI()
 				fadeInfo.finishedFunc = ShowFunction()
 				UIFrameFade(UIParent, fadeInfo)
 
-				if IsInGroup(Party) then
+				if IsInGroup(Party) and not IsInGroup(Raid) then
 					for i = 1, 5 do
 						_G["CompactPartyFrameMember"..i.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
 					end
-				end
 	
-				if IsInGroup(Raid) and not CompactPartyFrame:IsShown() then
+				elseif IsInGroup(Raid) then
 					for i = 1, floor(GetNumGroupMembers()/5 + 0.9) do	
 						for j = 1, 5 do
 							_G["CompactRaidGroup"..i.."Member"..j.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
