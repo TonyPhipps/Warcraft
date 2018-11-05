@@ -146,7 +146,7 @@ local function FadeUI()
 						_G["CompactPartyFrameMember"..i.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
 					end
 	
-				elseif IsInGroup(Raid) then
+				elseif IsInGroup(Raid) and GetNumGroupMembers()>5 then
 					for i = 1, floor(GetNumGroupMembers()/5 + 0.9) do	
 						for j = 1, 5 do
 							_G["CompactRaidGroup"..i.."Member"..j.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
