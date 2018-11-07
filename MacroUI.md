@@ -65,9 +65,9 @@ Some might be textures or sub-frames you want to hide...
 * MicroButtonAndBagsBar.MicroBagBar
 * MainMenuBarArtFrame.LeftEndCap
 * MainMenuBarArtFrame.RightEndCap
-
  
 # Unlock Most UI Frames
+
 ```
 /run local f=FRAMENAME; f:SetMovable(true); f:EnableMouse(true); f:SetUserPlaced(true); f:SetScript("OnMouseDown", f.StartMoving); f:SetScript("OnMouseUp", f.StopMovingOrSizing);
 ```
