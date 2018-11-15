@@ -70,35 +70,14 @@ local function SetupMouseover()
 		DressUpFrameInset:SetAlpha(1)
 	end
 
-	DressUpFrame:HookScript("OnShow", function()
-		
-		HideStuff()
-	end)
+	DressUpFrame:HookScript("OnShow", HideStuff)
 	
-	DressUpFrame:HookScript("OnEnter", function()
-		
-		ShowStuff()
-	end)
+	DressUpFrame:HookScript("OnEnter", ShowStuff)
+	DressUpModel:HookScript("OnEnter", ShowStuff)
+	DressUpFrameResetButton:HookScript("OnEnter", ShowStuff)
+	MaximizeMinimizeFrame.MinimizeButton:HookScript("OnEnter", ShowStuff)
 
-	DressUpModel:HookScript("OnEnter", function()
-		
-		ShowStuff()
-	end)
-
-	DressUpFrameResetButton:HookScript("OnEnter", function()
-		
-		ShowStuff()
-	end)
-
-	MaximizeMinimizeFrame.MinimizeButton:HookScript("OnEnter", function()
-		
-		ShowStuff()
-	end)
-
-	WorldFrame:HookScript("OnEnter", function()
-		
-		HideStuff()
-	end)
+	WorldFrame:HookScript("OnEnter", HideStuff)
 end
 
 -- SCRIPTS
@@ -129,17 +108,9 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 	
 		--Hooks
 	
-		CharacterFrame:HookScript("OnShow", function()
-			SetPosition()
-		end)
-	
-		DressUpFrame:HookScript("OnShow", function()
-			SetPosition()
-		end)
-	
-		hooksecurefunc("UpdateUIPanelPositions", function()
-			SetPosition()
-		end)
+		CharacterFrame:HookScript("OnShow", SetPosition)
+		DressUpFrame:HookScript("OnShow", SetPosition)
+		hooksecurefunc("UpdateUIPanelPositions", SetPosition)
 	
 		frame:UnregisterEvent("ADDON_LOADED")
 	end

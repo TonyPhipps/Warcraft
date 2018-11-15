@@ -14,13 +14,17 @@ local function Setup()
 	frame:RegisterEvent("QUEST_FINISHED")
 	frame:RegisterEvent("QUEST_PROGRESS")
 	frame:RegisterEvent("ITEM_TEXT_READY")
+
 end
 
 -- FUNCTIONS
 
 local function ResizeFrame(thisFrame)
-	thisFrame:SetScale(addonTable.db.GOSSIP_SCALE)
+	
+	thisFrame:ClearAllPoints()
 	thisFrame:SetPoint("TOPLEFT", 13, -13)
+	thisFrame:SetScale(addonTable.db.GOSSIP_SCALE)
+
 end
 
 local function PrintGossip()
@@ -76,36 +80,36 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 					end
 				end)
 			end
+
+			GossipFrame:HookScript("OnShow", function(self, event)
+				ResizeFrame(self)
+			end)
+		
+			if addonTable.db.GOSSIP_QUEST then
+				
+				QuestFrame:HookScript("OnShow", function(self, event)
+					ResizeFrame(self)
+				end)
+		
+				QuestLogPopupDetailFrame:HookScript("OnShow", function(self, event)
+					ResizeFrame(self)
+				end)
+			end
+		
+			if addonTable.db.GOSSIP_BOOKS then
+				ItemTextFrame:HookScript("OnShow", function(self)
+					ResizeFrame(self)
+				end)
+			end
+		
+			if addonTable.db.GOSSIP_MERCHANT then
+					
+				MerchantFrame:HookScript("OnShow", function(self)
+					ResizeFrame(self)
+				end)
+			end
 		end
 		
-		GossipFrame:HookScript("OnShow", function(self, event)
-			ResizeFrame(self)
-		end)
-	
-		if addonTable.db.GOSSIP_QUEST then
-			
-			QuestFrame:HookScript("OnShow", function(self, event)
-				ResizeFrame(self)
-			end)
-	
-			QuestLogPopupDetailFrame:HookScript("OnShow", function(self, event)
-				ResizeFrame(self)
-			end)
-		end
-	
-		if addonTable.db.GOSSIP_BOOKS then
-			ItemTextFrame:HookScript("OnShow", function(self)
-				ResizeFrame(self)
-			end)
-		end
-	
-		if addonTable.db.GOSSIP_MERCHANT then
-				
-			MerchantFrame:HookScript("OnShow", function(self)
-				ResizeFrame(self)
-			end)
-		end
-	
 		frame:UnregisterEvent("ADDON_LOADED")
 	end
 end)

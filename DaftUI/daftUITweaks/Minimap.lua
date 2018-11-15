@@ -5,10 +5,10 @@ local frame = CreateFrame("Frame")
 -- EVENTS
 
 frame:RegisterEvent("ADDON_LOADED")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD") -- Clock loads later than ADDON_LOADED
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 
--- FUNCTIONs
+-- FUNCTIONS
 
 local function FadeFramesIn(frame)
 		
@@ -161,7 +161,6 @@ end
 
 local function Setup()
 
-	frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	frame:RegisterEvent("PLAYER_LEVEL_UP")
 
 	MinimapCluster:SetScale(addonTable.db.MINIMAP_SCALE)
