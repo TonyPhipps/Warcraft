@@ -44,6 +44,7 @@ local FrameArray = {
 	"GameTooltip",
 	"RaidWarningFrame",
 	"SpellBookFrame",
+	"TargetFrame"
 }
 
 local function HideFunction(fadeInfo)
@@ -96,10 +97,12 @@ end
 local function FadeUI()
 
 	if not CinematicFrame:IsShown() 
-	and not MovieFrame:IsShown() then
+	and not MovieFrame:IsShown()
+	and addonTable.db.ENABLE_UIFADE then
 
 		if UnitAffectingCombat("Player")
 		or InCombatLockdown() then
+			
 			UIParent:SetAlpha(addonTable.db.UIFADE_IN)
 			ShowFunction()
 			return
@@ -120,8 +123,7 @@ local function FadeUI()
 				end
 			end
 			
-			if 
-			WatchedFrameShowing == true
+			if WatchedFrameShowing == true
 			or UnitCastingInfo("Player")
 			or UnitCastingInfo("Vehicle")
 			or UnitChannelInfo("Player")
@@ -190,28 +192,17 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 
 		addonTable.db = _G.daftUITweaksDB
 		
-		frame:RegisterEvent("PLAYER_ENTER_COMBAT")
-	
-		frame:SetScript("OnEvent", function(self, event)
-			
-			if addonTable.db.ENABLE_UIFADE then
+		if addonTable.db.ENABLE_UIFADE then
 
-				if event == "PLAYER_ENTER_COMBAT" then
-					
-					FadeUI()
-				end
-			end
-		end)
-	
-		frame:SetScript("OnUpdate", function()
-			
-			if addonTable.db.ENABLE_UIFADE then
-				
-				FadeUI()
-			end
-		end)
+			frame:RegisterEvent("PLAYER_REGEN_DISABLED")
+			frame:SetScript("OnUpdate", FadeUI)
+		end
 
 		frame:UnregisterEvent("ADDON_LOADED")
+	
+	elseif event == "PLAYER_REGEN_DISABLED" then
+					
+		FadeUI()
 	end
 end)
 
