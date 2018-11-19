@@ -192,11 +192,8 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 
 		addonTable.db = _G.daftUITweaksDB
 		
-		if addonTable.db.ENABLE_UIFADE then
-
-			frame:RegisterEvent("PLAYER_REGEN_DISABLED")
-			frame:SetScript("OnUpdate", FadeUI)
-		end
+		frame:RegisterEvent("PLAYER_REGEN_DISABLED")
+		frame:SetScript("OnUpdate", FadeUI)
 
 		frame:UnregisterEvent("ADDON_LOADED")
 	
