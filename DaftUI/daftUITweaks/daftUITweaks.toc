@@ -18,4 +18,5 @@ UIColors.lua
 UIFade.lua
 Fonts.lua
 RaidFrame.lua
+## Timer.lua
 ## BossFrame.lua
