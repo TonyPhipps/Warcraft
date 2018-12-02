@@ -65,6 +65,11 @@ local function ChangeChatFrames()
 		
 		if ChatFrame then
 			
+			if addonTable.SCREEN_CLAMP_FIX then
+			
+				ChatFrame:SetClampRectInsets(50,-50,-50,50)
+			end
+
 			if addonTable.DYNAMIC_SCROLL then
 				
 				ChatFrame:EnableMouseWheel(true)
@@ -122,18 +127,7 @@ local function ChangeChatFrames()
 		end
 		
 	end
-
 end
-
-local function AdjustScreenClamp()
-	
-	for i = 1, NUM_CHAT_WINDOWS do
-		
-		local ChatFrame = _G["ChatFrame"..i]
-		ChatFrame:SetClampRectInsets(50,-50,-50,50)
-	end
-end
-
 
 local function EnableClearCommand()
 	
@@ -158,16 +152,6 @@ local function EnableShortReloadCommand()
 		
 		ReloadUI()
 	end
-end
-
-
-local function EnableFading(i)
-	
-	local ChatFrame = _G["ChatFrame"..i]
-	
-	ChatFrame:SetFading(true)
-	ChatFrame:SetTimeVisible(10)
-	ChatFrame:SetFadeDuration(10)
 end
 
 
@@ -269,10 +253,7 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 			EnableShortReloadCommand()
 		end
 
-		if addonTable.SCREEN_CLAMP_FIX then
-			
-			AdjustScreenClamp()
-		end
+		ChangeChatFrames()
 	end
 
 	if event == "PLAYER_ENTERING_WORLD" then
@@ -295,8 +276,6 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 		if addonTable.OLD_LOOT_MESSAGE then
 			
 			RevertGoldMessage()
-		end
-
-		ChangeChatFrames()
+		end		
 	end
 end)
