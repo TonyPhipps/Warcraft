@@ -96,6 +96,13 @@ end
 
 local function FadeUI()
 
+	ProtectedFrameShown = false
+	
+	if IsAddOnLoaded("Blizzard_Communities")
+	and not ProtectedFrameShown then
+		ProtectedFrameShown = AddCommunitiesFlow_IsShown()
+	end
+	
 	if not CinematicFrame:IsShown() 
 	and not MovieFrame:IsShown()
 	and addonTable.db.ENABLE_UIFADE then
@@ -110,9 +117,12 @@ local function FadeUI()
 		
 			local MouseFrame = false
 			
-			if GetMouseFocus() then
+			if GetMouseFocus() 
+			and not ProtectedFrameShown
+			and not StoreFrame_IsShown()
+			then
 				
-				MouseFrame = GetMouseFocus():GetName()
+					MouseFrame = GetMouseFocus():GetName()
 			end
 
 			local WatchedFrameShowing = false
