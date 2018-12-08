@@ -116,8 +116,8 @@ local function ChangeChatFrames()
 			if addonTable.MESSAGE_FADING then
 				
 				ChatFrame:SetFading(true)
-				ChatFrame:SetTimeVisible(10)
-				ChatFrame:SetFadeDuration(10)
+				ChatFrame:SetTimeVisible(20)
+				ChatFrame:SetFadeDuration(20)
 			end
 			
 			if addonTable.STRATA_ABOVE_MAINBAR then
@@ -163,10 +163,11 @@ local function DetectUrls()
 		
 		if (message) then
 			
-			message = gsub(message, '([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])', '|cffffffff|Hurl:%1|h[%1]|h|r')
-			message = gsub(message, " ([_A-Za-z0-9-%.]+@[_A-Za-z0-9-]+%.+[_A-Za-z0-9-%.]+)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r")
-			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?:%d%d?%d?%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r")
-			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r")
+			 -- These semicolons are required, or it sends the link like 20 times
+			message = gsub(message, '([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])', '|cffffffff|Hurl:%1|h[%1]|h|r');
+			message = gsub(message, " ([_A-Za-z0-9-%.]+@[_A-Za-z0-9-]+%.+[_A-Za-z0-9-%.]+)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
+			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?:%d%d?%d?%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
+			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
 			return newAddMsg[frame:GetName()](frame, message, ...)
 		end
 	end
