@@ -163,7 +163,7 @@ local function DetectUrls()
 		
 		if (message) then
 			
-			 -- These semicolons are required, or it sends the link like 20 times
+			-- These semicolons are required, or it sends the link like 20 times
 			message = gsub(message, '([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])', '|cffffffff|Hurl:%1|h[%1]|h|r');
 			message = gsub(message, " ([_A-Za-z0-9-%.]+@[_A-Za-z0-9-]+%.+[_A-Za-z0-9-%.]+)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
 			message = gsub(message, " (%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?:%d%d?%d?%d?%d?)%s?", "|cffffffff|Hurl:%1|h[%1]|h|r");
@@ -177,7 +177,7 @@ local function DetectUrls()
 		if i ~= 2 then
 			
 			local frame = _G[format("%s%d", "ChatFrame", i)]
-			newAddMsg[format("%s%d", "ChatFrame", i)] = frame.AddMessage
+			newAddMsg[format("%s%d", "ChatFrame", i)] = frame.AddMessage;
 			frame.AddMessage = AddMessage
 		end
 	end
