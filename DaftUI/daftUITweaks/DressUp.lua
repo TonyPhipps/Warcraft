@@ -57,6 +57,7 @@ local function SetupMouseover()
 		DressUpFrameOutfitDropDown:SetAlpha(0)
 		MaximizeMinimizeFrame:SetAlpha(0)
 		DressUpFrameInset:SetAlpha(0)
+		DressUpFrame.NineSlice:SetAlpha(0)
 	end
 
 	local function ShowStuff()
@@ -68,6 +69,7 @@ local function SetupMouseover()
 		DressUpFrameOutfitDropDown:SetAlpha(1)
 		MaximizeMinimizeFrame:SetAlpha(1)
 		DressUpFrameInset:SetAlpha(1)
+		DressUpFrame.NineSlice:SetAlpha(1)
 	end
 
 	DressUpFrame:HookScript("OnShow", HideStuff)
