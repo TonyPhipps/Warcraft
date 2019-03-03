@@ -67,7 +67,8 @@ local function ChangeChatFrames()
 			
 			if addonTable.SCREEN_CLAMP_FIX then
 			
-				ChatFrame:SetClampRectInsets(50,-50,-50,50)
+				--ChatFrame:SetClampRectInsets(50,-50,-50,50)
+				ChatFrame:SetClampedToScreen(false)
 			end
 
 			if addonTable.DYNAMIC_SCROLL then
