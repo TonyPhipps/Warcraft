@@ -521,20 +521,20 @@ OptionsGossipDressup:SetScript("OnShow", function(self)
 			addonTable.db.ENABLE_GOSSIP = self:GetChecked()
 		end)
 
-	local GOSSIP_SCALE = CreateSlider("$parentGOSSIP_SCALE", OptionsGossipDressup, "0.1", "2.0", "Gossip Scale", "Adjusts the scale of all gossip frames.")
-		GOSSIP_SCALE:SetPoint("TOP", UIFADE_IN, "BOTTOM", 0, -44)
+	local GOSSIP_MERCHANT = CreateCheckbox("Include Merchant Windows", "", 16, -4, ENABLE_GOSSIP, OptionsGossipDressup)
+		GOSSIP_MERCHANT:SetChecked(addonTable.db.GOSSIP_MERCHANT)
+		GOSSIP_MERCHANT:SetScript("OnClick", function(self)
+			addonTable.db.GOSSIP_MERCHANT = self:GetChecked()
+		end)
+
+		local GOSSIP_SCALE = CreateSlider("$parentGOSSIP_SCALE", GOSSIP_MERCHANT, "0.1", "2.0", "Gossip Scale", "Adjusts the scale of all gossip frames.")
+		GOSSIP_SCALE:SetPoint("LEFT", ENABLE_GOSSIP, "RIGHT", 150, 0)
 		GOSSIP_SCALE:SetMinMaxValues(0.1, 2.0)
 		GOSSIP_SCALE:SetValueStep(0.1)
 		GOSSIP_SCALE:SetScript("OnValueChanged", function(self, value)
 			value = floor(value * 10) / 10
 			self.value:SetText(value)
             addonTable.db.GOSSIP_SCALE = value
-		end)
-
-	local GOSSIP_MERCHANT = CreateCheckbox("Include Merchant Windows", "", 16, -4, ENABLE_GOSSIP, OptionsGossipDressup)
-		GOSSIP_MERCHANT:SetChecked(addonTable.db.GOSSIP_MERCHANT)
-		GOSSIP_MERCHANT:SetScript("OnClick", function(self)
-			addonTable.db.GOSSIP_MERCHANT = self:GetChecked()
 		end)
 
 	local GOSSIP_QUEST = CreateCheckbox("Include Quest Windows", "", 0, -4, GOSSIP_MERCHANT, OptionsGossipDressup)
@@ -561,20 +561,20 @@ OptionsGossipDressup:SetScript("OnShow", function(self)
 			addonTable.db.ENABLE_DRESSUP = self:GetChecked()
 		end)
 
-	local DRESSUP_SCALE = CreateSlider("$parentDRESSUP_SCALE", OptionsGossipDressup, "0.1", "2.0", "Dressup Scale", "Adjusts the scale of the Dressup frames.")
-		DRESSUP_SCALE:SetPoint("TOP", GOSSIP_SCALE, "BOTTOM", 0, -136)
+	local DRESSUP_MOUSEOVER = CreateCheckbox("Hide Frame Until Mouseover", "", 16, -4, ENABLE_DRESSUP, OptionsGossipDressup)
+		DRESSUP_MOUSEOVER:SetChecked(addonTable.db.DRESSUP_MOUSEOVER)
+		DRESSUP_MOUSEOVER:SetScript("OnClick", function(self)
+			addonTable.db.DRESSUP_MOUSEOVER = self:GetChecked()
+		end)
+
+		local DRESSUP_SCALE = CreateSlider("$parentDRESSUP_SCALE", OptionsGossipDressup, "0.1", "2.0", "Dressup Scale", "Adjusts the scale of the Dressup frames.")
+		DRESSUP_SCALE:SetPoint("LEFT", ENABLE_DRESSUP, "RIGHT", 150, 0)
 		DRESSUP_SCALE:SetMinMaxValues(0.1, 2.0)
 		DRESSUP_SCALE:SetValueStep(0.1)
 		DRESSUP_SCALE:SetScript("OnValueChanged", function(self, value)
 			value = floor(value * 10) / 10
 			self.value:SetText(value)
             addonTable.db.DRESSUP_SCALE = value
-		end)
-
-	local DRESSUP_MOUSEOVER = CreateCheckbox("Hide Frame Until Mouseover", "", 16, -4, ENABLE_DRESSUP, OptionsGossipDressup)
-		DRESSUP_MOUSEOVER:SetChecked(addonTable.db.DRESSUP_MOUSEOVER)
-		DRESSUP_MOUSEOVER:SetScript("OnClick", function(self)
-			addonTable.db.DRESSUP_MOUSEOVER = self:GetChecked()
 		end)
 
 	local DRESSUP_CENTER = CreateCheckbox("Center Dressup Frame", "", 0, -4, DRESSUP_MOUSEOVER, OptionsGossipDressup)
@@ -618,7 +618,7 @@ OptionsMinimap:SetScript("OnShow", function(self)
 		end)
 
 	local MINIMAP_SCALE = CreateSlider("$parentMINIMAP_SCALE", OptionsMinimap, "0.1", "2.0", "Minimap Scale", "Adjusts the scale of the minimap.")
-		MINIMAP_SCALE:SetPoint("LEFT", ENABLE_MINIMAP.label, "RIGHT", 30, 0)
+		MINIMAP_SCALE:SetPoint("RIGHT", ENABLE_MINIMAP.label, "LEFT", 150, 0)
 		MINIMAP_SCALE:SetMinMaxValues(0.1, 2.0)
 		MINIMAP_SCALE:SetValueStep(0.1)
 		MINIMAP_SCALE:SetScript("OnValueChanged", function(self, value)

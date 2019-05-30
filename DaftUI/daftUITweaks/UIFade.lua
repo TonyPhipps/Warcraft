@@ -39,7 +39,7 @@ local FrameArray = {
 	"BonusRollFrame",
 	"QuestFrame",
 	"ItemTextFrame",
-	"TalkingHeadFrame",
+	--"TalkingHeadFrame",
 	"InterfaceOptionsFrame",
 	"GameTooltip",
 	"RaidWarningFrame",
