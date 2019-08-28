@@ -1,6 +1,6 @@
 Wow UI Source
 
-https://github.com/tekkub/wow-ui-source/
+https://github.com/tomrus88/BlizzardInterfaceCode
 
 Print Name of Frame Under Mouse
 ```
