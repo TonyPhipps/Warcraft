@@ -192,14 +192,15 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		
 		if event == "MERCHANT_SHOW" then
 			for bag = 0, 4 do
-				for slot = 1, GetContainerNumSlots(bag) do
-					local _, _, locked, _, _, _, link = GetContainerItemInfo(bag, slot)
+				for slot = 1, C_Container.GetContainerNumSlots(bag) do
+					local ItemInfo = C_Container.GetContainerItemInfo( bag, slot) 
+					--local _, _, isLocked, _, _, _, hyperlink = C_Container.GetContainerItemInfo(bag, slot)
 					
-					if link ~= nil then
-						local _, _, quality = GetItemInfo(link)
+					if ItemInfo then
+						local _, _, quality = GetItemInfo(ItemInfo.hyperlink)
 						
-						if quality == 0 and not locked then
-							UseContainerItem(bag, slot)
+						if quality == 0 and not ItemInfo.isLocked then
+							C_Container.UseContainerItem(bag, slot)
 						end
 					end
 				end
@@ -292,7 +293,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 				
 				for i = 1, STATICPOPUP_NUMDIALOGS do
 					local dialog = _G['StaticPopup' .. i]
-					print(dialog.which)
+					--print(dialog.which)
 					
 					if (dialog.which == 'PARTY_INVITE') then
 						dialog.inviteAccepted = 1
