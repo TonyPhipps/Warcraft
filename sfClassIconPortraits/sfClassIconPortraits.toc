@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: sfClassIconPortraits
+## Notes: Replaces unit portraits with their class icon for player characters.
+## Author: Daftwise - US Destromath
+## Version: 70000.1
+
+
+sfClassIconPortraits.lua

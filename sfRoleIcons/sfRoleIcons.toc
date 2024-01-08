@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: sfRoleIcons
+## Notes: Shows the unit's role icon on unit frames
+## Author: Daftwise - US Destromath
+## Version: 70000.1
+
+
+sfRoleIcons.lua
