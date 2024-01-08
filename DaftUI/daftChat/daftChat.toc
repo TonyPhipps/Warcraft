@@ -1,8 +1,8 @@
-## Interface: 80100
+## Interface: 100200
 ## Title: daftChat
 ## Notes: Quality of life chat frame tweaks.
-## Author: Daftsage - US Emerald Dream
-## Version: 80100.1
+## Author: Daftwise - US Destromath
+## Version: 100200.1
 
 daftChat.lua
 Options.lua
