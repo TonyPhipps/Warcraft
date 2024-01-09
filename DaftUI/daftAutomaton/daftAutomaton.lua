@@ -75,7 +75,7 @@ end
 ---- HELPER FUNCTIONS ----
 local function UnitIsInFriendList(name)
 
-	ShowFriends()
+	C_FriendList.ShowFriends()
 
 	-- Check character friends
 	for i = 1, GetNumFriends() do
