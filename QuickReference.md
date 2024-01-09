@@ -13,3 +13,6 @@ Print Children Names of Frame Under Mouse
 ```
 
 
+### Misc Troubleshooting
+#### wow.exe launches, but no screen is ever shown.
+Disable all overlay service (there are many these days. Windows Game Bar, graphics card software, gaming software, addon managers, discord, etc.)
