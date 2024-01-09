@@ -78,8 +78,8 @@ local function UnitIsInFriendList(name)
 	C_FriendList.ShowFriends()
 
 	-- Check character friends
-	for i = 1, GetNumFriends() do
-		if name == GetFriendInfo(i) or name == strsplit("-", GetFriendInfo(i), 2) then
+	for i = 1, C_FriendList.GetNumFriends() do
+		if name == C_FriendList.GetFriendInfo(i) or name == strsplit("-", C_FriendList.GetFriendInfo(i), 2) then
 			return true
 		end
 	end
