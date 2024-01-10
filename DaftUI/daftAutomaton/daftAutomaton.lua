@@ -96,15 +96,18 @@ local function UnitIsInFriendList(name)
 	-- Check Battle.net friends
 	local numFriends = BNGetNumFriends()
 	
-	for i = 1, numFriends do
-		local numBnetFriends = BNGetNumFriendGameAccounts(i)
-	
-		for j = 1, numBnetFriends do
-			local _, friendName, client, realm = BNGetFriendGameAccountInfo(i, j)
-			local friendNameFull = friendName .. "-" ..realm
-			
-			if client == "WoW" and friendNameFull == name then
-				return true
+
+	if BNGetNumFriendGameAccounts then
+		for i = 1, numFriends do
+			local numBnetFriends = BNGetNumFriendGameAccounts(i)
+		
+			for j = 1, numBnetFriends do
+				local _, friendName, client, realm = BNGetFriendGameAccountInfo(i, j)
+				local friendNameFull = friendName .. "-" ..realm
+				
+				if client == "WoW" and friendNameFull == name then
+					return true
+				end
 			end
 		end
 	end
