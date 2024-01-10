@@ -6,6 +6,6 @@
 
 Options.lua
 daftAutomaton.lua
-Auction.lua
+## Auction.lua
 FastLoot.lua
 CombatNamePlates.lua
