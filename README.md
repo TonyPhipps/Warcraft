@@ -21,11 +21,6 @@ Print something to chat
 print("Printed this to chat.")
 ```
 
-Show frame under mouse
-```
-/script ChatFrame1:AddMessage("frame name: " .. GetMouseFocus():GetName())
-```
-
 Framestack Tool
 - While hovering over a frame, press and release CTRL to get a popup with details/options.
 ```
@@ -45,6 +40,11 @@ Enable Blizzards Eror System
 Print Name of Frame Under Mouse
 ```
 /run print( GetMouseFocus():GetName() );
+```
+
+Show frame under mouse
+```
+/script ChatFrame1:AddMessage("frame name: " .. GetMouseFocus():GetName())
 ```
 
 Print Children Names of Frame Under Mouse
