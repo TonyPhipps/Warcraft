@@ -7,7 +7,7 @@ addon:RegisterEvent("PLAYER_REGEN_DISABLED");
 addon:RegisterEvent("PLAYER_REGEN_ENABLED");
 addon:RegisterEvent("PLAYER_FOCUS_CHANGED");
 addon:RegisterEvent("PLAYER_TARGET_CHANGED");
-addon:RegisterUnitEvent("UNIT_HEALTH_FREQUENT");
+addon:RegisterUnitEvent("UNIT_HEALTH");
 addon:RegisterUnitEvent("UNIT_POWER_FREQUENT");
 addon:RegisterUnitEvent("QUEST_WATCH_LIST_CHANGED");
 addon:RegisterUnitEvent("QUEST_WATCH_UPDATE");
