@@ -1,9 +1,9 @@
-## Interface: 80100
+## Interface: 100200
 ## Title: daftUITweaks
 ## Author: Daftwise - US Destromath
 ## Notes: Quality of life tweaks to the default UI.
 ## SavedVariables: daftUITweaksDB
-## Version: 80100.1
+## Version: 100200.1
 
 Options.lua
 OptionsPanel.lua
