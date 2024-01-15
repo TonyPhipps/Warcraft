@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 100200
 ## Title: daftFrameFade
 ## Notes: Fades default frames based on mouseover and combat status.
 ## Author: Daftwise - US Destromath
-## Version: 80000.1
+## Version: 100200.1
 
 
 daftFrameFade.lua

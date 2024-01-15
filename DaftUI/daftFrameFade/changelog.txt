@@ -1,3 +1,7 @@
+100200.1
+-- Dramatically rewrote to simply hide the entire UI.
+-- Added options for names, spellbar, tooltip, chatbox, top edge hover.
+
 70000.22
 -- Fixed bug causing all frames to not fade out if targeting self
 -- Added support for world quest fill bars to Quest Tracker Pulse feature

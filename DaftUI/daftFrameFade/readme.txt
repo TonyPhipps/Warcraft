@@ -1,18 +1,27 @@
-Fades default frames based on mouseover and combat status.
+Fades default frames based on combat status, target, casting, etc.
 
 Features:
-[LIST]
-[*]Both "in" and "out" fade levels can be modified, as well as the speed of the fade.
-[*]A different set of options for in combat versus out of combat.
-[*]If Player has less than 100% mana or health, player frame fades in.
-[*]If a target exists, fades in Player and Target frames.
-[*]When out of combat, target self to show buffs.
-[*]Briefly fade in Objective Tracker when it receives updates
-[/LIST]
+- Hides or shows the whole UI
+  - Set speed of fading in, fading out (and in combat vs not)
+  - Set degree to which fading will occur (for example, you many want to see the UI just a bit)
+  - Set whether unit names should disappear/reappear with UI fading.
+
+- The UI will fade IN when...
+  - Player is in combat
+  - Player has less than 100% mana or health
+  - A target exists
+  - (togglable) Player is casting
+  - (togglable) Tooltip appears
+  - (togglable) Mouse is on top edge of screen, fades in UI.
+  - (togglable) Player uses chat edit box.
+
+- Otherwise, the UI will fade out
 
 Settings can be edited completely in the [B]Options.lua[/B] file, as previewed below.
 
 [CODE]
+local addonName, addonTable = ... ;
+
 addonTable.NOCOMBAT_TIMETOFADEIN = 1.0;
 addonTable.NOCOMBAT_FADEIN = 0.8;
 addonTable.NOCOMBAT_TIMETOFADEOUT = 1.0;
@@ -23,19 +32,7 @@ addonTable.COMBAT_FADEIN = 1.0;
 addonTable.COMBAT_TIMETOFADEOUT = 0.5;
 addonTable.COMBAT_FADEOUT = 0.8;
 
--- true for enable, false for disable.
-addonTable.BUFFS = true; -- will show when targeting self or when hovering over PlayerFrame
-addonTable.CHATTABS = true;
-addonTable.MAINMENUBAR = true;
-addonTable.MINIMAP = true;
-addonTable.OBJECTIVETRACKER = true;
-addonTable.OBJECTIVETRACKER_PULSE = true; -- Briefly show the Object Tracker when updating achieve/quest progress
-addonTable.PARTY = true;
-addonTable.PLAYER = true;
-addonTable.RAIDMANAGER = true;
-addonTable.TARGET = true;
-addonTable.VEHICLESEATINDICATOR = true;
-addonTable.WORLDSTATEFRAME = true;  -- pvp and zone-wide progress frame
+addonTable.TOP_EDGE_HOVER = 1;
 [/CODE]
 
 [SIZE="1"]+Lightweight on code to stand the test of time (and patches).[/SIZE]

@@ -11,14 +11,8 @@ addonTable.COMBAT_TIMETOFADEOUT = 0.5;
 addonTable.COMBAT_FADEOUT = 0.8;
 
 -- true for enable, false for disable.
-addonTable.BUFFS = true; -- will show when targeting self or when hovering over PlayerFrame
-addonTable.CHATTABS = true;
-addonTable.MAINMENUBAR = true;
-addonTable.MINIMAP = true;
-addonTable.OBJECTIVETRACKER = true;
-addonTable.OBJECTIVETRACKER_PULSE = true; -- Briefly show the Object Tracker when updating achieve/quest progress
-addonTable.PARTY = true;
-addonTable.PLAYER = true;
-addonTable.RAIDMANAGER = true;
-addonTable.TARGET = true;
-addonTable.VEHICLESEATINDICATOR = true;
+addonTable.TOP_EDGE_HOVER = 1; -- Will show UI when mouse is in top edge of screen
+addonTable.CHATBOX = 1; -- Will show or hide UI with the appearance of the chat edit box
+addonTable.TOOLTIP = 1; -- Will show or hide UI with the appearance of the tooltip
+addonTable.CAST = 1; -- Will show or hide UI with the appearance of the player spell bar
+addonTable.NAMES = 1; -- Will show and hide character names with UI
