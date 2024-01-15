@@ -25,16 +25,11 @@ local function SetupFonts()
 
         local FrameArray = {
             "PlayerName",
-            "PlayerLevelText",
-            "FocusFrameTextureFrameName",
-            "FocusFrameTextureFrameLevelText",
-            "TargetFrameTextureFrameName",
-            "TargetFrameTextureFrameLevelText",
-            "TargetFrameToTTextureFrameName"
-        }   
+            "PlayerLevelText"
+        }
         
         local TextArray = {
-            "CastingBarFrame",
+            --"CastingBarFrame",
             "TargetFrameSpellBar"
         }
 
@@ -99,11 +94,11 @@ local function SetupFonts()
 
     -- HOOKS
 
-    hooksecurefunc("TargetFrame_CheckDead", StyleFonts)
-    hooksecurefunc("TargetFrame_Update", StyleFonts)
-    hooksecurefunc("TargetFrame_CheckFaction", StyleFonts)
-    hooksecurefunc("TargetFrame_CheckClassification", StyleFonts)
-    hooksecurefunc("TargetofTarget_Update", StyleFonts)
+    --hooksecurefunc("TargetFrame_CheckDead", StyleFonts)
+    --hooksecurefunc("TargetFrame_Update", StyleFonts)
+    --hooksecurefunc("TargetFrame_CheckFaction", StyleFonts)
+    --hooksecurefunc("TargetFrame_CheckClassification", StyleFonts)
+    --hooksecurefunc("TargetofTarget_Update", StyleFonts)
     --hooksecurefunc("PetActionButton_OnUpdate", StyleButtonFonts)
 end
 
@@ -124,3 +119,10 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 		frame:UnregisterEvent("ADDON_LOADED")
 	end
 end)
+
+
+		--"FocusFrameTextureFrameName",
+		--"FocusFrameTextureFrameLevelText",
+		--"TargetFrameToTTextureFrameName",
+		--"TargetFrameTextureFrameName",
+		--"TargetFrameTextureFrameLevelText",

@@ -8,19 +8,19 @@ frame:RegisterEvent("ADDON_LOADED")
 -- FUNCTIONS
 
 local NameCVarArray = {
-	"UnitNameFriendlySpecialNPCName",
-	"UnitNameInteractiveNPC",
+	"UnitNameEnemyGuardianName",
+	"UnitNameEnemyPetName",
+	"UnitNameEnemyPlayerName",
+	"UnitNameEnemyTotemName",
 	"UnitNameFriendlyGuardianName",
 	"UnitNameFriendlyPetName",
 	"UnitNameFriendlyPlayerName",
+	"UnitNameFriendlySpecialNPCName",
 	"UnitNameFriendlyTotemName",
-	"UnitNameNonCombatCreatureName",
 	"UnitNameHostleNPC",
-	"UnitNameEnemyPlayerName",
-	"UnitNameEnemyPetName",
-	"UnitNameEnemyGuardianName",
-	"UnitNameEnemyTotemName",
-	"UnitNameNPC"
+	"UnitNameInteractiveNPC",
+	"UnitNameNPC",
+	"UnitNameNonCombatCreatureName"
 }
 
 local FrameArray = {
@@ -30,20 +30,17 @@ local FrameArray = {
 	"GossipFrame",
 	"GameMenuFrame",
 	"StaticPopup1",
-	"MirrorTimer1",
 	"LFGDungeonReadyPopup",
 	"LFDRoleCheckPopup",
-	"LevelUpDisplay",
 	"RolePollPopup",
 	"ReadyCheckFrame",
 	"BonusRollFrame",
 	"QuestFrame",
 	"ItemTextFrame",
-	--"TalkingHeadFrame",
-	"InterfaceOptionsFrame",
 	"GameTooltip",
 	"RaidWarningFrame",
 	"SpellBookFrame",
+	"SettingsPanel",
 	"TargetFrame"
 }
 
