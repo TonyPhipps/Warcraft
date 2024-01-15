@@ -5,7 +5,6 @@ addonTable.db = {
     ENABLE_UIFADE = false,
         UIFADE_IN = 1.0,
         UIFADE_OUT = 0.0,
-        UIFADE_MINIMAP = false,
         UIFADE_NAMES = false,
 
 

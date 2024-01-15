@@ -58,10 +58,6 @@ local function HideFunction(fadeInfo)
 					SetCVar(CVar, 0)
 				end
 			end
-
-			if addonTable.db.UIFADE_MINIMAP then
-				MinimapCluster:Hide()
-			end
 		end
 
 		self:SetScript("OnUpdate", nil)
@@ -81,10 +77,6 @@ local function ShowFunction()
 						SetCVar(CVar, 1)
 					end
 				end
-			end
-
-			if addonTable.db.UIFADE_MINIMAP then
-				MinimapCluster:Show()
 			end
 
 			self:SetScript("OnUpdate", nil)
@@ -118,8 +110,7 @@ local function FadeUI()
 			and not ProtectedFrameShown
 			and not StoreFrame_IsShown()
 			then
-				
-					MouseFrame = GetMouseFocus():GetName()
+				MouseFrame = GetMouseFocus():GetName()
 			end
 
 			local WatchedFrameShowing = false
