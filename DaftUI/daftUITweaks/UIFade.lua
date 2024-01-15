@@ -44,45 +44,6 @@ local FrameArray = {
 	"TargetFrame"
 }
 
-local function HideFunction(fadeInfo)
-
-	local frame = CreateFrame("Frame")
-
-	frame:SetScript("OnUpdate", function(self)
-		
-		if not InCombatLockdown() and UIParent:GetAlpha() == addonTable.db.UIFADE_OUT then
-			
-			if addonTable.db.UIFADE_NAMES then
-				for _, CVar in pairs(NameCVarArray) do
-			
-					SetCVar(CVar, 0)
-				end
-			end
-		end
-
-		self:SetScript("OnUpdate", nil)
-	end)
-end
-
-local function ShowFunction()
-	
-	local frame = CreateFrame("Frame")
-
-	frame:SetScript("OnUpdate", function(self)
-
-			if addonTable.db.UIFADE_NAMES then
-				for _, CVar in pairs(NameCVarArray) do
-					
-					if GetCVar(CVar) == "0" and not InCombatLockdown() then
-						SetCVar(CVar, 1)
-					end
-				end
-			end
-
-			self:SetScript("OnUpdate", nil)
-	end)
-end
-
 local function FadeUI()
 
 	ProtectedFrameShown = false
@@ -100,7 +61,6 @@ local function FadeUI()
 		or InCombatLockdown() then
 			
 			UIParent:SetAlpha(addonTable.db.UIFADE_IN)
-			ShowFunction()
 			return
 		else
 		
@@ -133,47 +93,22 @@ local function FadeUI()
 			or MouseIsOver(ChatFrame4) 
 			or MouseFrame ~= "WorldFrame" then
 				
-				local fadeInfo = {}
-				fadeInfo.mode = "IN"
-				fadeInfo.startAlpha = UIParent:GetAlpha()
-				fadeInfo.timeToFade = 0.5
-				fadeInfo.endAlpha = addonTable.db.UIFADE_IN
-				fadeInfo.finishedFunc = ShowFunction()
-				UIFrameFade(UIParent, fadeInfo)
-
-				if IsInGroup(Party) and not IsInGroup(Raid) then
-					for i = 1, 5 do
-						_G["CompactPartyFrameMember"..i.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
-					end
-	
-				elseif IsInGroup(Raid) and GetNumGroupMembers()>5 then
-					for i = 1, floor(GetNumGroupMembers()/5 + 0.9) do	
-						for j = 1, 5 do
-							_G["CompactRaidGroup"..i.."Member"..j.."Background"]:SetAlpha(addonTable.db.UIFADE_IN)
-						end
+				UIFrameFadeIn(UIParent, UIParent:GetAlpha(), UIParent:GetAlpha(), addonTable.db.UIFADE_IN);
+				
+				if addonTable.db.UIFADE_NAMES then
+					for _, CVar in pairs(NameCVarArray) do
+				
+						SetCVar(CVar, 1)
 					end
 				end
+				
 			else
 
-				local fadeInfo = {}
-				fadeInfo.mode = "OUT"
-				fadeInfo.startAlpha = UIParent:GetAlpha()
-				fadeInfo.timeToFade = 3.0
-				fadeInfo.endAlpha = addonTable.db.UIFADE_OUT
-				fadeInfo.finishedFunc = HideFunction(fadeInfo)
-				UIFrameFade(UIParent, fadeInfo)
+				UIFrameFadeOut(UIParent, UIParent:GetAlpha(), UIParent:GetAlpha(), addonTable.db.UIFADE_OUT);
 				
-				if IsInGroup(Party) then
-					for i = 1, 5 do
-						UIFrameFade(_G["CompactPartyFrameMember"..i.."Background"], fadeInfo)
-					end
-				end
-	
-				if IsInGroup(Raid) then
-					for i = 1, floor(GetNumGroupMembers()/5 + 0.9) do
-						for j = 1, 5 do
-							UIFrameFade(_G["CompactRaidGroup"..i.."Member"..j.."Background"], fadeInfo)
-						end
+				if addonTable.db.UIFADE_NAMES then
+					for _, CVar in pairs(NameCVarArray) do
+						SetCVar(CVar, 0)
 					end
 				end
 			end
