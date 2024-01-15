@@ -43,7 +43,7 @@ local function PrintGossip()
 	end
 
 	if GossipFrame:IsShown() then
-		DEFAULT_CHAT_FRAME:AddMessage(GossipFrameNpcNameText:GetText() .. ' says, "' .. GossipGreetingText:GetText() .. '"', "MONSTER_SAY")
+		-- DEFAULT_CHAT_FRAME:AddMessage(GossipFrameNpcNameText:GetText() .. ' says, "' .. GossipGreetingText:GetText() .. '"', "MONSTER_SAY")
 	end
 
 	if ItemTextFrame:IsShown() then

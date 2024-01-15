@@ -92,12 +92,6 @@ Options:SetScript("OnShow", function(self)
 			addonTable.db.UIFADE_NAMES = self:GetChecked()
 		end)
 
-	--local UIFADE_MINIMAP = CreateCheckbox("Fade Minimap Icons", "Hide player arrow, gathering nodes, artifact/quest regions, quest pointer arrow when UI is faded out.", 0, -4, UIFADE_NAMES, Options)
-	--	UIFADE_MINIMAP:SetChecked(addonTable.db.UIFADE_MINIMAP)
-	--	UIFADE_MINIMAP:SetScript("OnClick", function(self)
-	--		addonTable.db.UIFADE_MINIMAP = self:GetChecked()
-	--	end)
-
     local UIFADE_IN = CreateSlider("$parentFADEIN", Options, "0.1", "1.0", "Fade In Alpha", "Adjusts the alpha when UI is faded in.")
 		UIFADE_IN:SetPoint("LEFT", ENABLE_UIFADE.label, "RIGHT", 80, 0)
 		UIFADE_IN:SetMinMaxValues(0.1, 1.0)
@@ -118,7 +112,7 @@ Options:SetScript("OnShow", function(self)
             addonTable.db.UIFADE_OUT = value
 		end)
 
-	local ENABLE_UICOLORS = CreateCheckbox("Colorize UI", "Set a hue on multiple UI elements based on character class OR a custom color.", -16, -40, UIFADE_MINIMAP, Options)
+	local ENABLE_UICOLORS = CreateCheckbox("Colorize UI", "Set a hue on multiple UI elements based on character class OR a custom color.", -16, -40, UIFADE_NAMES, Options)
 		ENABLE_UICOLORS:SetChecked(addonTable.db.ENABLE_UICOLORS)
 		ENABLE_UICOLORS:SetScript("OnClick", function(self)
 			addonTable.db.ENABLE_UICOLORS = self:GetChecked()
@@ -199,7 +193,7 @@ OptionsCastBars:SetScript("OnShow", function(self)
 
 	local title = OptionsCastBars:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 		title:SetPoint("TOPLEFT", 16, -16)
-		title:SetText(addonName .. " - Cast Bars")
+		title:SetText(addonName .. " - Cast Bars - WORK IN PROGRESS")
     
     local SubText = OptionsCastBars:CreateFontString("$parentSubText", "ARTWORK", "GameFontHighlightSmall")
 		SubText:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
@@ -288,19 +282,7 @@ OptionsMainbar:SetScript("OnShow", function(self)
 			addonTable.db.ENABLE_MAINBAR = self:GetChecked()
 		end)
 
-	local MAINBAR_SKIN_BUTTONERRORS = CreateCheckbox("Actionbutton Highlighting", "Highlight action buttons RED when out of range; blue when out of resources.", 0, -4, ENABLE_MAINBAR, OptionsMainbar)
-		MAINBAR_SKIN_BUTTONERRORS:SetChecked(addonTable.db.MAINBAR_SKIN_BUTTONERRORS)
-		MAINBAR_SKIN_BUTTONERRORS:SetScript("OnClick", function(self)
-			addonTable.db.MAINBAR_SKIN_BUTTONERRORS = self:GetChecked()
-		end)
-
-	local MAINBAR_CENTER_RIGHT_BARS = CreateCheckbox("Center Right Actionbars", "", 0, -4, MAINBAR_SKIN_BUTTONERRORS, OptionsMainbar)
-		MAINBAR_CENTER_RIGHT_BARS:SetChecked(addonTable.db.MAINBAR_CENTER_RIGHT_BARS)
-		MAINBAR_CENTER_RIGHT_BARS:SetScript("OnClick", function(self)
-			addonTable.db.MAINBAR_CENTER_RIGHT_BARS = self:GetChecked()
-		end)
-
-	local MAINBAR_HIDE_BAGS = CreateCheckbox("Hide Bagbar", "", 0, -16, MAINBAR_CENTER_RIGHT_BARS, OptionsMainbar)
+	local MAINBAR_HIDE_BAGS = CreateCheckbox("Hide Bagbar", "", 0, -16, ENABLE_MAINBAR, OptionsMainbar)
 		MAINBAR_HIDE_BAGS:SetChecked(addonTable.db.MAINBAR_HIDE_BAGS)
 		MAINBAR_HIDE_BAGS:SetScript("OnClick", function(self)
 			addonTable.db.MAINBAR_HIDE_BAGS = self:GetChecked()
@@ -323,125 +305,15 @@ OptionsMainbar:SetScript("OnShow", function(self)
 		MAINBAR_HIDE_MACRONAMES:SetScript("OnClick", function(self)
 			addonTable.db.MAINBAR_HIDE_MACRONAMES = self:GetChecked()
 		end)
+
+	-- local MAINBAR_SKIN_BUTTONERRORS = CreateCheckbox("Actionbutton Highlighting", "Highlight action buttons RED when out of range; blue when out of resources.", 0, -4, MAINBAR_HIDE_MACRONAMES, OptionsMainbar)
+	-- MAINBAR_SKIN_BUTTONERRORS:SetChecked(addonTable.db.MAINBAR_SKIN_BUTTONERRORS)
+	-- MAINBAR_SKIN_BUTTONERRORS:SetScript("OnClick", function(self)
+	-- 	addonTable.db.MAINBAR_SKIN_BUTTONERRORS = self:GetChecked()
+	-- end)
 	
-	local MAINBAR_HIDE_ACTIONBAR_BG = CreateCheckbox("Hide Actionbar BG", "", 0, -4, MAINBAR_HIDE_MACRONAMES, OptionsMainbar)
-		MAINBAR_HIDE_ACTIONBAR_BG:SetChecked(addonTable.db.MAINBAR_HIDE_ACTIONBAR_BG)
-		MAINBAR_HIDE_ACTIONBAR_BG:SetScript("OnClick", function(self)
-			addonTable.db.MAINBAR_HIDE_ACTIONBAR_BG = self:GetChecked()
-		end)
-	
-	local MAINBAR_HIDE_GRYPHONS = CreateCheckbox("Hide Gryphons", "", 0, -4, MAINBAR_HIDE_ACTIONBAR_BG, OptionsMainbar)
-		MAINBAR_HIDE_GRYPHONS:SetChecked(addonTable.db.MAINBAR_HIDE_GRYPHONS)
-		MAINBAR_HIDE_GRYPHONS:SetScript("OnClick", function(self)
-			addonTable.db.MAINBAR_HIDE_GRYPHONS = self:GetChecked()
-		end)
-	
-	local MAINBAR_HIDE_MENU_BG = CreateCheckbox("Hide Menubar BG", "", 0, -4, MAINBAR_HIDE_GRYPHONS, OptionsMainbar)
-		MAINBAR_HIDE_MENU_BG:SetChecked(addonTable.db.MAINBAR_HIDE_MENU_BG)
-		MAINBAR_HIDE_MENU_BG:SetScript("OnClick", function(self)
-			addonTable.db.MAINBAR_HIDE_MENU_BG = self:GetChecked()
-		end)
-
-	local MAINBAR_ALPHA = CreateSlider("$parentMAINBAR_ALPHA", OptionsMainbar, "0.1", "1.0", "Mainbar Alpha", "")
-		MAINBAR_ALPHA:SetPoint("LEFT", ENABLE_MAINBAR.label, "RIGHT", 52, 0)
-		MAINBAR_ALPHA:SetMinMaxValues(0.1, 1.0)
-        MAINBAR_ALPHA:SetValueStep(0.1)
-        MAINBAR_ALPHA:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_ALPHA = value
-		end)
-	
-	local MAINBAR_EXPBAR_ALPHA = CreateSlider("$parentMAINBAR_EXPBAR_ALPHA", OptionsMainbar, "0.0", "1.0", "Exp Bar Alpha", "")
-		MAINBAR_EXPBAR_ALPHA:SetPoint("TOP", MAINBAR_ALPHA, "BOTTOM", 0, -32)
-		MAINBAR_EXPBAR_ALPHA:SetMinMaxValues(0.1, 1.0)
-        MAINBAR_EXPBAR_ALPHA:SetValueStep(0.1)
-        MAINBAR_EXPBAR_ALPHA:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_EXPBAR_ALPHA = value
-		end)
-
-	local MAINBAR_EXPBAR_SCALE = CreateSlider("$parentMAINBAR_EXPBAR_SCALE", OptionsMainbar, "0.0", "2.0", "Exp Bar Scale", "")
-		MAINBAR_EXPBAR_SCALE:SetPoint("LEFT", MAINBAR_EXPBAR_ALPHA, "RIGHT", 16, 0)
-		MAINBAR_EXPBAR_SCALE:SetMinMaxValues(0.0, 2.0)
-        MAINBAR_EXPBAR_SCALE:SetValueStep(0.1)
-		MAINBAR_EXPBAR_SCALE:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_EXPBAR_SCALE = value
-		end)
-
-	local MAINBAR_BAGBAR_ALPHA = CreateSlider("$parentMAINBAR_BAGBAR_ALPHA", OptionsMainbar, "0.0", "1.0", "Bagbar Alpha", "")
-		MAINBAR_BAGBAR_ALPHA:SetPoint("TOP", MAINBAR_EXPBAR_ALPHA, "BOTTOM", 0, -32)
-		MAINBAR_BAGBAR_ALPHA:SetMinMaxValues(0.0, 1.0)
-        MAINBAR_BAGBAR_ALPHA:SetValueStep(0.1)
-        MAINBAR_BAGBAR_ALPHA:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_BAGBAR_ALPHA = value
-		end)
-
-	local MAINBAR_BAGBAR_SCALE = CreateSlider("$parentMAINBAR_BAGBAR_SCALE", OptionsMainbar, "0.0", "2.0", "Bagbar Scale", "")
-		MAINBAR_BAGBAR_SCALE:SetPoint("LEFT", MAINBAR_BAGBAR_ALPHA, "RIGHT", 16, 0)
-		MAINBAR_BAGBAR_SCALE:SetMinMaxValues(0.0, 2.0)
-        MAINBAR_BAGBAR_SCALE:SetValueStep(0.1)
-		MAINBAR_BAGBAR_SCALE:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_BAGBAR_SCALE = value
-		end)
-
-	local MAINBAR_MENUBAR_ALPHA = CreateSlider("$parentMAINBAR_MENUBAR_ALPHA", OptionsMainbar, "0.0", "1.0", "Menubar Alpha", "")
-		MAINBAR_MENUBAR_ALPHA:SetPoint("TOP", MAINBAR_BAGBAR_ALPHA, "BOTTOM", 0, -32)
-		MAINBAR_MENUBAR_ALPHA:SetMinMaxValues(0.0, 1.0)
-        MAINBAR_MENUBAR_ALPHA:SetValueStep(0.1)
-        MAINBAR_MENUBAR_ALPHA:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_MENUBAR_ALPHA = value
-		end)
-
-	local MAINBAR_MENUBAR_SCALE = CreateSlider("$parentMAINBAR_MENUBAR_SCALE", OptionsMainbar, "0.0", "2.0", "Menubar Scale", "")
-		MAINBAR_MENUBAR_SCALE:SetPoint("LEFT", MAINBAR_MENUBAR_ALPHA, "RIGHT", 16, 0)
-		MAINBAR_MENUBAR_SCALE:SetMinMaxValues(0.0, 2.0)
-        MAINBAR_MENUBAR_SCALE:SetValueStep(0.1)
-		MAINBAR_MENUBAR_SCALE:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_MENUBAR_SCALE = value
-		end)
-	
-	local MAINBAR_LEFTBAR_ALPHA = CreateSlider("$parentMAINBAR_LEFTBAR_ALPHA", OptionsMainbar, "0.0", "1.0", "Left Sidebar Alpha", "")
-		MAINBAR_LEFTBAR_ALPHA:SetPoint("TOP", MAINBAR_MENUBAR_ALPHA, "BOTTOM", 0, -32)
-		MAINBAR_LEFTBAR_ALPHA:SetMinMaxValues(0.0, 1.0)
-        MAINBAR_LEFTBAR_ALPHA:SetValueStep(0.1)
-        MAINBAR_LEFTBAR_ALPHA:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_LEFTBAR_ALPHA = value
-		end)
-
-	local MAINBAR_RIGHTBAR_ALPHA = CreateSlider("$parentMAINBAR_RIGHTBAR_ALPHA", OptionsMainbar, "0.0", "1.0", "Right Sidebar Alpha", "")
-		MAINBAR_RIGHTBAR_ALPHA:SetPoint("TOP", MAINBAR_LEFTBAR_ALPHA, "BOTTOM", 0, -32)
-		MAINBAR_RIGHTBAR_ALPHA:SetMinMaxValues(0.0, 1.0)
-        MAINBAR_RIGHTBAR_ALPHA:SetValueStep(0.1)
-		MAINBAR_RIGHTBAR_ALPHA:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MAINBAR_RIGHTBAR_ALPHA = value
-		end)
-
 	function self:refresh()
-		MAINBAR_ALPHA:SetValue(daftUITweaksDB.MAINBAR_ALPHA)
-		MAINBAR_EXPBAR_ALPHA:SetValue(daftUITweaksDB.MAINBAR_EXPBAR_ALPHA)
-		MAINBAR_EXPBAR_SCALE:SetValue(daftUITweaksDB.MAINBAR_EXPBAR_SCALE)
-		MAINBAR_BAGBAR_ALPHA:SetValue(daftUITweaksDB.MAINBAR_BAGBAR_ALPHA)
-		MAINBAR_BAGBAR_SCALE:SetValue(daftUITweaksDB.MAINBAR_BAGBAR_SCALE)
-		MAINBAR_MENUBAR_ALPHA:SetValue(daftUITweaksDB.MAINBAR_MENUBAR_ALPHA)
-		MAINBAR_MENUBAR_SCALE:SetValue(daftUITweaksDB.MAINBAR_MENUBAR_SCALE)
-		MAINBAR_LEFTBAR_ALPHA:SetValue(daftUITweaksDB.MAINBAR_LEFTBAR_ALPHA)
-		MAINBAR_RIGHTBAR_ALPHA:SetValue(daftUITweaksDB.MAINBAR_RIGHTBAR_ALPHA)
+
     end
 
 	self:refresh()
@@ -460,7 +332,7 @@ OptionsUnitFrames:SetScript("OnShow", function(self)
 
 	local title = OptionsUnitFrames:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 		title:SetPoint("TOPLEFT", 16, -16)
-		title:SetText(addonName .. " - Unit Frames")
+		title:SetText(addonName .. " - Unit Frames - WORK IN PROGRESS")
     
     local SubText = OptionsUnitFrames:CreateFontString("$parentSubText", "ARTWORK", "GameFontHighlightSmall")
 		SubText:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
@@ -583,7 +455,6 @@ OptionsGossipDressup:SetScript("OnShow", function(self)
 			addonTable.db.DRESSUP_CENTER = self:GetChecked()
 		end)
 
-    
     function self:refresh()
 		GOSSIP_SCALE:SetValue(daftUITweaksDB.GOSSIP_SCALE)
 		DRESSUP_SCALE:SetValue(daftUITweaksDB.DRESSUP_SCALE)
@@ -605,7 +476,7 @@ OptionsMinimap:SetScript("OnShow", function(self)
 
     local title = OptionsMinimap:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 		title:SetPoint("TOPLEFT", 16, -16)
-		title:SetText(addonName .. " - Minimap")
+		title:SetText(addonName .. " - Minimap  - WORK IN PROGRESS")
     
     local SubText = OptionsMinimap:CreateFontString("$parentSubText", "ARTWORK", "GameFontHighlightSmall")
 		SubText:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
@@ -617,120 +488,15 @@ OptionsMinimap:SetScript("OnShow", function(self)
 			addonTable.db.ENABLE_MINIMAP = self:GetChecked()
 		end)
 
-	local MINIMAP_SCALE = CreateSlider("$parentMINIMAP_SCALE", OptionsMinimap, "0.1", "2.0", "Minimap Scale", "Adjusts the scale of the minimap.")
-		MINIMAP_SCALE:SetPoint("RIGHT", ENABLE_MINIMAP.label, "LEFT", 150, 0)
-		MINIMAP_SCALE:SetMinMaxValues(0.1, 2.0)
-		MINIMAP_SCALE:SetValueStep(0.1)
-		MINIMAP_SCALE:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.MINIMAP_SCALE = value
-		end)
-
-	local FADE_BUTTONS = CreateCheckbox("Fade Out Buttons", "Fade out miscellaneous buttons, like Garrions and Tracking", 0, -4, ENABLE_MINIMAP, OptionsMinimap)
-		FADE_BUTTONS:SetChecked(addonTable.db.FADE_BUTTONS)
-		FADE_BUTTONS:SetScript("OnClick", function(self)
-			addonTable.db.FADE_BUTTONS = self:GetChecked()
-		end)
-
-	local FADE_CLOCK = CreateCheckbox("Fade Out Clock and Calendar", "", 0, -4, FADE_BUTTONS, OptionsMinimap)
-		FADE_CLOCK:SetChecked(addonTable.db.FADE_CLOCK)
-		FADE_CLOCK:SetScript("OnClick", function(self)
-			addonTable.db.FADE_CLOCK = self:GetChecked()
-		end)
-
-	local FADE_MAIL = CreateCheckbox("Fade Out Mail Icon", "", 0, -4, FADE_CLOCK, OptionsMinimap)
-		FADE_MAIL:SetChecked(addonTable.db.FADE_MAIL)
-		FADE_MAIL:SetScript("OnClick", function(self)
-			addonTable.db.FADE_MAIL = self:GetChecked()
-		end)
-
-	local FADE_NOTICES = CreateCheckbox("Fade Out Notices", "", 0, -4, FADE_MAIL, OptionsMinimap)
-		FADE_NOTICES:SetChecked(addonTable.db.FADE_NOTICES)
-		FADE_NOTICES:SetScript("OnClick", function(self)
-			addonTable.db.FADE_NOTICES = self:GetChecked()
-		end)
-
-	local FADE_ZONETEXT = CreateCheckbox("Fade Out Zone Text Bar", "", 0, -4, FADE_NOTICES, OptionsMinimap)
-		FADE_ZONETEXT:SetChecked(addonTable.db.FADE_ZONETEXT)
-		FADE_ZONETEXT:SetScript("OnClick", function(self)
-			addonTable.db.FADE_ZONETEXT = self:GetChecked()
-		end)
-		
-	local HIDE_MAPICON = CreateCheckbox("Hide Map Icon", "", 0, -4, FADE_ZONETEXT, OptionsMinimap)
-		HIDE_MAPICON:SetChecked(addonTable.db.HIDE_MAPICON)
-		HIDE_MAPICON:SetScript("OnClick", function(self)
-			addonTable.db.HIDE_MAPICON = self:GetChecked()
-		end)
-
-	local MICROMENU = CreateCheckbox("Enable Right-Click Micro Menu", "Right-click the Zone Text to show the Micro Menu", 0, -4, HIDE_MAPICON, OptionsMinimap)
+	local MICROMENU = CreateCheckbox("Enable Right-Click Micro Menu", "Right-click the Zone Text to show the Micro Menu", 0, -4, ENABLE_MINIMAP, OptionsMinimap)
 		MICROMENU:SetChecked(addonTable.db.MICROMENU)
 		MICROMENU:SetScript("OnClick", function(self)
 			addonTable.db.MICROMENU = self:GetChecked()
 		end)
-
-	local HIDE_NORTH = CreateCheckbox("Hide North Indicator", "", 0, -4, MICROMENU, OptionsMinimap)
-		HIDE_NORTH:SetChecked(addonTable.db.HIDE_NORTH)
-		HIDE_NORTH:SetScript("OnClick", function(self)
-			addonTable.db.HIDE_NORTH = self:GetChecked()
-		end)    
-
-	local SCROLL_ZOOM = CreateCheckbox("Enable Scroll Zoom", "Mouse scroll in to zoom in, scroll out to zoom out.", 0, -4, HIDE_NORTH, OptionsMinimap)
-		SCROLL_ZOOM:SetChecked(addonTable.db.SCROLL_ZOOM)
-		SCROLL_ZOOM:SetScript("OnClick", function(self)
-			addonTable.db.SCROLL_ZOOM = self:GetChecked()
-		end)
-
-	local HIDE_ZOOM = CreateCheckbox("Hide Zoom Icons", "With Scroll Zooming enabled, these buttons aren't typically needed.", 0, -4, SCROLL_ZOOM, OptionsMinimap)
-		HIDE_ZOOM:SetChecked(addonTable.db.HIDE_ZOOM)
-		HIDE_ZOOM:SetScript("OnClick", function(self)
-			addonTable.db.HIDE_ZOOM = self:GetChecked()
-		end)
     
-	local SKIN_BUTTONS = CreateCheckbox("Shrink Buttons", "", 0, -4, HIDE_ZOOM, OptionsMinimap)
-		SKIN_BUTTONS:SetChecked(addonTable.db.SKIN_BUTTONS)
-		SKIN_BUTTONS:SetScript("OnClick", function(self)
-			addonTable.db.SKIN_BUTTONS = self:GetChecked()
-		end)
-    
-    function self:refresh()
-		MINIMAP_SCALE:SetValue(daftUITweaksDB.MINIMAP_SCALE)
-    end
+	function self:refresh()
 
-	self:refresh()
-	self:SetScript("OnShow", nil)
-end)
-
--- Raid Panel
-local OptionsRaid = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
-	OptionsRaid.name = "Raid Frames"
-	OptionsRaid.parent = addonName
-	InterfaceOptions_AddCategory(OptionsRaid, addonName)
-	OptionsRaid:Hide()
-
-OptionsRaid:SetScript("OnShow", function(self)
-
-    local title = OptionsRaid:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
-		title:SetPoint("TOPLEFT", 16, -16)
-		title:SetText(addonName .. " - Raid & Compact Party Frames")
-    
-    local SubText = OptionsRaid:CreateFontString("$parentSubText", "ARTWORK", "GameFontHighlightSmall")
-		SubText:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
-		SubText:SetText(GetAddOnMetadata(addonName, "Notes"))
-    
-	local RAID_SCALE = CreateSlider("$parentRAID_SCALE", OptionsRaid, "0.1", "2.0", "Raid Scale", "Adjusts the scale of the raid and compact party frames.")
-		RAID_SCALE:SetPoint("TOPLEFT", SubText, "BOTTOMLEFT", 0, -16)
-		RAID_SCALE:SetMinMaxValues(0.1, 2.0)
-		RAID_SCALE:SetValueStep(0.1)
-		RAID_SCALE:SetScript("OnValueChanged", function(self, value)
-			value = floor(value * 10) / 10
-			self.value:SetText(value)
-            addonTable.db.RAID_SCALE = value
-		end)
-    
-    function self:refresh()
-		RAID_SCALE:SetValue(daftUITweaksDB.RAID_SCALE)
-    end
+	end
 
 	self:refresh()
 	self:SetScript("OnShow", nil)

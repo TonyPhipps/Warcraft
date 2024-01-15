@@ -3,7 +3,7 @@
 ## Author: Daftwise - US Destromath
 ## Notes: Quality of life tweaks to the default UI.
 ## SavedVariables: daftUITweaksDB
-## Version: 100200.1
+## Version: 100200.2
 
 Options.lua
 OptionsPanel.lua
@@ -17,5 +17,3 @@ Minimap.lua
 UIColors.lua
 UIFade.lua
 Fonts.lua
-RaidFrame.lua
-BossFrame.lua

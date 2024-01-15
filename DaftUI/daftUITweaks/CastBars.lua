@@ -44,13 +44,13 @@ frame:RegisterEvent("ADDON_LOADED")
 		
 		_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target")
 
-		TargetFrameTextureFrameName:Hide()
-		TargetFrameNameBackground:Hide()
-		TargetFramePortrait:Hide()
+		-- TargetFrameTextureFrameName:Hide()
+		-- TargetFrameNameBackground:Hide()
+		-- TargetFramePortrait:Hide()
 			
 		if addonTable.db.TARGET_BIG_SPELL_ICON then
 		
-			TargetFramePortrait:Hide()
+			-- TargetFramePortrait:Hide()
 		end
 
 		if addonTable.db.TARGET_HIDE_SPELL_ICON then
@@ -60,11 +60,11 @@ frame:RegisterEvent("ADDON_LOADED")
 		
 		if notInterruptible then
 		
-			TargetFrameTextureFrameQuestIcon:Show()
-			TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 0, 0, 1)
+			-- TargetFrameTextureFrameQuestIcon:Show()
+			-- TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 0, 0, 1)
 		else
 			
-			TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1)
+			-- TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1)
 		end
 	end
 
@@ -212,7 +212,7 @@ frame:RegisterEvent("ADDON_LOADED")
 					
 					if addonTable.db.TARGET_TIMER then
 					
-						TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
+						-- TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
 					end
 				
 				elseif self.channeling then
@@ -221,7 +221,7 @@ frame:RegisterEvent("ADDON_LOADED")
 					
 					if addonTable.db.TARGET_TIMER then
 					
-						TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.value, 0)))
+						-- TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.value, 0)))
 					end
 				end
 				
@@ -233,12 +233,12 @@ frame:RegisterEvent("ADDON_LOADED")
 		end)
 		
 		TargetFrameSpellBar:HookScript("OnHide", function(self, event, ...)
-			TargetFrameTextureFrameName:Show()
-			TargetFrameNameBackground:Show()
-			TargetFramePortrait:Show()
-			TargetFrameTextureFrameQuestIcon:Hide()
-			TargetFrameTextureFrameLevelText:SetText(UnitLevel("player"))
-			TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1)
+			-- TargetFrameTextureFrameName:Show()
+			-- TargetFrameNameBackground:Show()
+			-- TargetFramePortrait:Show()
+			-- TargetFrameTextureFrameQuestIcon:Hide()
+			-- TargetFrameTextureFrameLevelText:SetText(UnitLevel("player"))
+			-- TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1)
 		end)
 	end
 
