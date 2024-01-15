@@ -10,8 +10,6 @@ Intentionally lightweight on cpu/memory/load times. This comes with one downside
 - Hide the bag bar
 - Hide the micro menu bar
 - Hide text for hotkey, macros
-- Hide background art for action bars, micro menu bar, bag bar
-- Hide gryphon art
 
 
 # Full UI Fading
@@ -20,7 +18,6 @@ Intentionally lightweight on cpu/memory/load times. This comes with one downside
 - Set faded-in alpha
 - Set faded-out alpha
 - Also hide names
-- Also hide minimap quest areas/POIs
 
 
 # UI Colors
@@ -34,7 +31,6 @@ Intentionally lightweight on cpu/memory/load times. This comes with one downside
 - Embed castbars in player/target frames
 - Show the spell icon over the character portrait when casting
 - OR show a small spell icon
-- OR hide the spell icon
 - Show cast timers
 - Show a red icon in target frame when target's spell is not interruptible
 
@@ -47,12 +43,6 @@ Intentionally lightweight on cpu/memory/load times. This comes with one downside
 - Show role icons on target frame when in a party
 
 
-# Raid / Compact Party Frames
-
-- Set scale separate from the rest of the UI
-- Adjust frames anchor to top left corner
-
-
 # Improved Fonts
 
 - Improve text on hotkeys, macro labels, unit names, cast bars
@@ -61,14 +51,6 @@ Intentionally lightweight on cpu/memory/load times. This comes with one downside
 # MiniMap
 
 - Right click minimap zone text to show micro menu
-- Mouse-over fading on Tracking, clock/calendar, mail, other notifications
-- Mouse-over fading on zone text
-- Shrink Buttons slightly
-- Hide Zone Text Bar Map Button
-- Enable Mouse-Scroll Zooming
-- Hide Zoom Buttons
-- Hide North Indicator
-
 
 # Dressup Frame
 
