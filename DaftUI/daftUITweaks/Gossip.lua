@@ -27,29 +27,29 @@ local function ResizeFrame(thisFrame)
 
 end
 
-local function PrintGossip()
+-- local function PrintGossip()
 
-	if QuestFrame:IsShown() then
+-- 	if QuestFrame:IsShown() then
 		
-		if QuestFrameDetailPanel:IsShown() then
-			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. QuestInfoDescriptionText:GetText() .. '"' .. " (for " .. QuestInfoTitleHeader:GetText() .. ")", "MONSTER_SAY")
-		elseif QuestFrameProgressPanel:IsShown() then
-			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. QuestProgressText:GetText() .. '"' .. " (for " .. QuestProgressTitleText:GetText() .. ")", "MONSTER_SAY")
-		elseif QuestFrameRewardPanel:IsShown() then
-			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. QuestInfoRewardText:GetText() .. '"' .. " (for " .. QuestInfoTitleHeader:GetText() .. ")", "MONSTER_SAY")
-		elseif QuestFrameGreetingPanel:IsShown() then
-			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameNpcNameText:GetText() .. ' says, "' .. GreetingText:GetText() .. '"', "MONSTER_SAY")
-		end
-	end
+-- 		if QuestFrameDetailPanel:IsShown() then
+-- 			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameTitleText:GetText() .. ' says, "' .. QuestInfoDescriptionText:GetText() .. '"' .. " (for " .. QuestInfoTitleHeader:GetText() .. ")", "MONSTER_SAY")
+-- 		elseif QuestFrameProgressPanel:IsShown() then
+-- 			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameTitleText:GetText() .. ' says, "' .. QuestProgressText:GetText() .. '"' .. " (for " .. QuestProgressTitleText:GetText() .. ")", "MONSTER_SAY")
+-- 		elseif QuestFrameRewardPanel:IsShown() then
+-- 			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameTitleText:GetText() .. ' says, "' .. QuestInfoRewardText:GetText() .. '"' .. " (for " .. QuestInfoTitleHeader:GetText() .. ")", "MONSTER_SAY")
+-- 		elseif QuestFrameGreetingPanel:IsShown() then
+-- 			DEFAULT_CHAT_FRAME:AddMessage(QuestFrameTitleText:GetText() .. ' says, "' .. GreetingText:GetText() .. '"', "MONSTER_SAY")
+-- 		end
+-- 	end
 
-	if GossipFrame:IsShown() then
-		-- DEFAULT_CHAT_FRAME:AddMessage(GossipFrameNpcNameText:GetText() .. ' says, "' .. GossipGreetingText:GetText() .. '"', "MONSTER_SAY")
-	end
+-- 	if GossipFrame:IsShown() then
+-- 		-- DEFAULT_CHAT_FRAME:AddMessage(GossipFrameNpcNameText:GetText() .. ' says, "' .. GossipGreetingText:GetText() .. '"', "MONSTER_SAY")
+-- 	end
 
-	if ItemTextFrame:IsShown() then
-		DEFAULT_CHAT_FRAME:AddMessage(ItemTextFrame.TitleText:GetText() .. ' says, "' .. ItemTextGetText() .. '"', "MONSTER_SAY")
-	end
-end
+-- 	if ItemTextFrame:IsShown() then
+-- 		DEFAULT_CHAT_FRAME:AddMessage(ItemTextFrame.TitleText:GetText() .. ' says, "' .. ItemTextGetText() .. '"', "MONSTER_SAY")
+-- 	end
+-- end
 
 
 -- SCRIPTS
@@ -76,7 +76,7 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 					or event == "QUEST_PROGRESS"
 					or event == "ITEM_TEXT_READY" then
 		
-						PrintGossip()
+						-- PrintGossip()
 					end
 				end)
 			end
