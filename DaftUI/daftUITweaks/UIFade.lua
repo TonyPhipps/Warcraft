@@ -10,14 +10,14 @@ frame:RegisterEvent("ADDON_LOADED")
 local NameCVarArray = {
 	"UnitNameEnemyGuardianName",
 	"UnitNameEnemyPetName",
-	"UnitNameEnemyPlayerName",
+	--"UnitNameEnemyPlayerName",
 	"UnitNameEnemyTotemName",
 	"UnitNameFriendlyGuardianName",
 	"UnitNameFriendlyPetName",
 	"UnitNameFriendlyPlayerName",
 	"UnitNameFriendlySpecialNPCName",
 	"UnitNameFriendlyTotemName",
-	"UnitNameHostleNPC",
+	--"UnitNameHostleNPC",
 	"UnitNameInteractiveNPC",
 	"UnitNameNPC",
 	"UnitNameNonCombatCreatureName"
@@ -96,8 +96,7 @@ local function FadeUI()
 				UIFrameFadeIn(UIParent, UIParent:GetAlpha(), UIParent:GetAlpha(), addonTable.db.UIFADE_IN);
 				
 				if addonTable.db.UIFADE_NAMES then
-					for _, CVar in pairs(NameCVarArray) do
-				
+					for _, CVar in pairs(NameCVarArray) do						
 						SetCVar(CVar, 1)
 					end
 				end
@@ -107,9 +106,11 @@ local function FadeUI()
 				UIFrameFadeOut(UIParent, UIParent:GetAlpha(), UIParent:GetAlpha(), addonTable.db.UIFADE_OUT);
 				
 				if addonTable.db.UIFADE_NAMES then
-					for _, CVar in pairs(NameCVarArray) do
-						SetCVar(CVar, 0)
-					end
+					C_Timer.After(3, function()
+						for _, CVar in pairs(NameCVarArray) do
+							SetCVar(CVar, 0)
+						end
+					end)
 				end
 			end
 		end
