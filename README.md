@@ -16,11 +16,6 @@ Resources
 - http://us.media.blizzard.com/wow/interface/WoW_Interface_enUS.zip
 
 ## Addon Authoring Tips and Tricks
-Print something to chat
-```
-print("Printed this to chat.")
-```
-
 Framestack Tool
 - While hovering over a frame, press and release CTRL to get a popup with details/options.
 ```
@@ -30,6 +25,11 @@ Framestack Tool
 Event Trace Tool
 ```
 /etrace
+```
+
+Blizzard_Console
+```
+/script DeveloperConsole:Toggle(true)
 ```
 
 Enable Blizzards Eror System
@@ -50,4 +50,9 @@ Show frame under mouse
 Print Children Names of Frame Under Mouse
 ```
 /run function kiddos () local kiddos = { GetMouseFocus():GetChildren() }; for _, child in ipairs(kiddos) do print(child:GetName()); end end kiddos();
+```
+
+Print something to chat
+```
+print("Printed this to chat.")
 ```

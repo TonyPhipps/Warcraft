@@ -44,14 +44,6 @@ frame:RegisterEvent("ADDON_LOADED")
 		
 		_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo("target")
 
-		-- TargetFrameTextureFrameName:Hide()
-		-- TargetFrameNameBackground:Hide()
-		-- TargetFramePortrait:Hide()
-			
-		if addonTable.db.TARGET_BIG_SPELL_ICON then
-		
-			-- TargetFramePortrait:Hide()
-		end
 
 		if addonTable.db.TARGET_HIDE_SPELL_ICON then
 		
@@ -60,116 +52,30 @@ frame:RegisterEvent("ADDON_LOADED")
 		
 		if notInterruptible then
 		
-			-- TargetFrameTextureFrameQuestIcon:Show()
-			-- TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 0, 0, 1)
+			TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.RightText:SetText("Uninterruptable!")
+			TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.RightText:Show()
 		else
 			
-			-- TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1)
+			TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.RightText:Hide()
 		end
 	end
 
 	local function SetupPlayerFrame()
-
-		-- CastingBarFrame:SetFrameStrata("BACKGROUND")
-		-- CastingBarFrame.Border:Hide()
-
-		-- CastingBarFrame:SetWidth(PlayerFrameHealthBar:GetWidth())
-		-- CastingBarFrame:SetHeight(PlayerName:GetHeight()*1.8)
-		-- CastingBarFrame:ClearAllPoints()
-		-- CastingBarFrame:SetPoint("CENTER", PlayerName, "CENTER", 0, -1)
-		-- CastingBarFrame.SetPoint = function() end
-
-		-- CastingBarFrame.Text:ClearAllPoints()
-		-- CastingBarFrame.Text:SetPoint("CENTER", CastingBarFrame, "CENTER", 0, 0)
-		-- CastingBarFrame.Text.SetPoint = function() end
-
-		-- CastingBarFrame.Border:SetWidth(CastingBarFrame:GetWidth()*1.38)
-		-- CastingBarFrame.Border:SetHeight(CastingBarFrame:GetHeight()*3.6)
-		-- CastingBarFrame.Border:ClearAllPoints()
-		-- CastingBarFrame.Border:SetPoint("CENTER", CastingBarFrame, "CENTER", 0, 0)
-		-- CastingBarFrame.Border.SetPoint = function() end
-		-- CastingBarFrame.Border:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small")
-
-		-- CastingBarFrame.Flash:SetWidth(CastingBarFrame.Border:GetWidth())
-		-- CastingBarFrame.Flash:SetHeight(CastingBarFrame.Border:GetHeight())
-		-- CastingBarFrame.Flash:ClearAllPoints()
-		-- CastingBarFrame.Flash:SetPoint("CENTER", CastingBarFrame.Border, "CENTER", 0, 0)
-		-- CastingBarFrame.Flash.SetPoint = function() end
-		-- CastingBarFrame.Flash:SetTexture("Interface\\CastingBar\\UI-CastingBar-Flash-Small")
-		
-		if addonTable.db.PLAYER_BIG_SPELL_ICON and not addonTable.db.PLAYER_HIDE_SPELL_ICON then
-			
-			-- CastingBarFrame.Icon:Show()
-			-- CastingBarFrame.Icon:ClearAllPoints()
-			-- CastingBarFrame.Icon:SetPoint("CENTER", PlayerPortrait, "CENTER", 0, 0)
-			-- CastingBarFrame.Icon:SetWidth(PlayerPortrait:GetWidth()*.83)
-			-- CastingBarFrame.Icon:SetHeight(PlayerPortrait:GetHeight()*.83)
-			-- CastingBarFrame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		end
-		
-		if not addonTable.db.PLAYER_BIG_SPELL_ICON and not addonTable.db.PLAYER_HIDE_SPELL_ICON then
-			
-			-- CastingBarFrame.Icon:ClearAllPoints()
-			-- CastingBarFrame.Icon:SetPoint("LEFT", CastingBarFrame, "RIGHT", 5, 0)
-			-- CastingBarFrame.Icon.SetPoint = function() end
-		end
-		
+				
 		if addonTable.db.PLAYER_HIDE_PVP_ICON then
 			
 			-- PlayerPVPIcon:SetAlpha(0)
 		end
 
-
-		-- HOOKS
-
-		-- CastingBarFrame.update = 0
-		-- CastingBarFrame:HookScript('OnUpdate', function(self, elapsed)
-		
-		-- 	if self.update and self.update < elapsed then
-			
-		-- 		if self.casting then		
-					
-		-- 			ShowPlayerCastBar()
-					
-		-- 			if addonTable.db.PLAYER_TIMER then
-					
-		-- 				PlayerLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
-		-- 			end
-		-- 		elseif self.channeling then
-					
-		-- 			ShowPlayerCastBar()
-					
-		-- 			if addonTable.db.PLAYER_TIMER then
-					
-		-- 				PlayerLevelText:SetText(format("%.1f", max(self.value, 0)))
-		-- 			end
-		-- 		end
-				
-		-- 		self.update = 0
-				
-		-- 	else
-		-- 		self.update = self.update - elapsed
-		-- 	end
-		-- end)
-
-		-- CastingBarFrame:HookScript("OnHide", function(self, event, ...)
-		-- 	PlayerName:Show()
-		-- 	PlayerStatusTexture:Show()
-		-- 	PlayerFrameBackground:Show()
-		-- 	PlayerPortrait:Show()
-		-- 	PlayerLevelText:SetText(UnitLevel("player"))
-		-- 	PlayerAttackIcon:SetAlpha(1)
-		-- 	PlayerRestIcon:SetAlpha(1)
-		-- end)
 	end
 
 	local function SetupTargetFrame()
 
-		TargetFrameSpellBar:SetFrameStrata("BACKGROUND")
+		TargetFrameSpellBar:SetFrameStrata("MEDIUM")
 
 		TargetFrameSpellBar:ClearAllPoints()
-		TargetFrameSpellBar:SetPoint("TOPLEFT",TargetFrame,"TOPLEFT",7,-22)
-		TargetFrameSpellBar:SetPoint("BOTTOMRIGHT",TargetFrame,"BOTTOMRIGHT",-109.5, 60)
+		TargetFrameSpellBar:SetPoint("TOPLEFT",TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBar,"TOPLEFT",0,0)
+		TargetFrameSpellBar:SetPoint("BOTTOMRIGHT",TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBar,"BOTTOMRIGHT",0,0)
 		TargetFrameSpellBar.SetPoint = function() end
 		
 		TargetFrameSpellBar.Flash:ClearAllPoints()
@@ -187,9 +93,9 @@ frame:RegisterEvent("ADDON_LOADED")
 		if addonTable.db.TARGET_BIG_SPELL_ICON then
 			
 			TargetFrameSpellBar.Icon:ClearAllPoints()
-			-- TargetFrameSpellBar.Icon:SetPoint("CENTER", TargetFramePortrait, "CENTER", 0, 0)
-			-- TargetFrameSpellBar.Icon:SetWidth(TargetFramePortrait:GetWidth())
-			-- TargetFrameSpellBar.Icon:SetHeight(TargetFramePortrait:GetHeight())
+			TargetFrameSpellBar.Icon:SetPoint("CENTER", TargetFrame.TargetFrameContainer.Portrait, "CENTER", 0, 0)
+			TargetFrameSpellBar.Icon:SetWidth(TargetFrame.TargetFrameContainer.Portrait:GetWidth())
+			TargetFrameSpellBar.Icon:SetHeight(TargetFrame.TargetFrameContainer.Portrait:GetHeight())
 			TargetFrameSpellBar.Icon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask")
 		end
 		
@@ -212,7 +118,8 @@ frame:RegisterEvent("ADDON_LOADED")
 					
 					if addonTable.db.TARGET_TIMER then
 					
-						-- TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
+						TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.LeftText:SetText(format("%.1f", max(self.maxValue - self.value, 0)))
+						TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.LeftText:Show()
 					end
 				
 				elseif self.channeling then
@@ -221,7 +128,8 @@ frame:RegisterEvent("ADDON_LOADED")
 					
 					if addonTable.db.TARGET_TIMER then
 					
-						-- TargetFrameTextureFrameLevelText:SetText(format("%.1f", max(self.value, 0)))
+						TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.LeftText:SetText(format("%.1f", max(self.value, 0)))
+						TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar.LeftText:Show()
 					end
 				end
 				
@@ -230,15 +138,6 @@ frame:RegisterEvent("ADDON_LOADED")
 			else
 				self.update = self.update - elapsed
 			end
-		end)
-		
-		TargetFrameSpellBar:HookScript("OnHide", function(self, event, ...)
-			-- TargetFrameTextureFrameName:Show()
-			-- TargetFrameNameBackground:Show()
-			-- TargetFramePortrait:Show()
-			-- TargetFrameTextureFrameQuestIcon:Hide()
-			-- TargetFrameTextureFrameLevelText:SetText(UnitLevel("player"))
-			-- TargetFrameTextureFrameQuestIcon:SetVertexColor(1, 1, 1, 1)
 		end)
 	end
 
