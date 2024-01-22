@@ -254,6 +254,8 @@ OptionsCastBars:SetScript("OnShow", function(self)
 		TARGET_TIMER:SetScript("OnClick", function(self)
 			addonTable.db.TARGET_TIMER = self:GetChecked()
 		end)
+		
+	-- TARGET_HIDE_PVP_ICON
 
 	self:SetScript("OnShow", nil)
 end)

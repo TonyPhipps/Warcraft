@@ -64,7 +64,9 @@ frame:RegisterEvent("ADDON_LOADED")
 				
 		if addonTable.db.PLAYER_HIDE_PVP_ICON then
 			
-			-- PlayerPVPIcon:SetAlpha(0)
+			PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.PrestigeBadge:SetAlpha(0)
+			PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.PrestigePortrait:SetAlpha(0)
+			PlayerPVPTimerText:SetAlpha(0)
 		end
 
 	end
@@ -101,7 +103,7 @@ frame:RegisterEvent("ADDON_LOADED")
 		
 		if addonTable.db.TARGET_HIDE_PVP_ICON then
 			
-			-- TargetFrameTextureFramePVPIcon:SetAlpha(0)
+			TargetFrame.TargetFrameContent.TargetFrameContentContextual.PvpIcon:SetAlpha(0)
 		end
 
 		
