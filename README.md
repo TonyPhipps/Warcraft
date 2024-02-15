@@ -1,5 +1,15 @@
-# wow.exe launches, but no screen is ever shown.
+# Troubleshooting
+
+## wow.exe launches, but no screen is ever shown.
 Disable all overlay service (there are many these days. Windows Game Bar, graphics card software, gaming software, addon managers, discord, etc.)
+
+# Questing
+Check if you've completed a quest, where ##### is replaced with the quest ID (found in URL of Wowhead quest page)
+```
+/run print(C_QuestLog.IsQuestFlaggedCompleted(#####))
+```
+
+
 
 # Addons
 
