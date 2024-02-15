@@ -428,7 +428,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.SCREENSHOT_ACHIEVEMENTS then
 		
 		if event == "ACHIEVEMENT_EARNED" then
-			C_Timer.After(1, Screenshot)
+			C_Timer.After(1, function() Screenshot() end)
 		end
 	end
 	

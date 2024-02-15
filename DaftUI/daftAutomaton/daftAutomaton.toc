@@ -2,7 +2,7 @@
 ## Title: daftAutomaton
 ## Author: Daftwise - US Destromath
 ## Notes: Performs things automatically.
-## Version: 100200.2
+## Version: 100200.3
 
 Options.lua
 daftAutomaton.lua
