@@ -1,6 +1,14 @@
 TODO:
--- Accept Bind on Pickup messages when there is nobody else in the group.
 -- Add auto /say "Sapped by X"
+
+110700.1
+-- Bumped TOC
+-- Added Auto Mount (random favorite) when leaving combat
+-- Added Auto Mount (random favorite) when told to
+-- Added auto accept from guild members to the auto group accept
+-- Removed Auction (too complicated to update)
+-- Removed CombatNamePlates (Adopted into game options by Blizzard)
+-- Removed code for auto follow (Blizzard disabled API due to bot abuse)
 
 70100.1
 -- Fixed cross-realm issues with auto follow, auto accepts

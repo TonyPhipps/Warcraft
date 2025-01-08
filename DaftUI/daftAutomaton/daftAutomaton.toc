@@ -1,11 +1,9 @@
-## Interface: 100200
+## Interface: 110700
 ## Title: daftAutomaton
 ## Author: Daftwise - US Destromath
 ## Notes: Performs things automatically.
-## Version: 100200.3
+## Version: 110700.1
 
 Options.lua
 daftAutomaton.lua
-## Auction.lua
 FastLoot.lua
-CombatNamePlates.lua

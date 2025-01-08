@@ -19,9 +19,9 @@ local function RegisterEvents()
 		addon:RegisterEvent("GROUP_ROSTER_UPDATE")
 	end
 	
-	if addonTable.FOLLOW
-	or addonTable.PROMOTE_LEADER
-	or addon.PROMOTE_ASSISTANT then
+	if addonTable.PROMOTE_LEADER
+	or addonTable.MOUNT_WHEN_TOLD
+	or addonTable.PROMOTE_ASSISTANT then
 		addon:RegisterEvent("CHAT_MSG_GUILD")
 		addon:RegisterEvent("CHAT_MSG_PARTY")
 		addon:RegisterEvent("CHAT_MSG_PARTY_LEADER")
@@ -65,9 +65,12 @@ local function RegisterEvents()
 		addon:RegisterEvent("QUEST_DETAIL")
 	end
 	
-	
 	if addonTable.SHARE_QUESTS then
 		addon:RegisterEvent("QUEST_ACCEPTED")
+	end
+	
+	if addonTable.MOUNT_WHEN_SAFE then
+		addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 	end
 end
 
@@ -164,6 +167,13 @@ end
 
 SLASH_AUTOINVITE1, SLASH_AUTOINVITE2  = "/autoinv", "/autoinvite"
 
+
+---- FUNCTIONS ----
+local function isGuildMember(unit) 
+    local playerGuildName = GetGuildInfo("player") -- Get your own guild name
+    local unitGuildName = GetGuildInfo(unit) -- Get the guild name of the unit sending the message
+    return (playerGuildName and unitGuildName and playerGuildName == unitGuildName) -- Check if both guilds are the same
+end
 
 ---- EVENTS ----
 addon:SetScript("OnEvent", function(self, event, ...) 
@@ -291,7 +301,8 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		if event == "PARTY_INVITE_REQUEST" then
 			local sender = ...
 			
-			if UnitIsInFriendList(sender) then
+			if UnitIsInFriendList(sender)
+			or isGuildMember(sender) then
 				AcceptGroup()
 				
 				for i = 1, STATICPOPUP_NUMDIALOGS do
@@ -374,8 +385,16 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		end
 	end
 	
+	if addonTable.MOUNT_WHEN_SAFE then
+		
+		if event == "PLAYER_REGEN_ENABLED" then
+			if not IsMounted() then
+				C_MountJournal.SummonByID(0)
+			end
+		end
+	end
 	
-	if addonTable.FOLLOW then
+	if addonTable.MOUNT_WHEN_TOLD then
 		
 		if event == "CHAT_MSG_GUILD" 
 		or event == "CHAT_MSG_PARTY" 
@@ -385,22 +404,12 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		or event == "CHAT_MSG_WHISPER" then
 			local message, sender = ...
 			local senderName = Ambiguate(sender, "short")
-			local inRange = CheckInteractDistance(senderName, 4)
-			
-			if UnitInParty(senderName) or UnitIsInFriendList(senderName) then
 
-				if message == "!follow" then
-				
-					if inRange then
-						FollowUnit(senderName)
-						
-						if not IsMounted() then
-							C_MountJournal.SummonByID(0)
-						end
-						SendChatMessage("Following you.", "WHISPER", nil, sender)
-					
-					else
-						SendChatMessage("Too far to follow.", "WHISPER", nil, sender)
+			if UnitInParty(senderName) or UnitInRaid(senderName) or UnitIsInFriendList(senderName) then
+				if message == "mount" then
+					if not IsMounted() then
+						print("Auto-mounting from " .. sender)
+						C_MountJournal.SummonByID(0)
 					end
 				end
 			end
