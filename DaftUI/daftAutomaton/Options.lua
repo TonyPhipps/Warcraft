@@ -30,4 +30,7 @@ addonTable.SCREENSHOT_ACHIEVEMENTS = true -- Take a screenshot every time an ach
 addonTable.TOGGLE_CINEMATIC_SOUND = false -- Enable sound for cinematics reverts settings afterward
 addonTable.FASTLOOT = true                -- Makes auto looting super fast
 addonTable.MOUNT_WHEN_TOLD = true         -- Mount up when told "mount"
+
+-- Combat
 addonTable.MOUNT_WHEN_SAFE = true         -- Mount up when exiting combat
+addonTable.MOUNT_STEALTHERS = false       -- Mount up when exiting combat, sub-check for rogue/druid

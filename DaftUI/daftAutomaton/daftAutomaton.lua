@@ -1,12 +1,8 @@
 local addonName, addonTable = ...
 local addon = CreateFrame("Frame")
+local playerClass, englishClass = UnitClass("player");
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD")
-
-local function HasSoulstone()
-	local options = GetSortedSelfResurrectOptions()
-	return options and options[1] and options[1].name
-end
 
 local function RegisterEvents()
 	
@@ -76,6 +72,19 @@ end
 
 
 ---- HELPER FUNCTIONS ----
+
+
+local function isGuildMember(unit) 
+    local playerGuildName = GetGuildInfo("player") -- Get your own guild name
+    local unitGuildName = GetGuildInfo(unit) -- Get the guild name of the unit sending the message
+    return (playerGuildName and unitGuildName and playerGuildName == unitGuildName) -- Check if both guilds are the same
+end
+
+local function HasSoulstone()
+	local options = GetSortedSelfResurrectOptions()
+	return options and options[1] and options[1].name
+end
+
 local function UnitIsInFriendList(name)
 
 	C_FriendList.ShowFriends()
@@ -166,14 +175,6 @@ function SlashCmdList.AUTOINVITE(trigger)
 end
 
 SLASH_AUTOINVITE1, SLASH_AUTOINVITE2  = "/autoinv", "/autoinvite"
-
-
----- FUNCTIONS ----
-local function isGuildMember(unit) 
-    local playerGuildName = GetGuildInfo("player") -- Get your own guild name
-    local unitGuildName = GetGuildInfo(unit) -- Get the guild name of the unit sending the message
-    return (playerGuildName and unitGuildName and playerGuildName == unitGuildName) -- Check if both guilds are the same
-end
 
 ---- EVENTS ----
 addon:SetScript("OnEvent", function(self, event, ...) 
@@ -388,6 +389,14 @@ addon:SetScript("OnEvent", function(self, event, ...)
 	if addonTable.MOUNT_WHEN_SAFE then
 		
 		if event == "PLAYER_REGEN_ENABLED" then
+		
+			if not addonTable.MOUNT_STEALTHERS then
+				if playerClass == "Rogue"
+				or playeClass == "Druid" then
+					return
+				end
+			end
+			
 			if not IsMounted() then
 				C_MountJournal.SummonByID(0)
 			end
