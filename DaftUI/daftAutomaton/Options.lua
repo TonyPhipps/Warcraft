@@ -9,7 +9,7 @@ addonTable.SELL_GREYS = true
 
 -- Friend play / multiboxing
 addonTable.ACCEPT_GROUP = true			-- Accept group invites (only from friends / guildies)
-addonTable.ACCEPT_QUESTS = true		    -- Accept shared quests
+addonTable.ACCEPT_QUESTS = false	    -- Accept shared quests
 addonTable.ACCEPT_SUMMON = false		-- Accept summons (only when not in combat)
 addonTable.INVITE = false				-- Enable auto-inviting others to group who say trigger phrase
 addonTable.INVITE_TRIGGER = "invite"	-- Specify a trigger word to initiate auto invite
@@ -32,5 +32,5 @@ addonTable.FASTLOOT = true                -- Makes auto looting super fast
 addonTable.MOUNT_WHEN_TOLD = true         -- Mount up when told "mount"
 
 -- Combat
-addonTable.MOUNT_WHEN_SAFE = true         -- Mount up when exiting combat
-addonTable.MOUNT_STEALTHERS = false       -- Mount up when exiting combat, sub-check for rogue/druid
+addonTable.AUTO_MOUNT = true   		      -- Mount up when exiting combat or closing loot window
+addonTable.MOUNT_STEALTHERS = false       -- Auto mount sub-check for rogue/druid

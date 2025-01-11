@@ -65,8 +65,10 @@ local function RegisterEvents()
 		addon:RegisterEvent("QUEST_ACCEPTED")
 	end
 	
-	if addonTable.MOUNT_WHEN_SAFE then
+	if addonTable.AUTO_MOUNT then
 		addon:RegisterEvent("PLAYER_REGEN_ENABLED")
+		addon:RegisterEvent("LOOT_CLOSED")
+		addon:RegisterEvent("QUEST_LOG_UPDATE")
 	end
 end
 
@@ -386,20 +388,26 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		end
 	end
 	
-	if addonTable.MOUNT_WHEN_SAFE then
+	if addonTable.AUTO_MOUNT then
 		
-		if event == "PLAYER_REGEN_ENABLED" then
+		if event == "PLAYER_REGEN_ENABLED"
+		or event == "LOOT_CLOSED" 
+		or event == "QUEST_LOG_UPDATE" then
 		
+			if IsIndoors()
+			or IsMounted() 
+			or UnitAffectingCombat("player") then
+				return
+			end
+
 			if not addonTable.MOUNT_STEALTHERS then
 				if playerClass == "Rogue"
 				or playeClass == "Druid" then
 					return
 				end
 			end
-			
-			if not IsMounted() then
-				C_MountJournal.SummonByID(0)
-			end
+					
+			C_MountJournal.SummonByID(0)
 		end
 	end
 	
