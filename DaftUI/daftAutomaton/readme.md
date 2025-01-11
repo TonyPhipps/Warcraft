@@ -5,7 +5,6 @@ Automatically performs many functions, which can be enabled/disabled via the Opt
   - Repair all gear
 
 - Party/Raid
-
   - Invite people who ask using a trigger word
   - Accept group invites from friends and guild members
   - Mounts up when friends/party members say "mount" in a whisper or chat
@@ -17,9 +16,10 @@ Automatically performs many functions, which can be enabled/disabled via the Opt
   - Automatically Accept quests when in a group
   - When cinematics start, turn on and up the sound, then revert to previous settings when it ends.
   - Loot much faster than the default auto loot
+  - Auto mount after looting and interacting with quest items
 
 - Combat
-  - Mount up when leaving combat
+  - Auto mount when leaving combat
   - Release spirit after dying in pvp instances
   - Release spirit after dying in world zones
 

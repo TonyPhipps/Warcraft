@@ -400,7 +400,7 @@ addon:SetScript("OnEvent", function(self, event, ...)
 				return
 			end
 
-			if not addonTable.MOUNT_STEALTHERS then
+			if not addonTable.AUTO_MOUNT_STEALTHERS then
 				if playerClass == "Rogue"
 				or playeClass == "Druid" then
 					return

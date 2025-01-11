@@ -33,4 +33,4 @@ addonTable.MOUNT_WHEN_TOLD = true         -- Mount up when told "mount"
 
 -- Combat
 addonTable.AUTO_MOUNT = true   		      -- Mount up when exiting combat or closing loot window
-addonTable.MOUNT_STEALTHERS = false       -- Auto mount sub-check for rogue/druid
+addonTable.AUTO_MOUNT_STEALTHERS = false  -- Auto mount sub-check for rogue/druid

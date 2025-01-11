@@ -1,6 +1,11 @@
 TODO:
 -- Add auto /say "Sapped by X"
 
+110700.2
+-- Added option to specify auto mounting for stealthing characters
+-- Added auto mount when finished looting
+-- Added auto mount when finished interacting with quest object
+
 110700.1
 -- Bumped TOC
 -- Added Auto Mount (random favorite) when leaving combat
