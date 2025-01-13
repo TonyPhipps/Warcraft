@@ -1,6 +1,9 @@
 TODO:
 -- Add auto /say "Sapped by X"
 
+110700.3
+-- Split auto loot options between combat, loot, questing
+
 110700.2
 -- Added option to specify auto mounting for stealthing characters
 -- Added auto mount when finished looting

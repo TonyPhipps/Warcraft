@@ -65,9 +65,15 @@ local function RegisterEvents()
 		addon:RegisterEvent("QUEST_ACCEPTED")
 	end
 	
-	if addonTable.AUTO_MOUNT then
+	if addonTable.MOUNT_COMBAT then
 		addon:RegisterEvent("PLAYER_REGEN_ENABLED")
+	end
+	
+	if addonTable.MOUNT_LOOT then
 		addon:RegisterEvent("LOOT_CLOSED")
+	end
+	
+	if addonTable.MOUNT_QUEST then
 		addon:RegisterEvent("QUEST_LOG_UPDATE")
 	end
 end
@@ -75,6 +81,25 @@ end
 
 ---- HELPER FUNCTIONS ----
 
+
+local function AutoMount()
+	if IsIndoors()
+	or IsMounted() 
+	or UnitAffectingCombat("player") then
+		return
+	end
+	if not addonTable.MOUNT_ROGUE then
+		if playerClass == "Rogue" then
+			return
+		end
+	end
+	if not addonTable.MOUNT_DRUID then
+		if playerClass == "Druid" then
+			return
+		end
+	end
+	C_MountJournal.SummonByID(0)
+end
 
 local function isGuildMember(unit) 
     local playerGuildName = GetGuildInfo("player") -- Get your own guild name
@@ -388,26 +413,26 @@ addon:SetScript("OnEvent", function(self, event, ...)
 		end
 	end
 	
-	if addonTable.AUTO_MOUNT then
+	if addonTable.MOUNT_COMBAT then
 		
-		if event == "PLAYER_REGEN_ENABLED"
-		or event == "LOOT_CLOSED" 
-		or event == "QUEST_LOG_UPDATE" then
+		if event == "PLAYER_REGEN_ENABLED" then
+			AutoMount()
+		end
+	end
+	
+	if addonTable.MOUNT_LOOT then
 		
-			if IsIndoors()
-			or IsMounted() 
-			or UnitAffectingCombat("player") then
-				return
-			end
-
-			if not addonTable.AUTO_MOUNT_STEALTHERS then
-				if playerClass == "Rogue"
-				or playeClass == "Druid" then
-					return
-				end
-			end
-					
-			C_MountJournal.SummonByID(0)
+		if event == "LOOT_CLOSED" then
+			
+			AutoMount()
+		end
+	end
+	
+	if addonTable.MOUNT_QUEST then
+		
+		if event == "QUEST_LOG_UPDATE" then
+			
+			AutoMount()
 		end
 	end
 	
