@@ -1,0 +1,52 @@
+Things to do in WoW
+
+# Non-endgame Content
+- Leveling with lore, doing questlines of various expansions (each expansion grants nearly enough to get to max level)
+- Leveling through dungeons
+- Leveling through Battlegrounds
+
+# Endgame Content
+- Questing
+  - Go back and enjoy quest lines from lower levels, scaled up to 80
+- Raid
+  - Larger dungeons, larger bosses, for larger groups.
+  - Difficulties include LFR, Normal, Heroic, Mythic
+  - New raids every few months
+  - Higher difficulties offer rewards like achievements, titles, mounts, etc.
+- Mythic+ dungeons
+  - 5 players - tank, healer, 3x damage dealers
+  - Dungeons from all of WoW's history, rotating every few months
+  - Difficulties from Heroic > Mythic > Mythic+2 to +20 and beyond
+  - Higher difficulties offer rewards like achievements, titles, mounts, etc.
+- Battleground PVP
+  - Player-vs-player games
+  - Earn honor and buy transmog, mounts, gear
+- Rated Battlegrounds
+  - Earn ratings and get paired up based on them
+  - Options from 10-40 player teams
+  - Higher ratings offer rewards like achievements, titles, mounts, etc.
+- Arena
+  - Small scale groups and maps for player-vs-player matches
+  - Earn ratings and get paired up based on them
+  - Small battles of 1v1, 2v2, 3v3, 5v5
+  - Higher ratings offer rewards like achievements, titles, mounts, etc.
+    - Some of the most exclusive/unique mounts in the game come from here
+  - World PVP
+    - Enable "War Mode" and look for fights in open-world Azeroth
+- Battle Pets
+  - Entire system simlar to Pokemon
+- Playing the gold market
+  - Enjoy running the economy on Cloth (or whatever) and play the auction house!
+- Crafting
+  - Create items/gear for yourself and/or others
+- Transmogrification farming
+  - Collect Gear appearances and outfit your character(s)!
+- Mount farming
+  - There are 1500+ mounts in the game, many tied to achievements, many are simply rare drops from bosses/world creatures
+- Title farming
+- Reputation farming
+- Toybox farming
+  - Toys are like extra spells that do something fun, usually on a long cooldown like 10min or 30min
+- Achievement hunting
+  - Doing this ultimately winds up with you doing much of the items previously listed, as they ALL have achievements tied to them.
+  - There are 17,000+ achievement "points" with most achievements awarding 10-50 points each.
